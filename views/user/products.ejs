@@ -1,0 +1,151 @@
+<%-include('../partials/user_header')%>
+<!-- view products -->
+<style>
+  /* .product-item-inner {
+  padding: 0;
+} */
+ 
+  .img-box {
+    margin: 1;
+  }
+
+  .details {
+    padding: 0;
+  }
+  .img-box {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .img-box img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .product-image {
+    transition: transform 0.3s ease;
+    border-radius: 26%; /* Adjust the value as per your preference */
+
+  }
+
+  .product-image:hover {
+    transform: scale(1.1);
+    border-radius: 24%; /* Adjust the value as per your preference */
+
+  }
+
+  .cart {
+    transition: transform 0.3s ease;
+  }
+
+  .go-to-cart:hover .cart {
+    transform: translateY(-5px);
+  }
+
+.wishlist-icon {
+    color: white;
+    font-size: 24px;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .wishlist-icon:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    animation: pop-up 0.3s;
+  }
+
+  @keyframes pop-up {
+    0% {
+      transform: scale(1);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+  }
+</style>
+<main class="wrapper">
+  <section class="products pm">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <article class="title text-center">
+            <h2 class="title-sec">Products</h2>
+            <p class="sub-title">
+              Latest Protraits <i class="uil uil-list-ui-alt"></i><i></i>
+            </p>
+          </article>
+        </div>
+      </div>
+      <div class="row">
+
+        <!-- products-start  -->
+        <% viewProducts.forEach(function(viewProduct){ %>
+          <% if (viewProduct.block == false) { %>
+            <div class="col-md-4 col-lg-3">
+              <div class="product-item discount">
+                <div class="product-item-inner">
+                  <span class="discount">
+                    <a
+                      href="/addwishlist/<%= viewProduct._id %>"
+                      class="go-to-wishlist"
+                    >
+                    <i class="uil uil-heart wishlist-icon"></i>
+                    </a
+                  ></span>
+                  <figure
+                    class="img-box d-flex justify-content-center align-items-center"
+                  >
+                    <img
+                      src="/uploads/products/<%= viewProduct.image[1] %>"
+                      alt="Protrait"
+                      class="product-image"
+                    />
+                  </figure>
+                  <div class="details">
+                    <a href="/product_details/<%= viewProduct._id %>" class="link">
+                      <span class="cat">
+                        <i
+                          style="color: rgb(75, 72, 72)"
+                          class="uil uil-tag-alt"
+                        ></i>
+                        <b><%= viewProduct.productName %></b>
+                      </span>
+                      <h6>
+                        <%= viewProduct.description.split(' ').slice(0, 7).join(' ')
+                        %> ...
+                      </h6>
+                      <h4>₹ <%= viewProduct.price %></h4>
+                      <a href="/addcart/<%= viewProduct._id %>" class="go-to-cart">
+                        <i class="uil uil-shopping-bag shopping-cart cart"></i>
+                      </a>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% } %>
+        <!-- products-end ./ -->
+        <% })%>
+        <div class="row pt-40">
+          <div class="pagination justify-content-center">
+            <a href="#">1</a>
+            <a href="#">2</a>
+            <a href="#">...</a>
+            <a href="#">30</a>
+            <a href="#"><i class="uil uil-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%-include('../partials/user_footer')%>

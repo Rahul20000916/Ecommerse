@@ -1,0 +1,44 @@
+<%-include('../partials/user_header')%>
+<main class="wrapper">
+    <section class="product-details">
+        <div class="container-fluid">
+            <div class="row gap-5">
+                <div class="col-md-12 col-lg-6 mx-auto single-product-img">
+                    <div class="big-product">
+                        <img src="/uploads/products/<%= data.image[0] %>" class="pro-img img-fluid" alt="Protrait" />
+                    </div>
+                    <div class="img-gr d-flex justify-content-between">
+                        <div class="col-lg-3 img-col">
+                            <img src="/uploads/products/<%= data.image[0] %>" class="img-sm" alt="Protrait" />
+                        </div>
+                        <div class="col-lg-3 img-col">
+                            <img src="/uploads/products/<%= data.image[1] %>" class="img-sm" alt="Protrait" />
+                        </div>
+                        <div class="col-lg-3 img-col">
+                            <img src="/uploads/products/<%= data.image[2] %>" class="img-sm" alt="Protrait" />
+                        </div>
+                        <div class="col-lg-3 img-col">
+                            <img src="/uploads/products/<%= data.image[3] %>" class="img-sm" alt="Protrait" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-lg-5 mx-auto single-details">
+                    <h4><%= data.productName %></h4>
+                    <h2><%= data.price %></h2>
+                    <a href="/cart/<%= data._id %>"><button class="btn-normal m-1">Add to Cart</button></a>
+                    <button class="btn-normal">Add to Wish List</button>
+                    <span>
+                        <h5>Category Name</h5>
+                        <%= data.category %>
+                        <h4>Product Details</h4>
+                        <h4><%= data.description %></h4>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>    
+
+</main>
+
+<%-include('../partials/user_footer')%>

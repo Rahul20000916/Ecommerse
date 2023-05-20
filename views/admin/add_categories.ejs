@@ -1,0 +1,128 @@
+<%-include('../partials/admin_header')%>
+
+<section class="content-main">
+  <div class="content-header">
+    <div>
+      <h2 class="content-title card-title">ADD CATEGORIES</h2>
+      <p>ADD  /  EDIT  /  DELETE  CATEGORY</p>
+    </div>
+    <!-- <div>
+            <input type="text" placeholder="Search Categories" class="form-control bg-white">
+        </div> -->
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+          <form action="/admin/add_categories" method="post">
+            <div class="mb-4">
+              <label class="form-label">Name</label>
+              <input
+                type="text"
+                placeholder="Name"
+                id="name"
+                class="form-control"
+                name="Name"
+                required
+              />
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Description</label>
+              <textarea
+                placeholder="Description"
+                id="description"
+                name="Description"
+                class="form-control"
+                required
+              ></textarea>
+            </div>
+            <div class="d-grid">
+              <button class="btn btn-primary" id="btn" type="submit">
+                CREATE CATEGORY
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-9">
+          <div class="table-responsive">
+            <table class="table table-hover display mt-4">
+              <thead>
+                <tr>
+                    <div class="form-check">     
+                  <th scope="col">ID</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Description</th>
+                  <th scope="col" class="text-center" colspan="2">Actions</th>
+                     </div>
+                </tr>
+                <tbody>
+                  <% viewCategory.forEach(function(viewCategory,index){ %>
+                    <tr>
+                      <td><%= index+1  %></td>    
+                      <td><%= viewCategory.categoryName %></td>
+                      <td><%= viewCategory.description %></td>
+                      <td>
+                        <div class="text-center">
+                          <a href="/admin/edit_category/<%= viewCategory._id%>" class="btn btn-xs btn-success "> Edit</a>   
+                          <a href="/admin/delete_category/<%= viewCategory._id%>" class="btn btn-xs btn-danger" onclick="return deleteConfirmation(event)"> Delete</a>
+                         </div>
+                      </td>
+                    </tr>
+                    <% })%>
+                </tbody>
+              </thead>
+            </table>
+          </div>
+        </div>
+        <!-- .col// -->
+      </div>
+      <!-- .row // -->
+    </div>
+    <!-- card body .// -->
+  </div>
+  <!-- card .// -->
+</section>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  function deleteConfirmation(event) {
+    event.preventDefault(); // Prevent the default link behavior
+    
+    // Display the SweetAlert confirmation dialog
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this category!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        // If the user confirms the deletion, proceed with the link navigation
+        window.location.href = event.target.href;
+      }
+    });
+  }
+
+</script>
+
+<script>
+  document.getElementById("btn").onclick = () => {
+    let name = document.getElementById("name").value;
+    document.getElementById("name").value = name.trim();
+
+    let des = document.getElementById("des").value;
+    document.getElementById("des").value = des.trim();
+  };
+</script>
+<script>
+  function hide(id) {
+    setTimeout(() => {
+      document.getElementById(id).style.display = "none";
+    }, 1300);
+  }
+
+  hide("alert");
+</script>
+
+<%-include('../partials/admin_footer')%>

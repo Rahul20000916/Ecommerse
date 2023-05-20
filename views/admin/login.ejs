@@ -1,0 +1,32 @@
+<%-include('../partials/admin_header')%>
+
+<section class="content-main mt-50 mb-50">
+    <div class="card mx-auto card-login">
+        <div class="card-body">
+            <h4 class="card-title mb-2 text-center" >ADMIN LOGIN</h4>
+            <% if (loginErr == false) { %>
+             <P class="text-center" style="color: red;">INVALID USER OR PASSWORD !</P>
+            <% } %>
+            <form action="/admin/login" method="post">
+                <div class="mb-3">
+                    <input class="form-control"  name="Email" placeholder="email" type="text">
+                </div> <!-- form-group// -->
+                <div class="mb-3">
+                    <input class="form-control"name="Password" placeholder="Password" type="password">
+                </div> <!-- form-group// -->
+                <div class="mb-3">
+                    <!-- <a href="#" class="float-end font-sm text-muted">Forgot password?</a> -->
+                    <label class="form-check">
+                        <input type="checkbox" class="form-check-input" checked="">
+                        <span class="form-check-label">Remember</span>
+                    </label>
+                </div> <!-- form-group form-check .// -->
+                <div class="mb-2">
+                    <button type="submit" class="btn btn-primary w-100"> Login </button>
+                </div> <!-- form-group// -->
+            </form>
+        </div>
+    </div>
+</section>
+
+<%-include('../partials/admin_footer')%>

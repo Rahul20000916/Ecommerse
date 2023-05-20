@@ -1,0 +1,188 @@
+<%-include('../partials/user_header')%>
+
+<style>
+  .table-image td,
+  .table-image th {
+    vertical-align: middle;
+  }
+  /* Define the animation */
+  @keyframes fadeInOut {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* Apply the animation to the element */
+  .animation {
+    animation: fadeInOut 1s infinite;
+  }
+  button {
+    position: relative;
+    overflow: hidden;
+  }
+
+  button b {
+    position: relative;
+    z-index: 1;
+  }
+
+  button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+  }
+
+  button:hover::before {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+
+  .bg-hover-gray:hover {
+  background-color: gray;
+}
+</style>
+
+<main class="wrapper">
+  <% if (cartCount > 0) { %>
+  <section class="hero blog-hero">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 d-grid justify-content-center  mb-30 animation">
+          <img
+            src="images/user/buttons/cart-icon.png"
+            alt="Image"
+            class="img-fluid"
+          />
+        </div>
+        <h2 class="animation">SHOPPING CART</h2>
+      </div>
+    </div>
+  </section>
+  <!-- hero ./ -->
+  <% } else { %>
+  <section class="hero blog-hero">
+    <div class="container-fluid">
+      <div class="row">
+        <h2>EMPTY CART !</h2>
+      </div>
+      <div class="col-12 d-grid justify-content-center mt-15 mb-30 animation">
+        <img
+          src="images/user/buttons/cart-icon.png"
+          alt="Image"
+          class="img-fluid"
+        />
+      </div>
+      <a href="/products">
+        <button
+          style="
+            background-color: rgb(207, 200, 200);
+            transition: background-color 0.3s;
+            opacity: 1;
+          "
+          type="button"
+          class="btn btn-primary"
+        >
+          <b style="opacity: 70%"> CONTINUE SHOPPING</b>
+        </button>
+      </a>
+    </div>
+  </section>
+  <% } %> 
+  <% if (cartCount > 0) { %>
+
+  <div class="container col-md-12">
+    <div class="row">
+      <table class="table table-image table-striped">
+        <thead class="font-weight-bold">
+          <tr class="align-items-center">
+            <td>Item</td>
+            <td>Product Name</td>
+            <td>Description</td>
+            <td>Price</td>
+            <td>Remove</td>
+          </tr>
+        </thead>
+        <tbody>
+          <%console.log("223",products,"22211")%>
+
+          <% products?.forEach(function(viewProducts){ %>
+            
+            <%console.log("223",viewProducts,"223")%>
+          <tr>
+            <td>
+              <img
+                class="rounded"
+                style="height: 100px; width: 100px"
+                src="/uploads/products/<%= viewProducts.image[0]%>"
+                alt="Product image"
+              />
+            </td>
+            <td><%= viewProducts.productName %></td>
+            <td><%= viewProducts.description %></td>
+            <td><%= viewProducts.price %></td>
+            <td class="action">
+              <a href="/deleteCartItem/<%= viewProducts._id %>">
+                <button class="btn btn-light align-items-center bg-hover-gray">
+                  <i class="uil uil-times-circle"></i>
+                </button>                
+              </a>
+            </td>
+          </tr>
+          <% })%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <section class="cart-add">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-lg-6 cupon">
+          <!-- <h3>Apply Cupon</h3>
+            <div>
+              <input type="text" placeholder="Enter your Cupon..!" />
+              <button class="btn-normal">Apply</button>
+            </div> -->
+        </div>
+        <div class="col-md-6 col-lg-6 subtotal">
+          <h3>Cart Total</h3>
+          <table class="table table-borderless">
+            <tr>
+              <td>Cart Subtotal</td>
+              <td>Rs : <%= total %></td>
+            </tr>
+            <tr>
+              <td>Shipping</td>
+              <td>Free</td>
+            </tr>
+            <tr>
+              <td><strong>Total</strong></td>
+              <td><strong>Rs : <%= total %></strong></td>
+            </tr>
+          </table>
+          <a href="/place_order/">
+          <button class="btn-normal">Proceed to Checkout</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <% } %>
+</main>
+<!-- main-body-end ./ -->
+
+<%-include('../partials/user_footer')%>

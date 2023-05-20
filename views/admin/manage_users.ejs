@@ -1,0 +1,117 @@
+<%-include('../partials/admin_header')%>
+<section>
+  <div class="col-md-12">
+    <div class="table-responsive">
+      <table class="table table-hover display mt-4">
+        <thead>
+          <tr>
+              <div class="form-check">     
+            <th scope="col">No</th>
+            <th scope="col">User Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Status</th>
+            <th scope="col" class="text-center" colspan="2">Actions</th>
+              </div>
+          </tr>
+          <tbody>
+            <% viewUsers.forEach(function(viewUsers,index){ %>
+              <tr>
+                <td><%= index+1  %></td>    
+                <td><%= viewUsers.name %></td>
+                <td><%= viewUsers.email %></td>
+                <td>
+                <% if (viewUsers.block == true) { %>
+                 <p style="color: red;">Inactive</p> 
+                <% }else { %>
+                 <p style="color: green;">Active</p> 
+                <% }  %>
+                </td>
+                <td>
+                  <div class="text-center">
+                    <% if (viewUsers.block == true) { %>
+                    <a href="/admin/unblock_user/<%= viewUsers._id%>" class="btn btn-xs btn-success " onclick="return unblockAlert(event)"> Unblock</a>   
+                     <% }else { %>
+                    <a href="/admin/block_user/<%= viewUsers._id%>" class="btn btn-xs btn-success " onclick="return blockAlert(event)"> Block</a>   
+                     <% }  %>
+                    <a href="/admin/delete_user/<%= viewUsers._id%>" class="btn btn-xs btn-danger" onclick="return deleteAlert(event)">Remove</a>
+                  </div>
+                </td>
+              </tr>
+              <% })%>
+          </tbody>
+        </thead>
+      </table>
+    </div>
+  </div>
+</section>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  function deleteAlert(event) {
+    event.preventDefault(); // Prevent the default link behavior
+    
+    // Display the SweetAlert confirmation dialog
+    swal({
+      title: "Are you sure?",
+      text: "Do you want to remove this user?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        // If the user confirms the deletion, proceed with the link navigation
+        window.location.href = event.target.href;
+      }
+    });
+  }
+  function unblockAlert(event) {
+    event.preventDefault(); // Prevent the default link behavior
+
+    // Fetch the image URL
+    // Replace `imageUrl` with the actual URL of the image
+    const imageUrl = "https://example.com/path/to/product-image.jpg";
+
+    // Display the SweetAlert question dialog
+    swal({
+      title: "Are you sure?",
+      text: "Do you want to unblock this user?",
+      icon: "warning",
+      buttons: ["No", "Yes"], // Use buttons array for the question dialog
+    })
+    .then((isConfirmed) => {
+      if (isConfirmed) {
+        // If the user confirms the activation, proceed with the link navigation
+        window.location.href = event.target.href;
+
+        // Set the image source dynamically
+        document.getElementById("productImage").src = imageUrl;
+      }
+    });
+  }
+  function blockAlert(event) {
+    event.preventDefault(); // Prevent the default link behavior
+
+    // Fetch the image URL
+    // Replace `imageUrl` with the actual URL of the image
+    const imageUrl = "https://example.com/path/to/product-image.jpg";
+
+    // Display the SweetAlert question dialog
+    swal({
+      title: "Are you sure?",
+      text: "Do you want to block this user?",
+      icon: "warning",
+      buttons: ["No", "Yes"], // Use buttons array for the question dialog
+    })
+    .then((isConfirmed) => {
+      if (isConfirmed) {
+        // If the user confirms the activation, proceed with the link navigation
+        window.location.href = event.target.href;
+
+        // Set the image source dynamically
+        document.getElementById("productImage").src = imageUrl;
+      }
+    });
+  }
+</script>
+
+<%-include('../partials/admin_footer')%>

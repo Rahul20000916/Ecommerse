@@ -1,0 +1,240 @@
+<%-include('../partials/admin_header')%>
+
+<section class="content-main">
+  <form
+    action="/admin/edit_product/<%= data._id %>"
+    method="post"
+    enctype="multipart/form-data"
+    onsubmit="return validateForm()"
+  >
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h4>EDIT THE DETAILS</h4>
+          </div>
+          <div class="card-body">
+            <div class="mb-4">
+              <label for="product_name" class="form-label">PRODUCT TITLE</label>
+              <input
+                type="text"
+                value="<%= data.productName %>"
+                class="form-control"
+                name="Name"
+                required
+              />
+            </div>
+            <div class="mb-4">
+              <label class="form-label">DESCRIPTION</label>
+              <textarea name="Description" class="form-control" rows="4" required><%= data.description %></textarea>
+
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="mb-4">
+                  <label class="form-label">PRICE</label>
+                  <div class="row gx-2">
+                    <input
+                      value="<%= data.price%>"
+                      type="text"
+                      name="Price"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+                  <br />
+
+                  <br />
+                  <div class="mb-3">
+                    <label class="form-label">CATEGORY</label>
+                    <select
+                      type="text" 
+                      name="Category"
+                      id="category"
+                      class="form-select"
+                    >
+                    <option><%= data.category %></option>
+                    <% viewCategory.forEach(function(array) { %>
+                        <% array.forEach(function(element) { %>
+                          <option><%= element %></option>
+                        <% }) %>
+                    <% }) %>    
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4"></div>
+            </div>
+
+            <button
+              type="submit"
+              onclick="hideDiv()"
+              class="btn btn-md rounded font-sm hover-up"
+            >
+              UPDATE
+            </button>
+          </div>
+        </div>
+        <!-- card end// -->
+      </div>
+      <div class="col-lg-3">
+        <div class="card mb-6">
+          <div class="card-header">
+            <h4>IMAGE 1</h4>
+          </div>
+          <div class="card-body">
+            <div class="input-upload">
+              <img
+                src="/uploads/products/<%= data.image[0]%>"
+                alt=""
+                id="img1"
+              />
+              <!-- <input class="form-control" name="image1" type="file" multiple> -->
+            </div>
+          </div>
+        </div>
+        <!-- card end// -->
+
+        <!-- card end// -->
+
+        <div class="card mb-6">
+          <div class="card-header">
+            <h4>IMAGE 2</h4>
+          </div>
+          <div class="card-body">
+            <div class="input-upload">
+              <img
+                src="/uploads/products/<%= data.image[1]%>"
+                alt=""
+                id="img2"
+              />
+              <input
+                class="form-control"
+                onchange="function5(event)"
+                name="image"
+                type="file"
+                multiple
+                required
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="card mb-6">
+          <div class="card-header">
+            <h4>IMAGE 3</h4>
+          </div>
+          <div class="card-body">
+            <div class="input-upload">
+              <img
+                src="/uploads/products/<%= data.image[2]%>"
+                alt=""
+                id="img3"
+              />
+              <!-- <input class="form-control" name="image3" type="file" multiple> -->
+            </div>
+          </div>
+        </div>
+
+        <!-- card end// -->
+
+        <div class="card mb-6">
+          <div class="card-header">
+            <h4>IMAGE 4</h4>
+          </div>
+          <div class="card-body">
+            <div class="input-upload">
+              <img
+                src="/uploads/products/<%= data.image[3]%>"
+                alt=""
+                id="img4"
+              />
+              <!-- <input class="form-control" name="image4" type="file" multiple> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>
+
+<script>
+  function hideDiv() {
+    document.getElementById("alert").style.display = "none";
+  }
+
+  setTimeout(hideDiv, 1000); // Hide the div after 3 seconds (3000 milliseconds)
+  function function5(event) {
+    document.getElementById("img1").src = URL.createObjectURL(
+      event.target.files[0]
+    );
+    document.getElementById("img2").src = URL.createObjectURL(
+      event.target.files[1]
+    );
+    document.getElementById("img3").src = URL.createObjectURL(
+      event.target.files[2]
+    );
+    document.getElementById("img4").src = URL.createObjectURL(
+      event.target.files[3]
+    );
+  }
+</script>
+
+<script>
+  function validateForm() {
+    var title = document.getElementById("title").value;
+    var description = document.getElementById("description").value;
+    var stock = document.getElementById("stock").value;
+    var price = document.getElementById("price").value;
+    var category = document.getElementById("category").value;
+    var image = document.getElementById("image").value;
+
+    if (title == "") {
+      alert("Product name must be filled out");
+      return false;
+    }
+
+    if (description == "") {
+      alert("Description must be filled out");
+      return false;
+    }
+
+    if (stock == "" || stock <= 0) {
+      alert("Quantity must be a positive number");
+      return false;
+    }
+
+    if (price == "" || price <= 0) {
+      alert("Price must be a positive number");
+      return false;
+    }
+
+    if (category == "") {
+      alert("Category must be selected");
+      return false;
+    }
+
+    if (image == "") {
+      alert("Image must be uploaded");
+      return false;
+    }
+  }
+</script>
+
+<script>
+  const input = document.querySelector("input");
+  const preview1 = document.querySelector("#preview1");
+  const preview2 = document.querySelector("#preview2");
+  const preview3 = document.querySelector("#preview3");
+  input.addEventListener("change", handleFiles);
+
+  function handleFiles(event) {
+    const files = event.target.files;
+    preview1.src = URL.createObjectURL(files[0]);
+    preview2.src = URL.createObjectURL(files[1]);
+    preview3.src = URL.createObjectURL(files[2]);
+  }
+</script>
+
+<%-include('../partials/admin_footer')%>
