@@ -188,7 +188,11 @@ module.exports = {
         cartCount = await userHelpers.getCartCount(user._id);
       }
       let products = await userHelpers.getCartProducts(userId);
+      console.log('products cart ,,,,,,,,,,,,,,,,');
+      console.log(products);
       let total = await userHelpers.totalAmount(userId);
+      console.log('products total ,,,,,,,,,,,,,,,,');
+      console.log(total);
       res.render("user/cart", { user, products, cartCount, total });
     } catch (err) {
       console.log(err);
@@ -232,13 +236,17 @@ module.exports = {
   placeOrder :async(req,res)=>{
     try{
       let user = req.session.user
+      let usrId =req.session.user._id
+      let userId = new ObjectId(usrId);
       let cartCount = null;
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }
-        let address = await userHelpers.getAddress(user._id);
-        console.log(address)
-      res.render("user/place_order",{user,cartCount,address});
+        let addresses = await userHelpers.getAddress(user._id);
+        let address = addresses[0]
+        let products = await userHelpers.getCartProducts(userId);
+        let total = await userHelpers.totalAmount(userId);
+      res.render("user/place_order",{user,cartCount,address,products,total});
     }catch(err){
       console.log(err);
     }

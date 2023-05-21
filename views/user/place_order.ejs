@@ -44,23 +44,91 @@
       align-items: center;
     }
   </style>
-    <style>
-        .card-container {
-          width: 600px;
-          height: 350px;
-          overflow-y: auto;
-          border: 1px solid #ccc;
-          padding: 10px;
-        }
-        .card {
-          border: 1px solid #ccc;
-          padding: 10px;
-          margin-bottom: 10px;
-        }
-        .card:hover {
-          background-color: #f0f0f0;
-        }
-      </style>
+<style>
+  .cardcontainer {
+    height: 300px;
+    overflow-y: scroll;
+  }
+
+  .card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .card button {
+    margin-top: 10px;
+  }
+  .cardcontainer::-webkit-scrollbar {
+  width: 8px; /* Set the width of the scrollbar */
+}
+
+.cardcontainer::-webkit-scrollbar-track {
+  background-color: white; /* Set the background color of the track */
+}
+
+.cardcontainer::-webkit-scrollbar-thumb {
+  background-color: white; /* Set the color of the scrollbar */
+}
+</style>
+<!-- table style -->
+
+<style>
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table th,
+  .table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .table th {
+    background-color: #f2f2f2;
+  }
+
+  .table td.image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .table td.image img {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .table .product-name {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .table .product-price {
+    font-weight: bold;
+  }
+
+  .table .product-subtotal {
+    font-weight: bold;
+    text-align: right;
+  }
+
+  .table .font-xl {
+    font-size: 24px;
+  }
+
+  .table .text-brand {
+    color: #007bff;
+  }
+
+  .table .fw-900 {
+    font-weight: 900;
+  }
+</style>
+      
 </head>
 <body>
 
@@ -71,51 +139,35 @@
         <div class="mb-25">
             <h4 class="text-center">Check Out</h4>
             <hr>
-            <p class="text-center">Select any address or Add address for delevery</p>
+            <div class="mt4 mb-4">
+              <p class="text-center">Select any address or Add address for delevery</p>
+            </div>
         </div>
         <button id="addAddressButton" onclick="openModal()" class="btn btn-fill-out col-md-12">Add Address</button>
         <hr>
-        <div class="container">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Name: Rahul Pradeep</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Address: Christhuraj Chapel</h6>
-              <h6 class="card-subtitle mb-2 text-muted">City: Mulavukad, Ernakulam</h6>
-              <h6 class="card-subtitle mb-2 text-muted">State: Kerala</h6>
-              <h6 class="card-subtitle mb-2 text-muted">Zip Code: 682504</h6>
-              <h6 class="card-subtitle mb-2 text-muted">Phone: 07736572059</h6>
-              <h6 class="card-subtitle mb-2 text-muted">Email: rahul2000916@gmail.com</h6>
-            </div>
-            <div class="card-footer">
-              <form >
-                <div class="form-group">
-                  <label for="radioButton">Radio Button:</label>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radioButton" id="option1" value="option1">
-                    <label class="form-check-label" for="option1">Option 1</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radioButton" id="option2" value="option2">
-                    <label class="form-check-label" for="option2">Option 2</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radioButton" id="option3" value="option3">
-                    <label class="form-check-label" for="option3">Option 3</label>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="scrollDown">Scroll Down:</label>
-                  <select class="form-control" id="scrollDown">
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
-                  </select>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+  <!-- card start -->
+  
+<div class="cardcontainer">
+  <% address.forEach(element => { %>
 
+    <div class="card">
+      <p><strong>Name:</strong> <%= element.name %></p>
+      <p><strong>Address:</strong> <%= element.address %></p>
+      <p><strong>City:</strong> <%= element.city %></p>
+      <p><strong>State:</strong> <%= element.state %></p>
+      <p><strong>Zipcode:</strong> <%= element.zipcode %></p>
+      <p><strong>Phone:</strong> <%= element.phone %></p>
+      <p><strong>Email:</strong> <%= element.email %></p>
+      <button>Select</button>
+    </div>
+
+  <% }) %>
+
+
+</div>
+<hr>
+
+  <!-- card end -->
     </div>
     <div class="col-md-6 mt-4">
         <div class="order_review">
@@ -124,41 +176,46 @@
                 <hr>
             </div>
             <div class="table-responsive order_table text-center">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th colspan="2">Product Name</th>
-                            <th>Price</th>
-                        </tr>
-                    </thead>
+              <div class="cardcontainer">
+                <div class="card">
+                  <table class="table">
+           
                     <tbody>
+                      <% products?.forEach(function(viewProducts){ %>
                         <tr>
-                            <td class="image product-thumbnail"><img src="assets/imgs/shop/product-1-1.jpg" alt="#"></td>
-                            <td>
-                                <h5><a href="shop-product-full.html">Yidarton Women Summer Blue</a></h5> <span class="product-qty">x 2</span>
-                            </td>
-                            <td>$180.00</td>
+                          <td class="image product-thumbnail">
+                            <img style="height: 80px;" class="d" src="/uploads/products/<%= viewProducts.image[0]%>" alt="product image">
+                          </td>
+                          <td style="vertical-align: middle;">
+                            <p class="product-name"> <b><%= viewProducts.productName %></b> </p>
+                          </td>
+                          <td style="vertical-align: middle;" class="product-price">Rs <%= viewProducts.price %></td>
                         </tr>
-                        <tr>
-                            <th>SubTotal</th>
-                            <td class="product-subtotal" colspan="2">$280.00</td>
-                        </tr>
-                        <tr>
-                            <th>Shipping</th>
-                            <td colspan="2"><em>Free Shipping</em></td>
-                        </tr>
-                        <tr>
-                            <th>Total</th>
-                            <td colspan="2" class="product-subtotal"><span class="font-xl text-brand fw-900">$280.00</span></td>
-                        </tr>
+                        
+                      <% })%>
+                      <tr>
+                        <th>SubTotal</th>
+                        <td class="product-subtotal" colspan="2">Rs <%= total %></td>
+                      </tr>
+                      <tr>
+                        <th>Shipping</th>
+                        <td colspan="2"><em>Free Shipping</em></td>
+                      </tr>
+                      <tr>
+                        <th>Total</th>
+                        <td colspan="2" class="product-subtotal">
+                          <span class="font-xl text-brand fw-900">Rs <%= total %></span>
+                        </td>
+                      </tr>
                     </tbody>
-                </table>
+                  </table>
+                </div>
+              </div>
             </div>
-            <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+            <div class="bt-1 border-color-1 "></div>
             <div class="payment_method">
-                <div class="mb-25">
-                    <h5>Payment</h5>
+                <div class="mb-4">
+                    <h5>Payment Mode</h5>
                 </div>
                 <div class="payment_option">
                     <div class="custome-radio">
@@ -175,7 +232,9 @@
                     </div>
                 </div>
             </div>
-            <a href="#" class="btn btn-fill-out btn-block mt-20 col-md-12" >Place Order</a>
+            <div class=" mb-4">
+              <a href="#" class="btn btn-fill-out btn-block mt-20 col-md-12" >Place Order</a>
+            </div>
         </div>
     </div>
 </div>
