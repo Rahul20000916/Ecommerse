@@ -84,12 +84,12 @@ module.exports = {
         let userCart = await db.carts.find({ userid: userId });
         if (userCart.length > 0) {
           let cart = userCart[0]; // Assuming only one cart per user
-  
+
           // Check if the product already exists in the cart
           let productExists = cart.products.some(
             (item) => item.products.toString() === productId.toString()
           );
-  
+
           if (productExists) {
             resolve(); // Product already exists in the cart, resolve without updating
           } else {
@@ -116,18 +116,18 @@ module.exports = {
         let userCart = await db.carts.find({ userid: userId });
         if (userCart.length > 0) {
           let cart = userCart[0]; // Assuming only one cart per user
-  
+
           // Check if the product exists in the cart
           let productIndex = cart.products.findIndex(
             (item) => item.products.toString() === productId.toString()
           );
-  
+
           if (productIndex !== -1) {
             cart.products.splice(productIndex, 1); // Remove the product from the cart
             await cart.save(); // Save the updated cart
           }
         }
-  
+
         resolve();
       } catch (err) {
         console.log(err);
@@ -135,8 +135,8 @@ module.exports = {
       }
     });
   },
-  
-// get cart products
+
+  // get cart products
   getCartProducts: (userId) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -160,8 +160,7 @@ module.exports = {
               as: "cartItems",
             },
           },
-
-        ])
+        ]);
         // Extract cartItems from each cart item
         const resolvedCartItems = cartItems.map((cart) => cart.cartItems[0]);
         resolve(resolvedCartItems);
@@ -190,7 +189,7 @@ module.exports = {
       console.log(err);
     }
   },
-  
+
   // total amount
   totalAmount: (userId) => {
     return new Promise(async (resolve, reject) => {
@@ -216,7 +215,7 @@ module.exports = {
             },
           },
         ]);
-        
+
         // Extract cartItems from each cart item
         const resolvedCartItems = cartItems.map((cart) => cart.cartItems[0]);
         // Calculate the total amount
@@ -231,5 +230,52 @@ module.exports = {
     });
   },
 
+  // insert user address
+  addUserAddress: (userId, data) => {
+    return new Promise(async (resolve, reject) => {
+      console.log(data);
+      try {
+        let userAdress = {
+          name: data.name,
+          address: data.address,
+          city: data.city,
+          state: data.state,
+          zipcode: data.zipcode,
+          phone: data.phone,
+          email: data.email,
+        };
+        let address = {
+          userid: userId,
+          address: userAdress,
+        };
+        let uAddress = await db.addresses.find({ userid: userId });
+        if (uAddress.length > 0) {
 
+            let updatedAddress = await db.addresses.updateOne(
+              { userid: userId },
+              { $push: { address: userAdress } }
+            );
+            resolve(updatedAddress);
+        } else {
+          db.addresses.create(address);
+          resolve();
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  },
+
+  // get address
+  getAddress: async(userId) => {
+    return new Promise(async(resolve, reject) => {
+      try {
+        let address = await db.addresses.find({ userid: userId })
+        const resolvedAddress =address.map((cart) => cart.address);
+        resolve(resolvedAddress);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  },
 };

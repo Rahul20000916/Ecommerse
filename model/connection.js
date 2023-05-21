@@ -78,9 +78,23 @@ const cartSchema = new mongoose.Schema({
   },
 
 })
+
+// address
+const addressSchema = new mongoose.Schema({
+
+  userid: {
+    type: mongoose.SchemaTypes.ObjectId
+  },
+  address: {
+    type :[]
+  },
+
+})
 module.exports={
   products :mongoose.model('products',productSchema),
   categories :mongoose.model('categories',categorySchema),
   users :mongoose.model('users',usersSchema),
   carts :mongoose.model("carts",cartSchema),
+  addresses :mongoose.model("addresses",addressSchema),
+
 }

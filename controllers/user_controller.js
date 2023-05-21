@@ -236,10 +236,26 @@ module.exports = {
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }
-      res.render("user/place_order",{user,cartCount});
+        let address = await userHelpers.getAddress(user._id);
+        console.log(address)
+      res.render("user/place_order",{user,cartCount,address});
     }catch(err){
       console.log(err);
     }
   },
+
+  // add address
+  addAddress :async(req,res)=>{
+    try{
+    let userid = req.session.user._id
+    let formdata =req.body
+    await userHelpers.addUserAddress(userid,formdata).then((response)=>{
+      res.redirect("/place_order")
+    })
+    }catch(err){
+      console.log(err)
+    }
+  },
+
 };
 
