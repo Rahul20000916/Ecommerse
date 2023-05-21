@@ -48,7 +48,7 @@ router.get("/place_order",middleware.userSession,userController.placeOrder);
 // address insert 
 router.post("/user/place_order",middleware.userSession,userController.addAddress);
 
-
+router.post("/order_placed",middleware.userSession,userController.postOders);
 
 
 

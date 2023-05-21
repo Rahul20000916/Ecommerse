@@ -256,14 +256,23 @@ module.exports = {
   addAddress :async(req,res)=>{
     try{
     let userid = req.session.user._id
-    let formdata =req.body
-    await userHelpers.addUserAddress(userid,formdata).then((response)=>{
+    let formData =req.body
+    await userHelpers.addUserAddress(userid,formData).then((response)=>{
       res.redirect("/place_order")
     })
     }catch(err){
       console.log(err)
     }
   },
+  postOders :async(req,res)=>{
+    try{
+      let formData =req.body;
+      let userId = req.session.user._id
+      await userHelpers.postUserOders(userId,formData)
+    }catch(err){
+      console.log(err)
+    }
+  }
 
 };
 

@@ -278,4 +278,37 @@ module.exports = {
       }
     });
   },
+
+  // post orders
+  postUserOders: async(userId,data)=>{
+    return new Promise(async(resolve,reject)=>{
+      try{
+        console.log( data)
+        console.log('11111111111111111111111111111111111111')
+        console.log(userId)
+        let userAdress = {
+          name: data.name,
+          address: data.address,
+          city: data.city,
+          state: data.state,
+          zipcode: data.zipcode,
+          phone: data.phone,
+          email: data.email,
+        };
+        let orderProducts ={
+           products : [null],
+        };
+        let orders = {
+          userid: userId,
+          address: userAdress,
+          products: orderProducts,
+          total : null,
+        };
+          db.orders.create(orders);
+          resolve();
+      }catch(err){
+        console.log(err)
+      }
+    })
+  },
 };

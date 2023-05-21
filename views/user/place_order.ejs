@@ -149,17 +149,33 @@
   
 <div class="cardcontainer">
   <% address.forEach(element => { %>
-
     <div class="card">
-      <p><strong>Name:</strong> <%= element.name %></p>
-      <p><strong>Address:</strong> <%= element.address %></p>
-      <p><strong>City:</strong> <%= element.city %></p>
-      <p><strong>State:</strong> <%= element.state %></p>
-      <p><strong>Zipcode:</strong> <%= element.zipcode %></p>
-      <p><strong>Phone:</strong> <%= element.phone %></p>
-      <p><strong>Email:</strong> <%= element.email %></p>
-      <button>Select</button>
+      <form action="" id="checkout-form">
+        <p><strong>Name:</strong> <%= element.name %></p>
+        <input type="hidden" name="name" value="<%= element.name %>">
+    
+        <p><strong>Address:</strong> <%= element.address %></p>
+        <input type="hidden" name="address" value="<%= element.address %>">
+    
+        <p><strong>City:</strong> <%= element.city %></p>
+        <input type="hidden" name="city" value="<%= element.city %>">
+    
+        <p><strong>State:</strong> <%= element.state %></p>
+        <input type="hidden" name="state" value="<%= element.state %>">
+    
+        <p><strong>Zipcode:</strong> <%= element.zipcode %></p>
+        <input type="hidden" name="zipcode" value="<%= element.zipcode %>">
+    
+        <p><strong>Phone:</strong> <%= element.phone %></p>
+        <input type="hidden" name="phone" value="<%= element.phone %>">
+    
+        <p><strong>Email:</strong> <%= element.email %></p>
+        <input type="hidden" name="email" value="<%= element.email %>">
+    
+        <button type="submit" class="btn btn-fill-out col-md-12">Select</button>
+      </form>
     </div>
+    
 
   <% }) %>
 
@@ -218,19 +234,15 @@
                     <h5>Payment Mode</h5>
                 </div>
                 <div class="payment_option">
-                    <div class="custome-radio">
-                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios3" checked="">
-                        <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">Cash On Delevery</label>
-                        <div class="form-group collapse in" id="bankTranfer">
-                        </div>
-                    </div>
-                    <div class="custome-radio">
-                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios4" checked="">
-                        <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse" data-target="#checkPayment" aria-controls="checkPayment">Online Payment</label>
-                        <div class="form-group collapse in" id="checkPayment">
-                        </div>
-                    </div>
-                </div>
+                  <div class="custome-radio">
+                      <input type="radio" name="payment_option" id="cashOnDelivery" checked>
+                      <label for="cashOnDelivery">Cash On Delivery</label>
+                  </div>
+                  <div class="custome-radio">
+                      <input type="radio" name="payment_option" id="onlinePayment">
+                      <label for="onlinePayment">Online Payment</label>
+                  </div>
+              </div>              
             </div>
             <div class=" mb-4">
               <a href="#" class="btn btn-fill-out btn-block mt-20 col-md-12" >Place Order</a>
@@ -277,8 +289,21 @@
     <hr>
   </div>
 
+  <script>
+    $("#checkout-form").submit((item)=>{
+      item.preventDefault()
+      $.ajax({
+        url:"/order_placed",
+        method:"post",
+        data:$('#checkout-form').serialize(),
+        success:(response)=>{
+          alert(response)
+        }
+      })
+    })
 
-
+  </script>
+  
   <script>
     var modal = document.getElementById("addressModal");
     var addressList = document.getElementById("addressList");

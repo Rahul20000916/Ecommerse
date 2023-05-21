@@ -90,11 +90,28 @@ const addressSchema = new mongoose.Schema({
   },
 
 })
+// orders
+const ordersSchema = new mongoose.Schema({
+
+  userid: {
+    type: mongoose.SchemaTypes.ObjectId
+  },
+  address: {
+    type :[]
+  },
+  products:{
+    type :[]
+  },
+  total:{
+    type:String
+  }
+
+})
 module.exports={
   products :mongoose.model('products',productSchema),
   categories :mongoose.model('categories',categorySchema),
   users :mongoose.model('users',usersSchema),
   carts :mongoose.model("carts",cartSchema),
   addresses :mongoose.model("addresses",addressSchema),
-
+  orders :mongoose.model("orders",ordersSchema),
 }
