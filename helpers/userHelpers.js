@@ -236,6 +236,7 @@ module.exports = {
       console.log(data);
       try {
         let userAdress = {
+          userid: userId,
           name: data.name,
           address: data.address,
           city: data.city,
@@ -243,23 +244,11 @@ module.exports = {
           zipcode: data.zipcode,
           phone: data.phone,
           email: data.email,
+          type : data.type,
         };
-        let address = {
-          userid: userId,
-          address: userAdress,
-        };
-        let uAddress = await db.addresses.find({ userid: userId });
-        if (uAddress.length > 0) {
-
-            let updatedAddress = await db.addresses.updateOne(
-              { userid: userId },
-              { $push: { address: userAdress } }
-            );
-            resolve(updatedAddress);
-        } else {
-          db.addresses.create(address);
+          db.addresses.create(userAdress);
           resolve();
-        }
+        
       } catch (err) {
         console.log(err);
       }
@@ -271,8 +260,7 @@ module.exports = {
     return new Promise(async(resolve, reject) => {
       try {
         let address = await db.addresses.find({ userid: userId })
-        const resolvedAddress =address.map((cart) => cart.address);
-        resolve(resolvedAddress);
+        resolve(address);
       } catch (err) {
         console.log(err);
       }
@@ -280,32 +268,22 @@ module.exports = {
   },
 
   // post orders
-  postUserOders: async(userId,data)=>{
+  postUserOders: async(userId,products,total,paymentMode,address)=>{
     return new Promise(async(resolve,reject)=>{
       try{
-        console.log( data)
-        console.log('11111111111111111111111111111111111111')
-        console.log(userId)
-        let userAdress = {
-          name: data.name,
-          address: data.address,
-          city: data.city,
-          state: data.state,
-          zipcode: data.zipcode,
-          phone: data.phone,
-          email: data.email,
-        };
-        let orderProducts ={
-           products : [null],
-        };
         let orders = {
           userid: userId,
-          address: userAdress,
-          products: orderProducts,
-          total : null,
+          address: address,
+          products: products,
+          date :new Date().toDateString(),
+          coupon:'no coupon applied',
+          total : total,
+          paymentmode:paymentMode,
+          paymentstatus:'pending',
+          orderstatus:'placed',
         };
           db.orders.create(orders);
-          resolve();
+          resolve(orders);
       }catch(err){
         console.log(err)
       }

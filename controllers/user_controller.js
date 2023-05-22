@@ -3,7 +3,6 @@ const userHelpers = require("../helpers/userHelpers");
 const { ObjectId } = require("mongodb");
 
 module.exports = {
-
   // home page
 
   home: async (req, res) => {
@@ -188,10 +187,10 @@ module.exports = {
         cartCount = await userHelpers.getCartCount(user._id);
       }
       let products = await userHelpers.getCartProducts(userId);
-      console.log('products cart ,,,,,,,,,,,,,,,,');
+      console.log("products cart ,,,,,,,,,,,,,,,,");
       console.log(products);
       let total = await userHelpers.totalAmount(userId);
-      console.log('products total ,,,,,,,,,,,,,,,,');
+      console.log("products total ,,,,,,,,,,,,,,,,");
       console.log(total);
       res.render("user/cart", { user, products, cartCount, total });
     } catch (err) {
@@ -233,46 +232,62 @@ module.exports = {
   },
 
   // place order
-  placeOrder :async(req,res)=>{
-    try{
-      let user = req.session.user
-      let usrId =req.session.user._id
+  placeOrder: async (req, res) => {
+    try {
+      let user = req.session.user;
+      let usrId = req.session.user._id;
       let userId = new ObjectId(usrId);
       let cartCount = null;
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }
-        let addresses = await userHelpers.getAddress(user._id);
-        let address = addresses[0]
-        let products = await userHelpers.getCartProducts(userId);
-        let total = await userHelpers.totalAmount(userId);
-      res.render("user/place_order",{user,cartCount,address,products,total});
-    }catch(err){
+      let address = await userHelpers.getAddress(user._id);
+      let products = await userHelpers.getCartProducts(userId);
+      let total = await userHelpers.totalAmount(userId);
+      res.render("user/place_order", {
+        user,
+        cartCount,
+        address,
+        products,
+        total,
+      });
+    } catch (err) {
       console.log(err);
     }
   },
 
   // add address
-  addAddress :async(req,res)=>{
-    try{
-    let userid = req.session.user._id
-    let formData =req.body
-    await userHelpers.addUserAddress(userid,formData).then((response)=>{
-      res.redirect("/place_order")
-    })
-    }catch(err){
-      console.log(err)
+  addAddress: async (req, res) => {
+    try {
+      let userid = req.session.user._id;
+      let formData = req.body;
+      await userHelpers.addUserAddress(userid, formData).then((response) => {
+        res.redirect("/place_order");
+      });
+    } catch (err) {
+      console.log(err);
     }
   },
-  postOders :async(req,res)=>{
-    try{
-      let formData =req.body;
-      let userId = req.session.user._id
-      await userHelpers.postUserOders(userId,formData)
-    }catch(err){
-      console.log(err)
+  postOders: async (req, res) => {
+    try {
+      let address = req.body.selectedaddress;
+      let userId = req.session.user._id;
+      let usrId =new ObjectId(userId);
+      let paymentMode = req.body.payment_method;
+      let products = await userHelpers.getCartProducts(usrId);
+      let total = await userHelpers.totalAmount(usrId);
+      await userHelpers.postUserOders(
+        userId,
+        products,
+        total,
+        paymentMode,
+        address
+      ).then((response)=>{
+        let formData = response
+        console.log(formData)
+      })
+    } catch (err) {
+      console.log(err);
     }
-  }
-
+  },
 };
-

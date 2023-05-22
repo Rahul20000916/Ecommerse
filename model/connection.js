@@ -1,117 +1,149 @@
-var mongoose = require('mongoose');
-require('dotenv').config();
-const db = mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(()=>{
-  console.log("Database connected ...")
-}).catch((err)=>{
-  console.log("Something went wrong..."+err)
-})
+var mongoose = require("mongoose");
+require("dotenv").config();
+const db = mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Database connected ...");
+  })
+  .catch((err) => {
+    console.log("Something went wrong..." + err);
+  });
 
-const {ObjectID}=require('bson')
-const {ObjectId}=require("mongodb")
+const { ObjectID } = require("bson");
+const { ObjectId } = require("mongodb");
 
 // add product
 
 const productSchema = new mongoose.Schema({
-  productName:{
-    type :String
+  productName: {
+    type: String,
   },
-  category :{
-    type :String
+  category: {
+    type: String,
   },
-  description :{
-    type:String
+  description: {
+    type: String,
   },
-  price :{
-    type : Number
+  price: {
+    type: Number,
   },
-  image :{
-    type :[]
+  image: {
+    type: [],
   },
   block: {
-    type :Boolean
-  }
-
-})
+    type: Boolean,
+  },
+});
 
 //category
 
 const categorySchema = new mongoose.Schema({
-  categoryName:{
-    type :String
+  categoryName: {
+    type: String,
   },
-  description :{
-    type:String
+  description: {
+    type: String,
   },
-})
+});
 
 //users data
 
 const usersSchema = new mongoose.Schema({
-
   name: {
-    type: String
+    type: String,
   },
   email: {
-    type: String
+    type: String,
   },
   phone: {
-    type: String
+    type: String,
   },
   password: {
-    type: String 
+    type: String,
   },
   block: {
-    type :Boolean
+    type: Boolean,
   },
-})
-//cart 
+});
+//cart
 const cartSchema = new mongoose.Schema({
-
   userid: {
-    type: mongoose.SchemaTypes.ObjectId
+    type: mongoose.SchemaTypes.ObjectId,
   },
   products: {
-    type :[]
+    type: [],
   },
-
-})
+});
 
 // address
 const addressSchema = new mongoose.Schema({
-
   userid: {
-    type: mongoose.SchemaTypes.ObjectId
+    type: mongoose.SchemaTypes.ObjectId,
+  },
+  name: {
+    type: String,
   },
   address: {
-    type :[]
+    type: String,
   },
-
-})
+  city: {
+    type: String,
+  },
+  state: {
+    type: String,
+  },
+  zipcode: {
+    type: String,
+  },
+  phone: {
+    type: String,
+  },
+  email: {
+    type: String,
+  },
+  type: {
+    type: String,
+  },
+});
 // orders
 const ordersSchema = new mongoose.Schema({
 
   userid: {
-    type: mongoose.SchemaTypes.ObjectId
+    type: mongoose.SchemaTypes.ObjectId,
   },
   address: {
-    type :[]
+    type: String,
   },
-  products:{
-    type :[]
+  products: {
+    type: {},
   },
-  total:{
-    type:String
-  }
-
-})
-module.exports={
-  products :mongoose.model('products',productSchema),
-  categories :mongoose.model('categories',categorySchema),
-  users :mongoose.model('users',usersSchema),
-  carts :mongoose.model("carts",cartSchema),
-  addresses :mongoose.model("addresses",addressSchema),
-  orders :mongoose.model("orders",ordersSchema),
-}
+  date: {
+    type: Date,
+  },
+  coupon: {
+    type: String,
+  },
+  total: {
+    type: String,
+  },
+  paymentmode: {
+    type: String,
+  },
+  paymentstatus: {
+    type: String,
+  },
+  orderstatus: {
+    type: String,
+  },
+});
+module.exports = {
+  products: mongoose.model("products", productSchema),
+  categories: mongoose.model("categories", categorySchema),
+  users: mongoose.model("users", usersSchema),
+  carts: mongoose.model("carts", cartSchema),
+  addresses: mongoose.model("addresses", addressSchema),
+  orders: mongoose.model("orders", ordersSchema),
+};

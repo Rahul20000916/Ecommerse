@@ -150,35 +150,32 @@
 <div class="cardcontainer">
   <% address.forEach(element => { %>
     <div class="card">
-      <form action="" id="checkout-form">
+      <!------------------------ form start ----------------------->
+      <form action="" method="post" id="checkout-form">
         <p><strong>Name:</strong> <%= element.name %></p>
         <input type="hidden" name="name" value="<%= element.name %>">
-    
+  
         <p><strong>Address:</strong> <%= element.address %></p>
         <input type="hidden" name="address" value="<%= element.address %>">
-    
+  
         <p><strong>City:</strong> <%= element.city %></p>
         <input type="hidden" name="city" value="<%= element.city %>">
-    
+  
         <p><strong>State:</strong> <%= element.state %></p>
         <input type="hidden" name="state" value="<%= element.state %>">
-    
+  
         <p><strong>Zipcode:</strong> <%= element.zipcode %></p>
         <input type="hidden" name="zipcode" value="<%= element.zipcode %>">
-    
+  
         <p><strong>Phone:</strong> <%= element.phone %></p>
         <input type="hidden" name="phone" value="<%= element.phone %>">
-    
+  
         <p><strong>Email:</strong> <%= element.email %></p>
         <input type="hidden" name="email" value="<%= element.email %>">
-    
-        <button type="submit" class="btn btn-fill-out col-md-12">Select</button>
-      </form>
+  
+        <input type="radio" name="selectedaddress" value="<%= element._id %>" required>
     </div>
-    
-
   <% }) %>
-
 
 </div>
 <hr>
@@ -235,19 +232,21 @@
                 </div>
                 <div class="payment_option">
                   <div class="custome-radio">
-                      <input type="radio" name="payment_option" id="cashOnDelivery" checked>
+                      <input type="radio" name="payment_method" value="cash_on_delivery" id="cashOnDelivery" checked>
                       <label for="cashOnDelivery">Cash On Delivery</label>
                   </div>
                   <div class="custome-radio">
-                      <input type="radio" name="payment_option" id="onlinePayment">
+                      <input type="radio" name="payment_method" value="online_payment" id="onlinePayment">
                       <label for="onlinePayment">Online Payment</label>
                   </div>
               </div>              
             </div>
             <div class=" mb-4">
-              <a href="#" class="btn btn-fill-out btn-block mt-20 col-md-12" >Place Order</a>
+              <button type="submit" class="btn btn-fill-out col-md-12">place Order</button>
             </div>
         </div>
+      </form>
+<!------------------------ form end ----------------------->
     </div>
 </div>
 <!-- The Modal -->
@@ -289,21 +288,48 @@
     <hr>
   </div>
 
-  <script>
-    $("#checkout-form").submit((item)=>{
-      item.preventDefault()
-      $.ajax({
-        url:"/order_placed",
-        method:"post",
-        data:$('#checkout-form').serialize(),
-        success:(response)=>{
-          alert(response)
-        }
-      })
-    })
-
-  </script>
+  <!-- <script>
+    $(".checkout-form").submit(function(e) {
+      e.preventDefault();
+      var selectedAddress = $('input[name="selectedAddress"]:checked').val();
   
+      if (!selectedAddress) {
+        alert("Please select an address");
+        return;
+      }
+  
+      $.ajax({
+        url: "/order_placed",
+        method: "post",
+        data: $("#checkout-form").serialize(),
+        success: function(response) {
+          alert(response);
+        }
+      });
+    });
+  </script> -->
+  <script>
+    $(document).ready(function() {
+        $('#checkout-form').submit((e) =>{
+            e.preventDefault();
+console.log("clicked")
+const paymentMode = document.querySelector('input[name="payment_method"]:checked');
+let paymentMode1 = paymentMode.value
+console.log(paymentMode1);
+
+
+$.ajax({
+            url : '/order_placed',
+            type : 'post',
+            data:$('#checkout-form').serialize()
+          }).done((data) =>{
+            console.log(data)
+            alert(data)
+          })
+        })
+      })
+  </script>
+
   <script>
     var modal = document.getElementById("addressModal");
     var addressList = document.getElementById("addressList");
