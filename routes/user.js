@@ -48,8 +48,10 @@ router.get("/place_order",middleware.userSession,userController.placeOrder);
 // address insert 
 router.post("/user/place_order",middleware.userSession,userController.addAddress);
 
+// place orders
 router.post("/order_placed",middleware.userSession,userController.postOders);
 
-
+// order success
+router.get("/order_success",middleware.userSession,userController.success)
 
 module.exports = router;

@@ -172,8 +172,9 @@
   
         <p><strong>Email:</strong> <%= element.email %></p>
         <input type="hidden" name="email" value="<%= element.email %>">
-  
-        <input type="radio" name="selectedaddress" value="<%= element._id %>" required>
+         <hr>
+        <input type="radio" class="btn btn-fill-out col-md-12" name="selectedaddress" value="<%= element._id %>" required>
+        <hr>
     </div>
   <% }) %>
 
@@ -282,50 +283,25 @@
           <input required="" type="email" name="email" placeholder="Email address *" class="form-control">
         </div>
         <hr>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-fill-out col-md-12">Submit</button>
       </form>
     </div>
     <hr>
   </div>
 
-  <!-- <script>
-    $(".checkout-form").submit(function(e) {
-      e.preventDefault();
-      var selectedAddress = $('input[name="selectedAddress"]:checked').val();
-  
-      if (!selectedAddress) {
-        alert("Please select an address");
-        return;
-      }
-  
-      $.ajax({
-        url: "/order_placed",
-        method: "post",
-        data: $("#checkout-form").serialize(),
-        success: function(response) {
-          alert(response);
-        }
-      });
-    });
-  </script> -->
+
   <script>
     $(document).ready(function() {
         $('#checkout-form').submit((e) =>{
             e.preventDefault();
-console.log("clicked")
-const paymentMode = document.querySelector('input[name="payment_method"]:checked');
-let paymentMode1 = paymentMode.value
-console.log(paymentMode1);
-
-
-$.ajax({
+          const paymentMode = document.querySelector('input[name="payment_method"]:checked');
+          $.ajax({
             url : '/order_placed',
             type : 'post',
             data:$('#checkout-form').serialize()
           }).done((data) =>{
-            console.log(data)
-            alert(data)
-          })
+            location.href = "/order_success";  
+                  })
         })
       })
   </script>

@@ -135,6 +135,15 @@ module.exports = {
       }
     });
   },
+  // remove user cart
+  removeCartItems: async (userId) => {
+    try {
+      await db.carts.deleteMany({ userid: userId });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  
 
   // get cart products
   getCartProducts: (userId) => {

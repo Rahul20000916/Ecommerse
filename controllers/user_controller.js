@@ -268,24 +268,32 @@ module.exports = {
       console.log(err);
     }
   },
+  //  orders
   postOders: async (req, res) => {
     try {
       let address = req.body.selectedaddress;
       let userId = req.session.user._id;
-      let usrId =new ObjectId(userId);
+      let usrId = new ObjectId(userId);
       let paymentMode = req.body.payment_method;
       let products = await userHelpers.getCartProducts(usrId);
       let total = await userHelpers.totalAmount(usrId);
-      await userHelpers.postUserOders(
-        userId,
-        products,
-        total,
-        paymentMode,
-        address
-      ).then((response)=>{
-        let formData = response
-        console.log(formData)
-      })
+      await userHelpers
+        .postUserOders(userId, products, total, paymentMode, address)
+        .then(async(response) => {
+          let formData = response;
+          console.log(formData);
+          await  userHelpers.removeCartItems(usrId)
+          let placed = true;
+          res.json(placed);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  // order success
+  success: async (req, res) => {
+    try {
+      res.render('user/order_success')
     } catch (err) {
       console.log(err);
     }
