@@ -104,18 +104,30 @@ module.exports = {
     }
   },
 
-  // MANAGE PRODUCTS
-  manageProducts: (req, res) => {
+
+  manageProducts: async (req, res) => {
     try {
-      adminHelper.viewAddProduct().then((response) => {
-        let viewProduct = response;
-        console.log(viewProduct);
-        res.render("admin/manage_products", { viewProduct });
+      const currentPage = parseInt(req.query.page) || 1; // Current page number, default to 1
+      const perPage =5; // Number of items to display per page
+      const startIndex = (currentPage - 1) * perPage; // Start index of the current page
+      const endIndex = startIndex + perPage; // End index of the current page
+  
+      const viewProduct = await adminHelper.viewAddProduct();
+      const totalItems = viewProduct.length;
+      const totalPages = Math.ceil(totalItems / perPage);
+  
+      const paginatedProducts = viewProduct.slice(startIndex, endIndex);
+  
+      res.render("admin/manage_products", {
+        viewProduct: paginatedProducts,
+        currentPage,
+        totalPages
       });
     } catch (err) {
       console.log(err);
     }
   },
+  
   // DELETE PROUCT
   deleteProduct: (req, res) => {
     try {
@@ -227,17 +239,30 @@ module.exports = {
       console.log(err);
     }
   },
-  // MANAGE USERS
-  manageUsers: (req, res) => {
+
+  manageUsers: async (req, res) => {
     try {
-      adminHelpers.viewSignedUsers().then((response) => {
-        let viewUsers = response;
-        res.render("admin/manage_users", { viewUsers });
+      const currentPage = parseInt(req.query.page) || 1; // Current page number, default to 1
+      const perPage = 7; // Number of users to display per page
+      const startIndex = (currentPage - 1) * perPage; // Start index of the current page
+      const endIndex = startIndex + perPage; // End index of the current page
+  
+      const allUsers = await adminHelpers.viewSignedUsers();
+      const totalItems = allUsers.length;
+      const totalPages = Math.ceil(totalItems / perPage);
+  
+      const paginatedUsers = allUsers.slice(startIndex, endIndex);
+  
+      res.render("admin/manage_users", {
+        viewUsers: paginatedUsers,
+        currentPage,
+        totalPages
       });
     } catch (err) {
       console.log(err);
     }
   },
+  
   // DELETE USER
   deleteUser: (req, res) => {
     try {

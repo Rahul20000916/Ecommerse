@@ -136,11 +136,24 @@
         <% })%>
         <div class="row pt-40">
           <div class="pagination justify-content-center">
-            <a href="#">1</a>
-            <a href="#">2</a>
-            <a href="#">...</a>
-            <a href="#">30</a>
-            <a href="#"><i class="uil uil-arrow-right"></i></a>
+              <% if (currentPage > 1) { %>
+                <li class="page-item">
+                  <a class="page-link" href="?page=<%= currentPage - 1 %>"><i class="uil uil-arrow-left"></i></a>
+                </li>
+              <% } %>
+            
+              <% for (let i = 1; i <= totalPages; i++) { %>
+                <li class="page-item <% if (currentPage === i) { %> active <% } %>">
+                  <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                </li>
+              <% } %>
+            
+              <% if (currentPage < totalPages) { %>
+                <li class="page-item">
+                  <a class="page-link" href="?page=<%= currentPage + 1 %>"><i class="uil uil-arrow-right"></i></a>
+                </li>
+              <% } %>
+            </ul>
           </div>
         </div>
       </div>

@@ -118,19 +118,35 @@ module.exports = {
 
   viewProducts: async (req, res) => {
     try {
+      const currentPage = parseInt(req.query.page) || 1; // Current page number, default to 1
+      const perPage = 6; // Number of products to display per page
+      const startIndex = (currentPage - 1) * perPage; // Start index of the current page
+      const endIndex = startIndex + perPage; // End index of the current page
+  
       let user = req.session.loggedIn;
       let cartCount = null;
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }
-      userHelpers.viewProduct().then((response) => {
-        let viewProducts = response;
-        res.render("user/products", { viewProducts, user, cartCount });
+  
+      const allProducts = await userHelpers.viewProduct();
+      const totalItems = allProducts.length;
+      const totalPages = Math.ceil(totalItems / perPage);
+  
+      const paginatedProducts = allProducts.slice(startIndex, endIndex);
+  
+      res.render("user/products", {
+        viewProducts: paginatedProducts,
+        user,
+        cartCount,
+        currentPage,
+        totalPages
       });
     } catch (err) {
       console.log(err);
     }
   },
+  
 
   // view product details
 
@@ -163,7 +179,8 @@ module.exports = {
         cartCount = await userHelpers.getCartCount(user._id);
       }
       let address = await userHelpers.getAddress(user._id);
-      res.render("user/profile",{user,cartCount,address})
+      let orders =await userHelpers.getOrders(userId)
+      res.render("user/profile",{user,cartCount,address,orders})
     } catch (err) {
       console.log(err);
     }
@@ -269,6 +286,30 @@ module.exports = {
     } catch (err) {
       console.log(err);
     }
+  },
+
+  // get orders
+  getOrder : async(req,res)=>{
+    try {
+      let user = req.session.user;
+      let usrId = req.session.user._id;
+      let userId = new ObjectId(usrId);
+      let cartCount = null;
+      if (user) {
+        cartCount = await userHelpers.getCartCount(user._id);
+      }
+      let orders =await userHelpers.getOrders(userId)
+      console.log()
+      res.render("user/orders", {
+        user,
+        cartCount,
+        orders,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    // let address = await userHelpers.getAddress(user._id);
+
   },
 
   // add address

@@ -303,7 +303,19 @@ module.exports = {
       }
     });
   },
-
+  
+  // get orders
+  getOrders :async(userId) => {
+    return new Promise(async(resolve, reject) => {
+      try {
+        let orders = await db.orders.find({ userid: userId })
+        resolve(orders);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  },
+  
   // post orders
   postUserOders: async(userId,products,total,paymentMode,address)=>{
     return new Promise(async(resolve,reject)=>{

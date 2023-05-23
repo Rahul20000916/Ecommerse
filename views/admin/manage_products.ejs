@@ -1,10 +1,42 @@
 <%-include('../partials/admin_header')%>
+<style>
+.pagination {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
 
+.pagination li {
+  margin: 0;
+}
+
+.pagination li a {
+  font-size: 12px; /* Adjust the font size as needed */
+  padding: 5px 10px;
+  color: white; /* Set default color to white */
+}
+
+.pagination li.active a {
+  font-weight: bold;
+  background-color: #f0f0f0; /* Set selected background color to lighter gray */
+  color: #b9b6b6; /* Set selected text color to darker gray */
+}
+
+.pagination li:not(.active) a:hover {
+  background-color: #CCCCCC; /* Set hover background color to lighter gray */
+  color: #a5a3a3; /* Set hover text color to darker gray */
+}
+
+</style>
 <section>
   <div class="container-fluid">
     <div class="row justify-content-center">
       <div class="col-md-12">
         <div class="table-responsive">
+          <!-- Pagination links -->
           <table class="table table-hover mt-4">
             <thead>
               <tr>
@@ -55,6 +87,28 @@
         </div>
       </div>
     </div>
+  </div>
+  <hr>
+  <div class="pagination-container mt-2 mb-2">
+    <ul class="pagination">
+      <% if (currentPage > 1) { %>
+        <li class="page-item">
+          <a class="page-link" href="?page=<%= currentPage - 1 %>">&laquo; Previous</a>
+        </li>
+      <% } %>
+    
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <li class="page-item <% if (currentPage === i) { %> active <% } %>">
+          <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+        </li>
+      <% } %>
+    
+      <% if (currentPage < totalPages) { %>
+        <li class="page-item">
+          <a class="page-link" href="?page=<%= currentPage + 1 %>">Next &raquo;</a>
+        </li>
+      <% } %>
+    </ul>
   </div>
 </section>
 

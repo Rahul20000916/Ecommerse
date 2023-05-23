@@ -49,6 +49,9 @@ router.get("/deleteCartItem/:id",middleware.userSession,userController.deleteCar
 //place order
 router.get("/place_order",middleware.userSession,userController.placeOrder);
 
+// get orders
+router.get("/order_status/:id",middleware.userSession,userController.getOrder);
+
 // address insert 
 router.post("/user/place_order",middleware.userSession,userController.addAddress);
 

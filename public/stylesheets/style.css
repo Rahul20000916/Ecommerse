@@ -1502,7 +1502,7 @@ body.dark .dark-light i.sun,
     font-weight: 600;
     text-align: center;
     color: #ffffff;
-    background-color: var(--blue-mad);
+    background-color: #d3caca;
     transition: background-color .3s ease;
 }
 

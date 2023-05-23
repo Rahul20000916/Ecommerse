@@ -133,6 +133,7 @@
 <body>
 
 
+ 
 <div class="row">
     <div class="col-md-6 mt-4">
         <div class="mb-25">
@@ -171,6 +172,9 @@
   
         <p><strong>Email:</strong> <%= element.email %></p>
         <input type="hidden" name="email" value="<%= element.email %>">
+         <hr>
+        <input type="radio" class="btn btn-fill-out col-md-12" name="selectedaddress" value="<%= element._id %>" required>
+        <hr>
     </div>
   <% }) %>
 
