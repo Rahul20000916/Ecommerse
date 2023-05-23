@@ -248,6 +248,45 @@ function codeverify() {
 
 </script>
 
+<script>
+  // Get the password input element
+const passwordInpu = document.getElementById('password');
+
+// Add an event listener to the input element
+passwordInpu.addEventListener('input', validatePasswordStrength);
+
+// Function to validate password strength
+function validatePasswordStrength() {
+  // Get the password value
+  const password = passwordInpu.value;
+
+  // Define the criteria for password strength
+  const criteria = {
+    minLength: 8,      // Minimum length requirement
+    hasUpperCase: true,    // At least one uppercase letter
+    hasLowerCase: true,    // At least one lowercase letter
+    hasNumber: true,   // At least one digit
+    hasSpecialChar: true,   // At least one special character
+  };
+
+  // Validate the password against the criteria
+  const isValid = (
+    password.length >= criteria.minLength &&
+    (criteria.hasUpperCase && /[A-Z]/.test(password)) &&
+    (criteria.hasLowerCase && /[a-z]/.test(password)) &&
+    (criteria.hasNumber && /\d/.test(password)) &&
+    (criteria.hasSpecialChar && /[!@#$%^&*]/.test(password))
+  );
+
+  // Update the input element's style based on validity
+  if (isValid) {
+    passwordInpu.style.border = '1px solid green';
+  } else {
+    passwordInpu.style.border = '1px solid red';
+  }
+}
+
+</script>
     <script>
       const form = document.querySelector("form");
       const nameInput = document.querySelector('input[name="Name"]');
