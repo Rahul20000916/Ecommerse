@@ -28,6 +28,10 @@ router.get("/otp",userController.otpPage);
 
 // view products
 router.get("/products", userController.viewProducts);
+
+// profile
+router.get("/profile",middleware.userSession,userController.profile)
+
 //view product details
 router.get("/product_details/:id",middleware.userSession, userController.viewProductDetails);
 // cart
@@ -47,6 +51,12 @@ router.get("/place_order",middleware.userSession,userController.placeOrder);
 
 // address insert 
 router.post("/user/place_order",middleware.userSession,userController.addAddress);
+
+// add address on user page
+router.post("/user/address",middleware.userSession,userController.userAddAddress);
+
+// delete address
+router.post("/delete_address/:id",middleware.userSession,userController.deleteAddress);
 
 // place orders
 router.post("/order_placed",middleware.userSession,userController.postOders);

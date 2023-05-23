@@ -151,6 +151,23 @@ module.exports = {
     }
   },
 
+  // profile page
+
+  profile: async(req, res) => {
+    try {
+      let user = req.session.user;
+      let usrId = req.session.user._id;
+      let userId = new ObjectId(usrId);
+      let cartCount = null;
+      if (user) {
+        cartCount = await userHelpers.getCartCount(user._id);
+      }
+      let address = await userHelpers.getAddress(user._id);
+      res.render("user/profile",{user,cartCount,address})
+    } catch (err) {
+      console.log(err);
+    }
+  },
   // cart page
 
   cart: async (req, res) => {
@@ -187,10 +204,8 @@ module.exports = {
         cartCount = await userHelpers.getCartCount(user._id);
       }
       let products = await userHelpers.getCartProducts(userId);
-      console.log("products cart ,,,,,,,,,,,,,,,,");
       console.log(products);
       let total = await userHelpers.totalAmount(userId);
-      console.log("products total ,,,,,,,,,,,,,,,,");
       console.log(total);
       res.render("user/cart", { user, products, cartCount, total });
     } catch (err) {
@@ -268,6 +283,31 @@ module.exports = {
       console.log(err);
     }
   },
+  //user home address
+  userAddAddress: async (req, res) => {
+    try {
+      let userid = req.session.user._id;
+      let formData = req.body;
+      await userHelpers.addUserAddress(userid, formData).then((response) => {
+        res.redirect("/profile");
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
+  //delete address
+  deleteAddress: async (req, res) => {
+    try {
+      let id = req.params.id;
+      let addressId = new ObjectId(id)
+      await userHelpers.deleteAddress(addressId).then((response) => {
+        res.redirect("/profile");
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  },
   //  orders
   postOders: async (req, res) => {
     try {
@@ -279,11 +319,11 @@ module.exports = {
       let total = await userHelpers.totalAmount(usrId);
       await userHelpers
         .postUserOders(userId, products, total, paymentMode, address)
-        .then(async(response) => {
+        .then(async (response) => {
           let formData = response;
           console.log(formData);
-          await userHelpers.removeCartItems(usrId)
-          await userHelpers.inventory(products)
+          await userHelpers.removeCartItems(usrId);
+          await userHelpers.inventory(products);
           let placed = true;
           res.json(placed);
         });
@@ -294,7 +334,7 @@ module.exports = {
   // order success
   success: async (req, res) => {
     try {
-      res.render('user/order_success')
+      res.render("user/order_success");
     } catch (err) {
       console.log(err);
     }

@@ -280,6 +280,18 @@ module.exports = {
     });
   },
 
+  // delete address
+  deleteAddress: (id) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+          await db.addresses.deleteOne({_id:id});
+          resolve(); 
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  },
+
   // get address
   getAddress: async(userId) => {
     return new Promise(async(resolve, reject) => {

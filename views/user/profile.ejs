@@ -1,0 +1,303 @@
+<%-include('../partials/user_header')%>
+
+<style>
+    /* CSS for the modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+  
+    .modal-content {
+      background-color: #fefefe;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+    }
+  
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  
+    /* Additional styling */
+    .form-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+<style>
+    .dashboard-menu {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .dashboard-menu ul.nav {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .dashboard-menu ul.nav li.nav-item {
+        border-bottom: 1px solid #ccc;
+    }
+
+    .dashboard-menu ul.nav li.nav-item:last-child {
+        border-bottom: none;
+    }
+
+    .dashboard-menu ul.nav li.nav-item a.nav-link {
+        display: block;
+        padding: 10px;
+        color: #333;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .dashboard-menu ul.nav li.nav-item a.nav-link:hover {
+        background-color: #f2f2f2;
+    }
+</style>
+    <main class="main">
+
+        <section class="pt-30 pb-150">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 m-auto">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="dashboard-menu">
+                                    <ul class="nav flex-column" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="false"><i class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-md-9">
+                                <div class="tab-content dashboard-content">
+                                    <div class="tab-pane fade active show" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="mb-0 text-uppercase"> hello ... <%= user.name %> </h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <p>From your account dashboard. you can easily check &amp; view your <a href="#">recent orders</a>, manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a></p>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="card">
+                                            <div class="card-header">
+                                                <h5>Account Details</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <p>Already have an account? <a href="page-login-register.html">Log in instead!</a></p>
+                                                <form method="post" name="enq">
+                                                    <div class="row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>First Name <span class="required">*</span></label>
+                                                            <input required="" class="form-control square" name="name" type="text">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Last Name <span class="required">*</span></label>
+                                                            <input required="" class="form-control square" name="phone">
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label>Display Name <span class="required">*</span></label>
+                                                            <input required="" class="form-control square" name="dname" type="text">
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label>Email Address <span class="required">*</span></label>
+                                                            <input required="" class="form-control square" name="email" type="email">
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label>Current Password <span class="required">*</span></label>
+                                                            <input required="" class="form-control square" name="password" type="password">
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label>New Password <span class="required">*</span></label>
+                                                            <input required="" class="form-control square" name="npassword" type="password">
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label>Confirm Password <span class="required">*</span></label>
+                                                            <input required="" class="form-control square" name="cpassword" type="password">
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Your Orders</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Order</th>
+                                                                <th>Date</th>
+                                                                <th>Status</th>
+                                                                <th>Total</th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>#1357</td>
+                                                                <td>March 45, 2020</td>
+                                                                <td>Processing</td>
+                                                                <td>$125.00 for 2 item</td>
+                                                                <td><a href="#" class="btn-small d-block">View</a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>#2468</td>
+                                                                <td>June 29, 2020</td>
+                                                                <td>Completed</td>
+                                                                <td>$364.00 for 5 item</td>
+                                                                <td><a href="#" class="btn-small d-block">View</a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>#2366</td>
+                                                                <td>August 02, 2020</td>
+                                                                <td>Completed</td>
+                                                                <td>$280.00 for 3 item</td>
+                                                                <td><a href="#" class="btn-small d-block">View</a></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+                                        <div class="row">
+                                            <p class=" text-center"><strong>YOU CAN ADD DELETE OR REMOVE ADDRESSES</strong</p>
+                                                <div class="col text-right">
+                                                    <button id="addAddressButton" onclick="openModal()" class="btn btn-fill-out col-md-2 mb-4">Add Address</button>
+                                                </div>
+                                        </div>
+                                        <div class="row">
+
+                                            <% address.forEach(element => { %>
+                                                <div class="col-lg-6 mb-2">
+                                                    <div class="card mb-3 mb-lg-0">
+                                                        <div class="m-3">
+                                                        <p><strong>Name:</strong> <%= element.name %></p>
+                                                        <p><strong>Address:</strong> <%= element.address %></p>
+                                                        <p><strong>City:</strong> <%= element.city %></p>
+                                                        <p><strong>State:</strong> <%= element.state %></p>
+                                                        <p><strong>Zipcode:</strong> <%= element.zipcode %></p>
+                                                        <p><strong>Phone:</strong> <%= element.phone %></p>
+                                                        <p><strong>Email:</strong> <%= element.email %></p>
+                                                        </div>
+                                                        <div class="row">
+                                                            <form action="/delete_address/<%= element._id %>" method="post" class="col-md-6">
+                                                                <button class="btn btn-fill-out mt-1 mb-3 m-3" type="submit" >Delete</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            <% }) %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- The Modal -->
+<div id="addressModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h4 class="text-center">ADD ADDRESS</h4>
+      <hr>
+      <form method="post" action="/user/address">
+          <div class="form-group ">
+            <input type="text" required="" name="name" placeholder="Full name *" class="form-control">
+          </div>
+ 
+        <hr>
+        <div class="form-group">
+          <input type="text" name="address" required="" placeholder="Address *" class="form-control">
+        </div>
+        <div class="form-group">
+          <input required="" type="text" name="city" placeholder="City / Town *" class="form-control">
+        </div>
+        <div class="form-group">
+          <input required="" type="text" name="state" placeholder="State / County *" class="form-control">
+        </div>
+        <div class="form-group">
+          <input required="" type="text" name="zipcode" placeholder="Postcode / ZIP *" class="form-control">
+        </div>
+        <hr>
+        <div class="form-group">
+          <input required="" type="text" name="phone" placeholder="Phone *" class="form-control">
+        </div>
+        <div class="form-group">
+          <input required="" type="email" name="email" placeholder="Email address *" class="form-control">
+        </div>
+        <hr>
+        <button type="submit" class="btn btn-fill-out col-md-12">Submit</button>
+      </form>
+    </div>
+    <hr>
+  </div>
+
+  
+
+
+  <script>
+    var modal = document.getElementById("addressModal");
+    var addressList = document.getElementById("addressList");
+
+    // Function to open the modal
+    function openModal() {
+      modal.style.display = "block";
+    }
+
+    // Function to close the modal
+    function closeModal() {
+      modal.style.display = "none";
+    }
+
+  </script>
+
+
+<%-include('../partials/user_footer')%>
