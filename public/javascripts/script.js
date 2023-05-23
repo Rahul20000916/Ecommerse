@@ -141,10 +141,10 @@ searchToggle.addEventListener("click", () => {
 });
 
 // Checkout
-const checkOut = document.querySelector(".shopping-cart");
-checkOut.onclick = () => {
-    location.href = `${domain}/cart.html`;
-};
+// const checkOut = document.querySelector(".shopping-cart");
+// checkOut.onclick = () => {
+//     location.href = `${domain}/cart.html`;
+// };
 
 
 // mobile nav

@@ -282,7 +282,8 @@ module.exports = {
         .then(async(response) => {
           let formData = response;
           console.log(formData);
-          await  userHelpers.removeCartItems(usrId)
+          await userHelpers.removeCartItems(usrId)
+          await userHelpers.inventory(products)
           let placed = true;
           res.json(placed);
         });

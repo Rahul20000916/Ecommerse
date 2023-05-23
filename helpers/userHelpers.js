@@ -143,7 +143,23 @@ module.exports = {
       console.log(err);
     }
   },
+  // inventory soft delete
+  inventory: (products) => {
+    try {
+      const productIds = products.map((product) => product._id); // Extracting the _id values
+      console.log(productIds);
   
+      return new Promise(async (resolve, reject) => {
+        await db.products
+          .updateMany({ _id: { $in: productIds } }, { $set: { block: true } }) // Updating the documents with matching _id values
+          .then((response) => {
+            resolve(response);
+          });
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  },
 
   // get cart products
   getCartProducts: (userId) => {
