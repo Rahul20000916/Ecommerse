@@ -30,6 +30,13 @@ router.post(
   adminController.updateProducts
 )
 
+// manage orders
+router.get(
+  "/manage_orders",
+  middleware.adminSession,
+  adminController.manageOrders
+)
+
 // manage products page
 router.get(
   "/manage_products",

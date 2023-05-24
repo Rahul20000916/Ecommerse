@@ -18,6 +18,15 @@ module.exports = {
       });
     });
   },
+  // ORDERS
+  orders:()=>{
+    return new Promise(async(resolve, reject) => {
+       await db.orders.find().then((response)=>{
+        resolve(response)
+       })
+    });
+  },
+
   // UPDATE PRODUCT
   updateProducts: (id, productData, filename) => {
     return new Promise((resolve, reject) => {

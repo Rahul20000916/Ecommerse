@@ -1,0 +1,134 @@
+<%-include('../partials/admin_header')%>
+<style>
+.pagination {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.pagination li {
+  margin: 0;
+}
+
+.pagination li a {
+  font-size: 12px; /* Adjust the font size as needed */
+  padding: 5px 10px;
+  color: white; /* Set default color to white */
+}
+
+.pagination li.active a {
+  font-weight: bold;
+  background-color: #f0f0f0; /* Set selected background color to lighter gray */
+  color: #b9b6b6; /* Set selected text color to darker gray */
+}
+
+.pagination li:not(.active) a:hover {
+  background-color: #CCCCCC; /* Set hover background color to lighter gray */
+  color: #a5a3a3; /* Set hover text color to darker gray */
+}
+
+</style>
+<section>
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <!-- Pagination links -->
+          <table class="table table-hover mt-4">
+            <thead>
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Description</th>
+                <th scope="col">Price</th>
+                <th scope="col">Images</th>
+                <th scope="col">Status</th>
+                <th scope="col" class="text-center" colspan="3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  function deleteConfirmation(event) {
+    event.preventDefault(); // Prevent the default link behavior
+    
+    // Display the SweetAlert confirmation dialog
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this product!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        // If the user confirms the deletion, proceed with the link navigation
+        window.location.href = event.target.href;
+      }
+    });
+  }
+  function activeAlert(event) {
+    event.preventDefault(); // Prevent the default link behavior
+
+    // Fetch the image URL
+    // Replace `imageUrl` with the actual URL of the image
+    const imageUrl = "https://example.com/path/to/product-image.jpg";
+
+    // Display the SweetAlert question dialog
+    swal({
+      title: "Are you sure?",
+      text: "Do you want to activate this product?",
+      icon: "warning",
+      buttons: ["No", "Yes"], // Use buttons array for the question dialog
+    })
+    .then((isConfirmed) => {
+      if (isConfirmed) {
+        // If the user confirms the activation, proceed with the link navigation
+        window.location.href = event.target.href;
+
+        // Set the image source dynamically
+        document.getElementById("productImage").src = imageUrl;
+      }
+    });
+  }
+  function inactiveAlert(event) {
+    event.preventDefault(); // Prevent the default link behavior
+
+    // Fetch the image URL
+    // Replace `imageUrl` with the actual URL of the image
+    const imageUrl = "https://example.com/path/to/product-image.jpg";
+
+    // Display the SweetAlert question dialog
+    swal({
+      title: "Are you sure?",
+      text: "Do you want to Inactivate this product?",
+      icon: "warning",
+      buttons: ["No", "Yes"], // Use buttons array for the question dialog
+    })
+    .then((isConfirmed) => {
+      if (isConfirmed) {
+        // If the user confirms the activation, proceed with the link navigation
+        window.location.href = event.target.href;
+
+        // Set the image source dynamically
+        document.getElementById("productImage").src = imageUrl;
+      }
+    });
+  }
+</script>
+
+<%-include('../partials/admin_footer')%>

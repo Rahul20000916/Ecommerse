@@ -103,7 +103,15 @@ module.exports = {
       console.log(err);
     }
   },
-
+  manageOrders : async(req,res)=>{
+    try{
+      let orders = await adminHelper.orders();
+      console.log(orders,"111111111111111111111111111111111111111")
+      res.render("admin/manage_orders")
+    }catch(err){
+      console.log(err)
+    }
+  },
 
   manageProducts: async (req, res) => {
     try {
