@@ -7,7 +7,7 @@ module.exports = {
 
   home: async (req, res) => {
     try {
-      var user = req.session.user;
+      const user = req.session.user;
       console.log(user);
       let cartCount = null;
       if (user) {
@@ -89,7 +89,28 @@ module.exports = {
       console.log(err);
     }
   },
-
+// do login with otp
+loginDoneOtp: async (req, res) => {
+  try {
+    let number = req.body.number; // Access the number from req.body
+    let response = await userHelpers.doLoginWithOtp(number);
+    if (response.status) {
+      req.session.loggedIn = true;
+      req.session.user = response.user;
+      let placed = true;
+      res.json(placed);
+      // res.redirect("/");
+    } else {
+      let placed = true;
+      res.json(placed);
+      // res.redirect("/login");
+    }
+  } catch (err) {
+    console.log(err);
+    // Handle the error here, such as sending an error response
+    res.status(500).send("An error occurred");
+  }
+},
   // otp page
 
   otpPage: async (req, res) => {
@@ -103,6 +124,30 @@ module.exports = {
     } catch (err) {}
   },
 
+  // ort login
+  otpLogin:async (req, res) => {
+    try {
+      let user = req.session.loggedIn;
+      let cartCount = null;
+      let number = req.body.number; // Access the number from req.body
+      console.log(number)
+      if (user) {
+        cartCount = await userHelpers.getCartCount(user._id);
+      }
+      userHelpers.checkphonenumber(number).then((response)=>{
+        if (response) {
+            console.log("number verified");
+            // Number is registered
+            res.json({ registered: true });
+          } else {
+            console.log("number not registerd");
+            // Number is not registered
+            res.json({ registered: false });
+          }
+        })
+      // res.render("user/otp_page", { user, cartCount });
+    } catch (err) {}
+  },
   // logout
 
   logout: (req, res) => {

@@ -103,13 +103,49 @@ module.exports = {
       console.log(err);
     }
   },
-  manageOrders : async(req,res)=>{
-    try{
+
+  // manage orders
+
+  manageOrders: async (req, res) => {
+    try {
+      const page = parseInt(req.query.page) || 1; // Get the current page from the query parameter, default to 1 if not provided
+      const pageSize = 5; // Number of orders to show per page
+  
+      // Fetch all orders
       let orders = await adminHelper.orders();
-      console.log(orders,"111111111111111111111111111111111111111")
-      res.render("admin/manage_orders")
-    }catch(err){
-      console.log(err)
+  
+      const totalOrders = orders.length;
+      const totalPages = Math.ceil(totalOrders / pageSize);
+  
+      // Calculate the start and end index of orders for the current page
+      const startIndex = (page - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+  
+      // Get the orders for the current page
+      const currentPageOrders = orders.slice(startIndex, endIndex);
+  
+      res.render("admin/manage_orders", {
+        orders: currentPageOrders,
+        currentPage: page,
+        totalPages: totalPages
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  // view orders
+  viewOrders : async (req, res) => {
+    try {
+       let orderId = req.params.id
+       console.log(orderId)
+       let orders = await adminHelper.viewOrders(orderId); 
+       let addressId = orders[0].address
+       let address = await adminHelper.getOrderAddress(addressId)
+       console.log(address)
+       console.log(orders)
+       res.render("admin/order_status",{orders,address})
+    } catch (err) {
+      console.log(err);
     }
   },
 

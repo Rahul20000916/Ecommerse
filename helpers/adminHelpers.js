@@ -26,7 +26,26 @@ module.exports = {
        })
     });
   },
+  // ORDERS WITH ID
 
+  viewOrders:(id)=>{
+    let ordId = new ObjectId(id);
+    return new Promise(async(resolve, reject) => {
+      await db.orders.find({_id:ordId}).then((response)=>{
+       resolve(response)
+      })
+   });
+  },
+
+ // ORDERED ADDRESS
+ getOrderAddress: (id)=>{
+  let addressId = new ObjectId(id);
+  return new Promise(async(resolve, reject) => {
+    await db.addresses.find({_id:addressId}).then((response)=>{
+    resolve(response)
+    })
+ });
+},
   // UPDATE PRODUCT
   updateProducts: (id, productData, filename) => {
     return new Promise((resolve, reject) => {
@@ -186,6 +205,7 @@ module.exports = {
       });
     });
   },
+
   // GET USERS
   viewSignedUsers: () => {
     return new Promise(async (resolve, reject) => {

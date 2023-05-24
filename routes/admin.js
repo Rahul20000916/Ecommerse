@@ -7,6 +7,7 @@ const multer = require("../multer/multer");
 // admin opening page
 router.get("/", adminController.dashBoard);
 
+
 // admin login page
 router.get("/login", adminController.getlogin);
 router.post("/login", adminController.postLogin);
@@ -36,6 +37,12 @@ router.get(
   middleware.adminSession,
   adminController.manageOrders
 )
+// view orders
+router.get(
+  "/vieworders/:id",
+  middleware.adminSession,
+  adminController.viewOrders
+);
 
 // manage products page
 router.get(

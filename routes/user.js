@@ -14,6 +14,9 @@ router.get("/login", userController.login);
 // post login page
 router.post("/login", userController.doLogin);
 
+// otp login done
+router.post("/logindone",userController.loginDoneOtp)
+
 // logout
 router.get("/logout",userController.logout);
 
@@ -25,6 +28,8 @@ router.post("/signup", userController.doSignup);
 
 // otp page
 router.get("/otp",userController.otpPage);
+
+router.post("/otp_login",userController.otpLogin)
 
 // view products
 router.get("/products", userController.viewProducts);

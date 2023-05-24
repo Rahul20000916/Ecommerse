@@ -49,6 +49,33 @@ module.exports = {
       }
     });
   },
+
+  // ot login done
+  doLoginWithOtp:(number) => {
+    return new Promise(async (resolve, reject) => {
+      try{let loginStatus = false;
+      let response = {};
+      await db.users.findOne({ phone: number }).then((user)=>{
+        if (user) {
+          console.log("login Success");
+          response.user = user;
+          response.status = true;
+          resolve(response);
+        }
+        else {
+        console.log("Login Failed");
+        resolve({ status: false });
+}
+
+      });
+    }
+      catch(err){
+        console.log("ERROR OCCURED",err)
+        reject(err)
+      }
+    
+    });
+  },
   // view products
   viewProduct: () => {
     return new Promise(async (resolve, reject) => {
@@ -213,6 +240,21 @@ module.exports = {
     } catch (err) {
       console.log(err);
     }
+  },
+
+  // check user with phone number
+  checkphonenumber:(phonenumber)=>{
+    return new Promise((resolve, reject) => {
+      db.users.findOne({ phone: phonenumber })
+      .then((data) => {
+        console.log(data);
+        if(data){
+          resolve(data)
+        }else{
+          reject()
+        }
+      })
+    })
   },
 
   // total amount

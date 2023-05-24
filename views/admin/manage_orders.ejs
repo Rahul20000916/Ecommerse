@@ -1,36 +1,36 @@
 <%-include('../partials/admin_header')%>
 <style>
-.pagination {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-}
-
-.pagination li {
-  margin: 0;
-}
-
-.pagination li a {
-  font-size: 12px; /* Adjust the font size as needed */
-  padding: 5px 10px;
-  color: white; /* Set default color to white */
-}
-
-.pagination li.active a {
-  font-weight: bold;
-  background-color: #f0f0f0; /* Set selected background color to lighter gray */
-  color: #b9b6b6; /* Set selected text color to darker gray */
-}
-
-.pagination li:not(.active) a:hover {
-  background-color: #CCCCCC; /* Set hover background color to lighter gray */
-  color: #a5a3a3; /* Set hover text color to darker gray */
-}
-
-</style>
+    .pagination {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .pagination li {
+      margin: 0;
+    }
+    
+    .pagination li a {
+      font-size: 12px; /* Adjust the font size as needed */
+      padding: 5px 10px;
+      color: white; /* Set default color to white */
+    }
+    
+    .pagination li.active a {
+      font-weight: bold;
+      background-color: #f0f0f0; /* Set selected background color to lighter gray */
+      color: #b9b6b6; /* Set selected text color to darker gray */
+    }
+    
+    .pagination li:not(.active) a:hover {
+      background-color: #CCCCCC; /* Set hover background color to lighter gray */
+      color: #a5a3a3; /* Set hover text color to darker gray */
+    }
+    
+    </style>
 <section>
   <div class="container-fluid">
     <div class="row justify-content-center">
@@ -39,26 +39,84 @@
           <!-- Pagination links -->
           <table class="table table-hover mt-4">
             <thead>
-              <tr>
-                <th scope="col">No</th>
-                <th scope="col">Name</th>
-                <th scope="col">Category</th>
-                <th scope="col">Description</th>
-                <th scope="col">Price</th>
-                <th scope="col">Images</th>
-                <th scope="col">Status</th>
-                <th scope="col" class="text-center" colspan="3">Actions</th>
-              </tr>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Products Id</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Payment Mode</th>
+                    <th scope="col">Payment Status</th>
+                    <th scope="col">Orders Status</th>
+                    <th scope="col">total</th>
+                    <th scope="col" class="text-center" colspan="3">Actions</th>
+                </tr>
             </thead>
             <tbody>
+                <% orders?.forEach(function(item,index){ %>
+                    <tr>
+                        <td>
+                            <%= index+1 %>
+                        </td>
+                        <td>
+                        <% item.products.forEach(function(products,index){ %>
+                            
+                                <b><%= index+1 %></b>  <%= products._id%>
+                                <br>
+                            <% })%>
+                            </td>
 
+                                <td>
+                                    <%= item.date %>
+                                </td>
+                                <td>
+                                    <%= item.paymentmode %>
+                                </td>
+                                <td>
+                                    <%= item.paymentstatus %>
+                                </td>
+                                <td>
+                                    <%= item.orderstatus %>
+                                </td>
+                                <td>
+                                    <p style="color: rgb(238, 54, 54);">
+                                  Rs:  <%= item.total %>
+                                </p>
+                                </td>
+                                <td class="text-center">
+                                    <a href="/admin/vieworders/<%= item._id %>"
+                                        class="btn btn-xs btn-success">View More</a>
+                                </td>
+                    </tr>
+
+                    <% })%>
             </tbody>
-          </table>
-        </div>
+        </table>
+
       </div>
     </div>
   </div>
-
+  <hr>
+  <div class="pagination-container mt-2 mb-2">
+    <ul class="pagination">
+      <% if (currentPage > 1) { %>
+        <li class="page-item">
+          <a class="page-link" href="?page=<%= currentPage - 1 %>">&laquo; Previous</a>
+        </li>
+      <% } %>
+    
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <li class="page-item <% if (currentPage === i) { %> active <% } %>">
+          <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+        </li>
+      <% } %>
+    
+      <% if (currentPage < totalPages) { %>
+        <li class="page-item">
+          <a class="page-link" href="?page=<%= currentPage + 1 %>">Next &raquo;</a>
+        </li>
+      <% } %>
+    </ul>
+  </div>
+  </div>
 </section>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

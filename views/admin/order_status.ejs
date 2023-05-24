@@ -1,0 +1,325 @@
+<%-include('../partials/admin_header')%>
+<!-- <style>
+    /* CSS for the modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+  
+    .modal-content {
+      background-color: #fefefe;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+    }
+  
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  
+    /* Additional styling */
+    .form-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style> -->
+<style>
+  .cardcontainer {
+    height: 400px;
+    overflow-y: scroll;
+  }
+
+  .card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .card button {
+    margin-top: 10px;
+  }
+  .cardcontainer::-webkit-scrollbar {
+  width: 8px; /* Set the width of the scrollbar */
+}
+
+.cardcontainer::-webkit-scrollbar-track {
+  background-color: white; /* Set the background color of the track */
+}
+
+.cardcontainer::-webkit-scrollbar-thumb {
+  background-color: white; /* Set the color of the scrollbar */
+}
+</style>
+<!-- table style -->
+
+<style>
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table th,
+  .table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .table th {
+    background-color: #f2f2f2;
+  }
+
+  .table td.image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .table td.image img {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .table .product-name {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .table .product-price {
+    font-weight: bold;
+  }
+
+  .table .product-subtotal {
+    font-weight: bold;
+    text-align: right;
+  }
+
+  .table .font-xl {
+    font-size: 24px;
+  }
+
+  .table .text-brand {
+    color: #007bff;
+  }
+
+  .table .fw-900 {
+    font-weight: 900;
+  }
+</style>
+      
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+<section class="mb-80">
+ 
+<div class="row">
+    <div class="col-md-6 mt-4">
+        <div class="mb-25">
+            <h4 class="text-center">Status</h4>
+            <hr>
+        </div>
+  <!-- card start -->
+  
+<div class="cardcontainer">
+    <div class="card">
+        <hr>
+        <ul class="status-list">
+            <li class="cancel">
+                <button  class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'packed')">Mark as Canceld</button>
+              </li>
+              <hr>
+
+          <li class="ordered">
+            <button class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'packed')">Mark as Packed</button>
+          </li>
+          <hr>
+
+          <li class="packed">
+            <button class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'shipped')">Mark as Shipped</button>
+          </li>
+          <hr>
+
+          <li class="shipped">
+            <button class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'delivered')">Mark as Delivered</button>
+          </li>
+          <hr>
+
+        </ul>
+
+      </div>
+</div>
+<hr>
+
+  <!-- card end -->
+    </div>
+    <div class="col-md-6 mt-4">
+        <div class="order_review">
+            <div class="mb-20">
+                <h4 class="text-center">Your Orders</h4>
+                
+                <hr>
+            </div>
+            <div class="table-responsive order_table text-center">
+              <div class="cardcontainer">
+                <div class="card">
+                  <table class="table">
+           
+                    <tbody>
+                      <% orders?.forEach(function(products){ %>
+                        <% products.products?.forEach(function(viewProducts){ %>
+                        <tr>
+                          <td class="image product-thumbnail">
+                            <img style="height: 80px;" class="d" src="/uploads/products/<%= viewProducts.image[0]%>" alt="product image">
+                          </td>
+                          <td style="vertical-align: middle;">
+                            <p class="product-name"> <b><%= viewProducts.productName %></b> </p>
+                          </td>
+                          <td style="vertical-align: middle;" class="product-price">Rs <%= viewProducts.price %></td>
+                        </tr>
+                        <% })%>
+                      <tr>
+                        <th>SubTotal</th>
+                        <td class="product-subtotal" colspan="2">Rs <%= products.total %></td>
+                      </tr>
+                      <tr>
+                        <th>Shipping</th>
+                        <td colspan="2"><em>Free Shipping</em></td>
+                      </tr>
+                      <tr>
+                        <th>Total</th>
+                        <td colspan="2" class="product-subtotal">
+                          <span class="font-xl text-brand fw-900">Rs <%= products.total %></span>
+                        </td>
+                      </tr>
+                      <% })%>
+                      
+                    </tbody>
+                  </table>
+                  <!-- <button id="addAddressButton" onclick="openModal()" class="btn btn-fill-out col-md-12 mb-1">View Address</button> -->
+
+                </div>
+              </div>
+            </div>
+            <div class="bt-1 border-color-1 "></div>
+          <hr>
+        </div>
+    </div>
+</section>
+<h1> <%= address.name %> </h1>
+ 
+<div class="cardcontainer">
+    <div class="card">
+        
+        <hr>
+        <ul class="status-list">
+            <li class="cancel">
+              </li>
+        <hr>
+<p><%= address.name %></p>
+          <li class="ordered">
+          </li>
+          <hr>
+
+          <li class="packed">
+          </li>
+          <hr>
+
+          <li class="shipped">
+          </li>
+          <hr>
+
+        </ul>
+
+      </div>
+</div>
+</div>
+<!-- 
+<div id="addressModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h4 class="text-center">VIEW ADDRESS</h4>
+      <hr>
+      <div class="form-group">
+        <h6>Full name *</h6>
+        <input type="text" required="" name="name" placeholder="Enter your full name" class="form-control">
+      </div>
+      
+      <hr>
+      
+      <div class="form-group">
+        <h6>Address *</h6>
+        <input type="text" name="address" required="" placeholder="Enter your address" class="form-control">
+      </div>
+      
+      <div class="form-group">
+        <h6>City / Town *</h6>
+        <input required="" type="text" name="city" placeholder="Enter your city or town" class="form-control">
+      </div>
+      
+      <div class="form-group">
+        <h6>State / County *</h6>
+        <input required="" type="text" name="state" placeholder="Enter your state or county" class="form-control">
+      </div>
+      
+      <div class="form-group">
+        <h6>Postcode / ZIP *</h6>
+        <input required="" type="text" name="zipcode" value="" class="form-control">
+      </div>
+      
+      <hr>
+      
+      <div class="form-group">
+        <h6>Phone *</h6>
+        <input required="" type="text" name="phone" placeholder="Enter your phone number" class="form-control">
+      </div>
+      
+      <div class="form-group">
+        <h6>Email address *</h6>
+        <input required="" type="email" name="email" placeholder="Enter your email address" class="form-control">
+      </div>
+      
+        <hr>
+    </div>
+    <hr>
+  </div> -->
+
+<!--   
+  <script>
+    var modal = document.getElementById("addressModal");
+    var addressList = document.getElementById("addressList");
+
+    // Function to open the modal
+    function openModal() {
+      modal.style.display = "block";
+    }
+
+    // Function to close the modal
+    function closeModal() {
+      modal.style.display = "none";
+    }
+
+  </script> -->
+
+<%-include('../partials/admin_footer')%>
