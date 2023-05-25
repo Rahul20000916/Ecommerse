@@ -4,6 +4,14 @@ const { ObjectId } = require("mongodb");
 
 const bcrypt = require("bcrypt");
 
+// razor pay
+const Razorpay = require('razorpay');
+var instance = new Razorpay({
+  key_id: 'rzp_test_onTZMcpnZgRY0j',
+  key_secret: 'd4xfSpxnHiRmdYyfnVIkvAkV',
+});
+
+
 module.exports = {
   doSignup: (userData) => {
     console.log(userData);
@@ -174,8 +182,6 @@ module.exports = {
   inventory: (products) => {
     try {
       const productIds = products.map((product) => product._id); // Extracting the _id values
-      console.log(productIds);
-  
       return new Promise(async (resolve, reject) => {
         await db.products
           .updateMany({ _id: { $in: productIds } }, { $set: { block: true } }) // Updating the documents with matching _id values
@@ -187,7 +193,34 @@ module.exports = {
       console.log(err);
     }
   },
-
+  // get order id
+  findOrderId: (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const order = await db.orders.findOne(data);
+        resolve(order._id);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  },
+  // generate razorpay
+  generateRazorpay:(orderId,total)=>{
+    return new Promise(async(resolve,reject)=>{
+      try{
+        var option ={
+          amount: total,
+          currency: 'INR',
+          receipt: ""+orderId,
+        }
+        instance.orders.create(option,(err,order)=>{
+          resolve(order)
+        })
+      }catch(err){
+        console.log(err);
+      }
+    })
+  },
   // get cart products
   getCartProducts: (userId) => {
     return new Promise(async (resolve, reject) => {

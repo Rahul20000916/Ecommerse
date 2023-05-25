@@ -72,4 +72,7 @@ router.post("/order_placed",middleware.userSession,userController.postOders);
 // order success
 router.get("/order_success",middleware.userSession,userController.success)
 
+// varify payment
+router.post("/varify-payment",middleware.userSession,userController.verifyPayment);
+
 module.exports = router;

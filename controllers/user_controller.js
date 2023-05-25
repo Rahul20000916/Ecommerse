@@ -410,8 +410,17 @@ loginDoneOtp: async (req, res) => {
           console.log(formData);
           await userHelpers.removeCartItems(usrId);
           await userHelpers.inventory(products);
-          let placed = true;
-          res.json(placed);
+          if (formData.paymentmode === 'cash_on_delivery') {
+            res.json({codSucces:true});
+          }else{
+            await userHelpers.findOrderId(formData).then(async(response)=>{
+              let orderId= response
+              await userHelpers.generateRazorpay(orderId,total).then((response)=>{
+                console.log(response,"11111111111111111111111111111111111")
+                res.json(response)
+              })
+            })
+          }
         });
     } catch (err) {
       console.log(err);
@@ -425,4 +434,13 @@ loginDoneOtp: async (req, res) => {
       console.log(err);
     }
   },
+    // varify payment
+    verifyPayment :(req,res)=>{
+      try{
+        console.log(req.body)
+      }catch(err){
+        console.log(err);
+      }
+    },
 };
+
