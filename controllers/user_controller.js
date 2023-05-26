@@ -416,7 +416,6 @@ loginDoneOtp: async (req, res) => {
             await userHelpers.findOrderId(formData).then(async(response)=>{
               let orderId= response
               await userHelpers.generateRazorpay(orderId,total).then((response)=>{
-                console.log(response,"11111111111111111111111111111111111")
                 res.json(response)
               })
             })

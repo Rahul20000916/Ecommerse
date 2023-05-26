@@ -1,11 +1,11 @@
 const { response } = require("express");
 const db = require("../model/connection");
 const { ObjectId } = require("mongodb");
+const Razorpay = require('razorpay');
 
 const bcrypt = require("bcrypt");
 
 // razor pay
-const Razorpay = require('razorpay');
 var instance = new Razorpay({
   key_id: 'rzp_test_onTZMcpnZgRY0j',
   key_secret: 'd4xfSpxnHiRmdYyfnVIkvAkV',
