@@ -55,7 +55,7 @@
                     <div class="p-conf text-center">NUMBER VARIFIED</div>
                     <div class="n-conf text-center">OTP ERROR</div>
            <!-- message end -->
-            <form action="/otp_login" method="post">
+            <form action="/logindone" method="post">
               <!-- form-group// -->
               <div class="mb-2">
                 <div class="input-group" >
@@ -101,7 +101,7 @@
               </div>
               <!-- form-group// -->
               <div class="mb-4 mt-4">
-                <button type="submit" class="btn btn-primary w-100" onclick="submitForm()" id="submit-btn" disabled>
+                <button type="submit" class="btn btn-primary w-100" id="submit-btn" disabled>
                   Sign In
                 </button>                
               </div>
@@ -240,7 +240,7 @@ function codeverify() {
 </script>
 
 <!-- login -->
-<script>
+<!-- <script>
 function submitForm() {
   let number = document.getElementById('phone').value;
   fetch("/logindone", {
@@ -250,21 +250,19 @@ function submitForm() {
     },
     body: JSON.stringify({ number: number })
   })
-    .then((response) =>
-      response.json())
-    .then((data) => {
-      if (data == true) {
+    .then(response => response.json())
+    .then(data => {
+      if (data) {
         location.href = "/products";
       } else {
         location.href = "/login";
       }
     })
-    .catch((error) => {
+    .catch(error => {
       console.error(error);
     });
 }
-
-</script>
+</script> -->
 
 <!-- login end -->
 

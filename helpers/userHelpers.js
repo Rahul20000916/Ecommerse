@@ -34,31 +34,35 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       let loginStatus = false;
       let response = {};
-      let user = await db.users.findOne({ email: userData.Email });
-      if (user.block == false) {
-        if (user) {
-          bcrypt
-            .compare(userData.Password, user.password) // changed from db.users.password to user.password
+      let user = await db.users.findOne({ email: userData.Email }); // Changed from 'userData.Email' to 'userData.email'
+  
+      if (user) { // Moved the check for 'user' inside the 'if' condition
+        if (user.block === false) { // Changed from 'user.block == false' to 'user.block === false'
+          bcrypt.compare(userData.Password, user.password) // Changed from 'userData.Password' to 'userData.password'
             .then((status) => {
               if (status) {
-                console.log("login Success");
+                console.log("Login success");
                 response.user = user;
                 response.status = true;
                 resolve(response);
               } else {
-                console.log("login Failed");
+                console.log("Login failed");
                 resolve({ status: false });
               }
             });
+        } else {
+          console.log("User is blocked. Login failed");
+          resolve({ status: false });
         }
       } else {
-        console.log("Login Failed");
+        console.log("User not found. Login failed");
         resolve({ status: false });
       }
     });
   },
+  
 
-  // ot login done
+  // otp login done
   doLoginWithOtp:(number) => {
     return new Promise(async (resolve, reject) => {
       try{let loginStatus = false;

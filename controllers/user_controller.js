@@ -8,12 +8,14 @@ module.exports = {
   home: async (req, res) => {
     try {
       const user = req.session.user;
-      console.log(user);
-      let cartCount = null;
       if (user) {
+        console.log(user);
+        let cartCount = null;
         cartCount = await userHelpers.getCartCount(user._id);
+        res.render("user/index", { user, cartCount });
+      }else{
+        res.redirect("/login")
       }
-      res.render("user/index", { user, cartCount });
     } catch (err) {
       console.log(err);
     }
@@ -92,23 +94,18 @@ module.exports = {
 // do login with otp
 loginDoneOtp: async (req, res) => {
   try {
-    let number = req.body.number; // Access the number from req.body
-    let response = await userHelpers.doLoginWithOtp(number);
+    let number = req.body.Phone;
+    userHelpers.doLoginWithOtp(number).then((response) => {
     if (response.status) {
       req.session.loggedIn = true;
       req.session.user = response.user;
-      let placed = true;
-      res.json(placed);
-      // res.redirect("/");
+      res.redirect("/");
     } else {
-      let placed = true;
-      res.json(placed);
-      // res.redirect("/login");
+      res.redirect("/login");
     }
+  });
   } catch (err) {
     console.log(err);
-    // Handle the error here, such as sending an error response
-    res.status(500).send("An error occurred");
   }
 },
   // otp page
@@ -145,7 +142,6 @@ loginDoneOtp: async (req, res) => {
             res.json({ registered: false });
           }
         })
-      // res.render("user/otp_page", { user, cartCount });
     } catch (err) {}
   },
   // logout

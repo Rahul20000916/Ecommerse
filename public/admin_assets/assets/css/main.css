@@ -616,7 +616,7 @@ b {
 .pagination-area .page-item.active .page-link,
 .pagination-area .page-item:hover .page-link {
   color: #fff;
-  background: #9c9e9e;
+  background: #aab1b1;
 }
 .pagination-area .page-item .page-link {
   border: 0;
