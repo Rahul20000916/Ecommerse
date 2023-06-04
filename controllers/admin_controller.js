@@ -96,14 +96,13 @@ module.exports = {
       console.log(images);
       console.log(req.body);
       console.log(id);
-      adminHelper.updateProducts(id, req.body, images).then((add) => {
+      adminHelper.updateProducts(id, req.body, images).then(() => {
         res.redirect("/admin/manage_products");
       });
     } catch (err) {
       console.log(err);
     }
   },
-
   // manage orders
 
   manageOrders: async (req, res) => {

@@ -1,4 +1,16 @@
 <%-include('../partials/admin_header')%>
+<style>
+  .modal-title {
+      text-align: center;
+  }
+  .description {
+      width: 300px;
+      margin: 0 auto;
+      border: 1px solid black;
+      padding: 10px;
+      text-align: center;
+  }
+</style>
 <!-- topbar -->
 <div class="container-fluid" style="background-color: rgb(255, 255, 255); height: 100px;">
   <div class="row mt-1">
@@ -38,11 +50,11 @@
 
             </div>
             <div class="row">
-              <div class="col-lg-4">
                 <div class="mb-4">
                   <label class="form-label">PRICE</label>
                   <div class="row gx-2">
                     <input
+                    style="width: 515px;"
                       value="<%= data.price%>"
                       type="text"
                       name="Price"
@@ -56,6 +68,7 @@
                   <div class="mb-3">
                     <label class="form-label">CATEGORY</label>
                     <select
+                      style="width: 515px;"
                       type="text" 
                       name="Category"
                       id="category"
@@ -69,12 +82,11 @@
                     <% }) %>    
                     </select>
                   </div>
-                </div>
               </div>
-              <div class="col-lg-4"></div>
             </div>
 
             <button
+              style="background-color: rgba(253, 253, 253, 0.712);width: 515px;"
               type="submit"
               onclick="hideDiv()"
               class="btn btn-md rounded font-sm hover-up"
@@ -110,7 +122,7 @@
             <h4>IMAGE 2</h4>
           </div>
           <div class="card-body">
-            <div class="input-upload">
+            <!-- <div class="input-upload">
               <img
                 src="/uploads/products/<%= data.image[1]%>"
                 alt=""
@@ -124,6 +136,21 @@
                 multiple
                 required
               />
+            </div> -->
+            <div class="mb-4 input-upload">
+              <label for="id_image"></label><br />
+              <img src="/uploads/products/<%= data.image[1]%>" alt="" id="img2" />
+              <input
+                class="form-control"
+                onchange="function5(event)"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+                type="file"
+                id="id_image"
+                name="image"
+                accept="image/*"
+                multiple
+              /><br />
             </div>
           </div>
         </div>
@@ -165,6 +192,48 @@
       </div>
     </div>
   </form>
+    <!-- Modal -->
+    <div
+    class="modal fade mt-80"
+    id="exampleModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="description">
+            <h5>CROPED IMAGES SHOULD BE A SQUARE</h5> 
+          </div>
+          <div class="modal-header border-bottom-0 mt-4">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="form-group row" id="test"></div>
+        </div>
+        <div class="modal-header text-center mt-4">
+          <button
+            style="background-color: rgba(253, 253, 253, 0.712);"
+            class="btn btn-success"
+            type="button"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            Save Changes
+          </button>
+        </div>
+      </div>
+         
+    </div>
+  </div>
 </section>
 
 <script>
@@ -229,8 +298,8 @@
     }
   }
 </script>
-
-<script>
+<!-- ........................................................................... -->
+<!-- <script>
   const input = document.querySelector("input");
   const preview1 = document.querySelector("#preview1");
   const preview2 = document.querySelector("#preview2");
@@ -243,6 +312,104 @@
     preview2.src = URL.createObjectURL(files[1]);
     preview3.src = URL.createObjectURL(files[2]);
   }
+</script> -->
+<!-- ........................................................................... -->
+
+<script>
+  const input = document.getElementById("id_image");
+  const test = document.getElementById("test");
+  input.addEventListener("change", () => {
+    // Getting image file object from the input variable
+    const img_data = [];
+    const imagebox = [];
+    const crop_btn = [];
+    const confirm_btn = [];
+    const url = [];
+    const length = input.files.length;
+    for (i = 0; i < length; i++) {
+      test.innerHTML += `<div class="col-4"><div id="image-box${i}" class="image-container" style="height: 350px; width: 350px;"> </div>
+  <button class="btn btn-outline-info" id="crop-btn${i}" style="width: 100%; margin-top: 10px; display: block;" type="button">Crop</button> </div>`;
+    }
+    for (i = 0; i < length; i++) {
+      img_data[i] = input.files[i];
+    }
+
+    img_data.forEach((image_data, i) => {
+      url[i] = URL.createObjectURL(image_data);
+    });
+    // createObjectURL() static method creates a DOMString containing a URL representing the object given in the parameter.
+    // The new object URL represents the specified File object or Blob object.
+    url.forEach((url, i) => {
+      document.getElementById(
+        "image-box" + i
+      ).innerHTML = `<img src="${url}" id="image${i}" style="width:100%;">`;
+    });
+
+    // Creating a image tag inside imagebox which will hold the cropping view image(uploaded file) to it using the url created before.
+
+    // Storing that cropping view image in a variable
+
+    // Displaying the image box
+    for (i = 0; i < length; i++) {
+      document.getElementById("image-box" + i).style.display = "block";
+      document.getElementById("crop-btn" + i).style.display = "block";
+    }
+
+    for (i = 0; i < length; i++) {
+      cropper(
+        img_data[i],
+        document.getElementById("image" + i),
+        i,
+        document.getElementById("crop-btn" + i),
+        document.getElementById("image-box" + i)
+      );
+    }
+
+    // Creating a croper object with the cropping view image
+    // The new Cropper() method will do all the magic and diplay the cropping view and adding cropping functionality on the website
+    // For more settings, check out their official documentation at https://github.com/fengyuanchen/cropperjs
+    let container = new DataTransfer();
+    let fileInputElement = document.getElementById("id_image");
+
+    function cropper(img_data, image, index, crop_btn, imagebox) {
+      const cropper = new Cropper(image, {
+        autoCropArea: 1,
+        viewMode: 1,
+        scalable: false,
+        zoomable: false,
+        movable: false,
+        minCropBoxWidth: 50,
+        minCropBoxHeight: 50,
+      });
+
+      // When crop button is clicked this event will get triggered
+      crop_btn.addEventListener("click", () => {
+        // This method coverts the selected cropped image on the cropper canvas into a blob object
+        cropper.getCroppedCanvas().toBlob((blob) => {
+          // Gets the original image data
+          // Make a new cropped image file using that blob object, image_data.name will make the new file name same as original image
+          let file = new File([blob], img_data.name, {
+            type: "image/*",
+            lastModified: new Date().getTime(),
+          });
+          // Create a new container
+
+          // Add the cropped image file to the container
+          container.items.add(file);
+
+          fileInputElement.files = container.files;
+
+          // Replace the original image file with the new cropped image file
+
+          // Hide the cropper box
+          imagebox.style.display = "none";
+          // Hide the crop button
+          crop_btn.style.display = "none";
+        });
+      });
+    }
+  });
 </script>
+
 
 <%-include('../partials/admin_footer')%>

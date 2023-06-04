@@ -47,23 +47,23 @@ module.exports = {
  });
 },
   // UPDATE PRODUCT
-  updateProducts: (id, productData, filename) => {
+  updateProducts: (id, productData, filenames) => {
     return new Promise((resolve, reject) => {
       try {
+        let updateData = {
+          productName: productData.Name,
+          category: productData.Category,
+          description: productData.Description,
+          price: productData.Price,
+          block: false,
+        };
+  
+        if (filenames.length > 0) {
+          updateData.image = filenames;
+        }
+  
         db.products
-          .updateOne(
-            { _id: id },
-            {
-              $set: {
-                productName: productData.Name,
-                category: productData.Category,
-                description: productData.Description,
-                price: productData.Price,
-                image: filename,
-                block:false,
-              },
-            }
-          )
+          .updateOne({ _id: id }, { $set: updateData })
           .then(() => {
             resolve();
           });
