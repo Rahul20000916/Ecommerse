@@ -113,6 +113,9 @@ module.exports = {
       // Fetch all orders
       let orders = await adminHelper.orders();
   
+      // Reverse the order of the orders array
+      orders.reverse();
+  
       const totalOrders = orders.length;
       const totalPages = Math.ceil(totalOrders / pageSize);
   
@@ -132,6 +135,7 @@ module.exports = {
       console.log(err);
     }
   },
+  
   // view orders
   viewOrders : async (req, res) => {
     try {
@@ -139,7 +143,8 @@ module.exports = {
        console.log(orderId)
        let orders = await adminHelper.viewOrders(orderId); 
        let addressId = orders[0].address
-       let address = await adminHelper.getOrderAddress(addressId)
+       let addresss = await adminHelper.getOrderAddress(addressId)
+       let address=addresss[0]
        console.log(address)
        console.log(orders)
        res.render("admin/order_status",{orders,address})

@@ -1,5 +1,5 @@
 <%-include('../partials/admin_header')%>
-<!-- <style>
+<style>
     /* CSS for the modal */
     .modal {
       display: none;
@@ -43,7 +43,7 @@
       justify-content: space-between;
       align-items: center;
     }
-  </style> -->
+  </style>
 <style>
   .cardcontainer {
     height: 400px;
@@ -131,13 +131,21 @@
       
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-
+    <!-- topbar -->
+    <div class="container-fluid" style="background-color: rgb(255, 255, 255); height: 100px;">
+      <div class="row mt-1">
+          <h3 class="content-title card-title mt-3" style="color: #00000098; text-align: center;">ORDER STATUS</h3>
+          <p style="color: rgba(0, 0, 0, 0.493); text-align: center;">( STAY UPDATED ON YOUR ORDER'S JOURNEY )</p>
+          <hr>
+      </div>
+    </div>
+      <!-- /topbar -->
 <section class="mb-80">
  
 <div class="row">
     <div class="col-md-6 mt-4">
         <div class="mb-25">
-            <h4 class="text-center">Status</h4>
+            <h4 class="text-center">MANAGE STATUS</h4>
             <hr>
         </div>
   <!-- card start -->
@@ -147,22 +155,22 @@
         <hr>
         <ul class="status-list">
             <li class="cancel">
-                <button  class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'packed')">Mark as Canceld</button>
+                <button  class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'packed')"><h5 style="color: red;">REMOVE ORDER</h5></button>
               </li>
               <hr>
 
           <li class="ordered">
-            <button class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'packed')">Mark as Packed</button>
+            <button class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'packed')"><h6 style="color: rgba(0, 128, 0, 0.493);">MARK AS PACKED</h6></button>
           </li>
           <hr>
 
           <li class="packed">
-            <button class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'shipped')">Mark as Shipped</button>
+            <button class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'shipped')"><h6 style="color: rgba(0, 128, 0, 0.774);">MARK AS SHIPPED</h6></button>
           </li>
           <hr>
 
           <li class="shipped">
-            <button class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'delivered')">Mark as Delivered</button>
+            <button class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'delivered')"><h6 style="color: green;">MARK AS DELIVERED</h6></button>
           </li>
           <hr>
 
@@ -177,13 +185,13 @@
     <div class="col-md-6 mt-4">
         <div class="order_review">
             <div class="mb-20">
-                <h4 class="text-center">Your Orders</h4>
+                <h4 class="text-center"> ORDERS</h4>
                 
                 <hr>
             </div>
             <div class="table-responsive order_table text-center">
               <div class="cardcontainer">
-                <div class="card">
+                <div class="card mt-1">
                   <table class="table">
            
                     <tbody>
@@ -210,102 +218,80 @@
                       <tr>
                         <th>Total</th>
                         <td colspan="2" class="product-subtotal">
-                          <span class="font-xl text-brand fw-900">Rs <%= products.total %></span>
+                          <span class="font-xl text-brand fw-900"> <h4 style="color: #888;">Rs: <%= products.total %></h4></span>
                         </td>
                       </tr>
                       <% })%>
                       
                     </tbody>
                   </table>
-                  <!-- <button id="addAddressButton" onclick="openModal()" class="btn btn-fill-out col-md-12 mb-1">View Address</button> -->
-
+                  <button id="addAddressButton" onclick="openModal()" class="btn btn-fill-out col-md-12 mb-1">VIEW ADDRESS</button>
+                  <div>
+                    <button id="addAddressButton" class="btn btn-fill-out col-md-12 mb-1"><h6 style="color: rgba(255, 68, 0, 0.589);">ORDER STATUS </h6><h5 style="color: red;"><%= orders[0].orderstatus %></h5></button>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="bt-1 border-color-1 "></div>
+            
           <hr>
         </div>
+
     </div>
+
 </section>
-<h1> <%= address.name %> </h1>
- 
-<div class="cardcontainer">
-    <div class="card">
-        
-        <hr>
-        <ul class="status-list">
-            <li class="cancel">
-              </li>
-        <hr>
-<p><%= address.name %></p>
-          <li class="ordered">
-          </li>
-          <hr>
 
-          <li class="packed">
-          </li>
-          <hr>
 
-          <li class="shipped">
-          </li>
-          <hr>
-
-        </ul>
-
-      </div>
-</div>
-</div>
-<!-- 
 <div id="addressModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
       <h4 class="text-center">VIEW ADDRESS</h4>
       <hr>
       <div class="form-group">
-        <h6>Full name *</h6>
-        <input type="text" required="" name="name" placeholder="Enter your full name" class="form-control">
+        <p>Full name </p>
+        <input type="text" required="" name="name" value="<%= address.name %>" class="form-control" disabled>
       </div>
       
       <hr>
       
       <div class="form-group">
-        <h6>Address *</h6>
-        <input type="text" name="address" required="" placeholder="Enter your address" class="form-control">
+        <p>Address </p>
+        <input type="text" name="address" required="" value="<%= address.address %>" class="form-control"disabled>
       </div>
       
       <div class="form-group">
-        <h6>City / Town *</h6>
-        <input required="" type="text" name="city" placeholder="Enter your city or town" class="form-control">
+        <p>City / Town </p>
+        <input required="" type="text" name="city" value="<%= address.city %>" class="form-control"disabled>
       </div>
       
       <div class="form-group">
-        <h6>State / County *</h6>
-        <input required="" type="text" name="state" placeholder="Enter your state or county" class="form-control">
+        <p>State / County </p>
+        <input required="" type="text" name="state" value="<%= address.state %>" class="form-control"disabled>
       </div>
       
       <div class="form-group">
-        <h6>Postcode / ZIP *</h6>
-        <input required="" type="text" name="zipcode" value="" class="form-control">
+        <p>Postcode / ZIP </p>
+        <input required="" type="text" name="zipcode" value="<%= address.zipcode %>" class="form-control"disabled>
       </div>
       
       <hr>
       
       <div class="form-group">
-        <h6>Phone *</h6>
-        <input required="" type="text" name="phone" placeholder="Enter your phone number" class="form-control">
+        <p>Phone </p>
+        <input required="" type="text" name="phone" value="<%= address.phone %>" class="form-control"disabled>
       </div>
       
       <div class="form-group">
-        <h6>Email address *</h6>
-        <input required="" type="email" name="email" placeholder="Enter your email address" class="form-control">
+        <p>Email address </p>
+        <input required="" type="email" name="email" value="<%= address.email %>" class="form-control"disabled>
       </div>
       
         <hr>
     </div>
     <hr>
-  </div> -->
+  </div> 
 
-<!--   
+  
   <script>
     var modal = document.getElementById("addressModal");
     var addressList = document.getElementById("addressList");
@@ -320,6 +306,6 @@
       modal.style.display = "none";
     }
 
-  </script> -->
+  </script>
 
 <%-include('../partials/admin_footer')%>
