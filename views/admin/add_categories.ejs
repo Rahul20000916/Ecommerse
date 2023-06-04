@@ -1,15 +1,16 @@
 <%-include('../partials/admin_header')%>
 
-<section class="content-main">
-  <div class="content-header">
-    <div>
-      <h2 class="content-title card-title">ADD CATEGORIES</h2>
-      <p>ADD  /  EDIT  /  DELETE  CATEGORY</p>
-    </div>
-    <!-- <div>
-            <input type="text" placeholder="Search Categories" class="form-control bg-white">
-        </div> -->
+<!-- topbar -->
+<div class="container-fluid" style="background-color: rgb(255, 255, 255); height: 100px;">
+  <div class="row mt-1">
+      <h3 class="content-title card-title mt-3" style="color: #00000098; text-align: center;">ADD CATEGORIES</h3>
+      <p style="color: rgba(0, 0, 0, 0.493); text-align: center;">( ADD / EDIT / DELETE CATEGORY)</p>
+      <hr>
   </div>
+</div>
+  <!-- /topbar -->
+
+<section class="content-main">
   <div class="card">
     <div class="card-body">
       <div class="row">
@@ -38,7 +39,7 @@
               ></textarea>
             </div>
             <div class="d-grid">
-              <button class="btn btn-primary" id="btn" type="submit">
+              <button style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-primary" id="btn" type="submit">
                 CREATE CATEGORY
               </button>
             </div>
@@ -64,8 +65,8 @@
                       <td><%= viewCategory.description %></td>
                       <td>
                         <div class="text-center">
-                          <a href="/admin/edit_category/<%= viewCategory._id%>" class="btn btn-xs btn-success "> Edit</a>   
-                          <a href="/admin/delete_category/<%= viewCategory._id%>" class="btn btn-xs btn-danger" onclick="return deleteConfirmation(event)"> Delete</a>
+                          <a href="/admin/edit_category/<%= viewCategory._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-success "><p style="color: green;">Edit</p></a>   
+                          <a href="/admin/delete_category/<%= viewCategory._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger" onclick="return deleteConfirmation(event)"><p style="color: red;">Delete</p></a>
                          </div>
                       </td>
                     </tr>

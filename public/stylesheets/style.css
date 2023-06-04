@@ -1527,12 +1527,13 @@ body.dark .dark-light i.sun,
 
 .big-product {
     margin-bottom: 10px;
-    background-color: var(--black-high);
+    background-color: #f7f7f7e1;
 }
 
 .pro-img {
     display: block;
     width: 80%;
+    height: 60%;
     margin: 0 auto;
     transition: all .3s ease;
 }

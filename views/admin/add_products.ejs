@@ -11,6 +11,15 @@
       text-align: center;
   }
 </style>
+<!-- topbar -->
+<div class="container-fluid" style="background-color: rgb(255, 255, 255); height: 100px;">
+  <div class="row mt-1">
+      <h3 class="content-title card-title mt-3" style="color: #00000098; text-align: center;">ADD PRODUCTS</h3>
+      <p style="color: rgba(0, 0, 0, 0.493); text-align: center;">( EFFORTLESSLY EXPAND YOUR INVENTORY WITH SIMPLE PRODUCT ADDITION )</p>
+      <hr>
+  </div>
+</div>
+  <!-- /topbar -->
 <section class="content-main">
   <form
     action="/admin/add_products"
@@ -45,42 +54,39 @@
                 required
               ></textarea>
             </div>
-            <div class="row">
-              <div class="col-lg-4">
-                <div class="mb-4">
-                  <label class="form-label">PRICE</label>
-                  <div class="row gx-2">
-                    <input
-                      placeholder="₹"
-                      type="text"
-                      name="Price"
-                      class="form-control"
-                      required
-                    />
-                  </div>
-                  <br />
-
-                  <br />
-                  <div class="mb-3">
-                    <label class="form-label">CATEGORY</label>
-                    <select
-                      type="text"
-                      placeholder="ENTER CATEGORY"
-                      name="Category"
-                      id="category"
-                      class="form-select"
-                    >
-                      <% viewCategory.forEach(function(viewCategory){ %>
-                      <option><%= viewCategory.categoryName %></option>
-                      <% })%>
-                    </select>
-                  </div>
-                </div>
+            <div class="mb-4">
+              <label class="form-label">PRICE</label>
+              <div class="row gx-2">
+                <input
+                  placeholder="₹"
+                  type="text"
+                  name="Price"
+                  class="form-control"
+                  required
+                />
               </div>
-              <div class="col-lg-4"></div>
+              <br />
+            
+              <br />
+              <div class="mb-3">
+                <label class="form-label">CATEGORY</label>
+                <select
+                  type="text"
+                  placeholder="ENTER CATEGORY"
+                  name="Category"
+                  id="category"
+                  class="form-select"
+                >
+                  <% viewCategory.forEach(function(viewCategory){ %>
+                  <option><%= viewCategory.categoryName %></option>
+                  <% })%>
+                </select>
+              </div>
             </div>
+            
 
             <button
+              style="background-color: rgba(253, 253, 253, 0.712); width: 515px;"
               type="submit"
               onclick="hideDiv()"
               class="btn btn-md rounded font-sm hover-up"
@@ -216,6 +222,7 @@
         </div>
         <div class="modal-header text-center mt-4">
           <button
+            style="background-color: rgba(253, 253, 253, 0.712);"
             class="btn btn-success"
             type="button"
             data-bs-dismiss="modal"

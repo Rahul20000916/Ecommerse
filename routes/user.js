@@ -32,7 +32,7 @@ router.get("/otp",userController.otpPage);
 router.post("/otp_login",userController.otpLogin)
 
 // view products
-router.get("/products", userController.viewProducts);
+router.get("/products",middleware.userSession, userController.viewProducts);
 
 // profile
 router.get("/profile",middleware.userSession,userController.profile)
