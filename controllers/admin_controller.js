@@ -203,7 +203,6 @@ module.exports = {
   softUnDelete : (req, res) => {
     try {
       adminHelper.productActive(req.params.id).then((response) => {
-        console.log(req.params.id);
         res.redirect("/admin/manage_products");
       });
     } catch (err) {

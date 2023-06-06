@@ -201,13 +201,21 @@ module.exports = {
   findOrderId: (data) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const order = await db.orders.findOne(data);
-        resolve(order._id);
+        const orders = await db.orders.find(data);
+        if (orders.length > 0) {
+          const order = orders[0];
+          console.log(order._id);
+          resolve(order._id);
+        } else {
+          console.log("No matching orders found.");
+          resolve(null); // or reject() if you want to indicate an error
+        }
       } catch (err) {
         console.log(err);
       }
     });
   },
+  
   // generate razorpay
   generateRazorpay:(orderId,total)=>{
     return new Promise(async(resolve,reject)=>{
@@ -383,11 +391,33 @@ module.exports = {
     });
   },
   
+  // get order address
+  getOrderAddress: async(addressId) => {
+    return new Promise(async(resolve, reject) => {
+      try {
+        let address = await db.addresses.find({ _id: addressId })
+        resolve(address);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  },
   // get orders
   getOrders :async(userId) => {
     return new Promise(async(resolve, reject) => {
       try {
         let orders = await db.orders.find({ userid: userId })
+        resolve(orders);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  },
+  // get single order
+  getOneOrders :async(orderId) => {
+    return new Promise(async(resolve, reject) => {
+      try {
+        let orders = await db.orders.find({ _id: orderId })
         resolve(orders);
       } catch (err) {
         console.log(err);

@@ -305,7 +305,9 @@
     } 
     else{
       console.log(response)
-      getRazorpay(response);
+      getRazorpay(response).then(()=>{
+        location.href = "/order_success";
+      });
       }
       }
     });
@@ -318,7 +320,7 @@
       "key": 'rzp_test_onTZMcpnZgRY0j', // Enter the Key ID generated from the Dashboard
       "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
       "currency": "INR",
-      "name": "Acme Corp", //your business name
+      "name": "Po trait", //your business name
       "description": "Test Transaction",
       "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
       "handler": function (response) {
@@ -351,28 +353,31 @@
 
 
   const verifyPayment = (payment, order) => {
-    $.ajax({
-      type: "post",
-      url: '/verify-payment',
-      data: {
-        payment,
-        order
-      },
-      success: (response) => {
-        if (response) {
-          swal({
-            title: "Order placed Successfully",
+  const data = {
+    payment,
+    order
+  };
 
-
-          }).then(function () {
-
-            location.href = '/order_success'
-          })
-
-        }
+  $.ajax({
+    type: "POST",
+    url: '/verify-payment',
+    data: JSON.stringify(data),
+    contentType: 'application/json',
+    success: (response) => {
+      if (response.opSucces) {
+        // swal({
+        //   title: "Order placed Successfully",
+        // }).then(() => {
+          location.href = "/order_success";
+        // });
       }
-    })
-  }
+    },
+    error: (error) => {
+      console.log(error);
+    }
+  });
+}
+
 
 
   </script>

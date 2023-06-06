@@ -333,23 +333,27 @@ loginDoneOtp: async (req, res) => {
   getOrder : async(req,res)=>{
     try {
       let user = req.session.user;
-      let usrId = req.session.user._id;
-      let userId = new ObjectId(usrId);
+      let odrId = req.params.id;
+      let orderId = new ObjectId(odrId);
       let cartCount = null;
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }
-      let orders =await userHelpers.getOrders(userId)
-      console.log()
+      let orders =await userHelpers.getOneOrders(orderId)
+      let addrId = orders[0].address
+      let addressId = new ObjectId(addrId );
+      let addr = await userHelpers.getOrderAddress(addressId);
+      let address =addr[0]
+      console.log(address,'------------------address-------------------')
       res.render("user/orders", {
         user,
         cartCount,
         orders,
+        address
       });
     } catch (err) {
       console.log(err);
     }
-    // let address = await userHelpers.getAddress(user._id);
 
   },
 
@@ -403,7 +407,6 @@ loginDoneOtp: async (req, res) => {
         .postUserOders(userId, products, total, paymentMode, address)
         .then(async (response) => {
           let formData = response;
-          console.log(formData);
           await userHelpers.removeCartItems(usrId);
           await userHelpers.inventory(products);
           if (formData.paymentmode === 'cash_on_delivery') {
@@ -433,6 +436,8 @@ loginDoneOtp: async (req, res) => {
     verifyPayment :(req,res)=>{
       try{
         console.log(req.body)
+        console.log("-----------------payment done---------------------")
+        res.json({opSucces:true});
       }catch(err){
         console.log(err);
       }

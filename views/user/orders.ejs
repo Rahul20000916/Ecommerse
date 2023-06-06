@@ -1,5 +1,49 @@
 <%-include('../partials/user_header')%>
+<style>
+  /* CSS for the modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
 
+  .modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  /* Additional styling */
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+</style>
 
 <style>
   .cardcontainer {
@@ -117,7 +161,7 @@
               <div class="cardcontainer">
                 <div class="card">
                   <table class="table">
-           
+                  
                     <tbody>
                       <% orders?.forEach(function(products){ %>
                         <% products.products?.forEach(function(viewProducts){ %>
@@ -155,6 +199,73 @@
             <div class="bt-1 border-color-1 "></div>
           
         </div>
-        <button class="btn btn-fill-out col-md-12"> Order Cancel</button>
+        <button id="addAddressButton" onclick="openModal()" class="btn btn-fill-out col-md-12 mb-1">VIEW DELIVERY ADDRESS</button>
+        <button class="btn btn-fill-out col-md-12 mb-4"> <h4 style="color: red;">CANCEL ORDER</h4></button>
 </section>
+
+<div id="addressModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h4 class="text-center">VIEW DELIVERY ADDRESS</h4>
+    <hr>
+    <div class="form-group">
+      <p>Full name </p>
+      <input type="text" required="" name="name" value="<%= address.name %>" class="form-control" disabled>
+    </div>
+    
+    <hr>
+    
+    <div class="form-group">
+      <p>Address </p>
+      <input type="text" name="address" required="" value="<%= address.address %>" class="form-control"disabled>
+    </div>
+    
+    <div class="form-group">
+      <p>City / Town </p>
+      <input required="" type="text" name="city" value="<%= address.city %>" class="form-control"disabled>
+    </div>
+    
+    <div class="form-group">
+      <p>State / County </p>
+      <input required="" type="text" name="state" value="<%= address.state %>" class="form-control"disabled>
+    </div>
+    
+    <div class="form-group">
+      <p>Postcode / ZIP </p>
+      <input required="" type="text" name="zipcode" value="<%= address.zipcode %>" class="form-control"disabled>
+    </div>
+    
+    <hr>
+    
+    <div class="form-group">
+      <p>Phone </p>
+      <input required="" type="text" name="phone" value="<%= address.phone %>" class="form-control"disabled>
+    </div>
+    
+    <div class="form-group">
+      <p>Email address </p>
+      <input required="" type="email" name="email" value="<%= address.email %>" class="form-control"disabled>
+    </div>
+    
+      <hr>
+  </div>
+  <hr>
+</div> 
+
+
+<script>
+  var modal = document.getElementById("addressModal");
+  var addressList = document.getElementById("addressList");
+
+  // Function to open the modal
+  function openModal() {
+    modal.style.display = "block";
+  }
+
+  // Function to close the modal
+  function closeModal() {
+    modal.style.display = "none";
+  }
+
+</script>
 <%-include('../partials/user_footer')%>
