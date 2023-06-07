@@ -50,10 +50,11 @@
       <section class="content-main mt-15 mb-15">
         <div class="card mx-auto card-login">
           <div class="card-body">
-            <h4 class="card-title mb-2">Sign up</h4>
+            <h4 class="card-title mb-2 text-center">SIGN UP</h4>
             <!-- message -->
                     <div class="p-conf text-center">NUMBER VARIFIED</div>
                     <div class="n-conf text-center">OTP ERROR</div>
+                    <div id="timer" class="text-center"></div>
            <!-- message end -->
             <form action="/signup" method="post">
               <div class="mb-2">
@@ -110,7 +111,7 @@
                     type="button"
                     class="btn btn-primary "
                     id="send"
-                    onclick="phoneAuth()"
+                    onclick="phoneAuth();startTimer()"
                   >
                     <b style="opacity: 60%;">Get OTP</b>
                   </button>
@@ -183,6 +184,31 @@
         </div>
       </section>
     </main>
+ <!-- timer -->
+ <script>
+  function startTimer() {
+    var startButton = document.getElementById("send");
+    var timerDisplay = document.getElementById("timer");
+
+    startButton.style.display = "none";
+    timerDisplay.style.display = "block";
+
+    var count = 30;
+    timerDisplay.innerHTML = count + " seconds";
+
+    var countdown = setInterval(function () {
+      count--;
+      timerDisplay.innerHTML = "RESEND OTP IN "+ count + " SECONDS";
+
+      if (count === 0) {
+        clearInterval(countdown);
+        timerDisplay.style.display = "none";
+        startButton.style.display = "block";
+      }
+    }, 1000);
+  }
+</script>
+<!-- end timer -->
 
 
 <!-- add SDK firebase -->
