@@ -240,4 +240,14 @@ module.exports = {
         });
     });
   },
+  // REMOVE ORDER
+  removeOrder: (id) => {
+    return new Promise(async (resolve, reject) => {
+      await db.users
+        .deleteOne({ _id: id })
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
 };

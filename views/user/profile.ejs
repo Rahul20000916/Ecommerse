@@ -292,14 +292,15 @@
           <h4 class="text-center">CREATE NEW PASSWORD</h4>
           <hr>
           <form method="post" action="/edit_password/<%= user._id %>">
-       
+            <div class="text-center" id="password-strength-indicator"></div>
+
             <div class="form-group">
-              <input type="password" name="password" required="" placeholder="Enter new password*" class="form-control">
+              <input type="password" id="password" name="password" required="" placeholder="Enter new password*" class="form-control">
             </div>
-         
+                   
             <hr>
             <div class="form-group">
-              <input required="" type="password"  placeholder="Confirm password *" class="form-control">
+              <input type="password" id="confirmPassword" required="" placeholder="Confirm password*" class="form-control">
             </div>
             <hr>
             <button type="submit" class="btn btn-fill-out col-md-12">Submit</button>
@@ -351,5 +352,64 @@
         }
     
       </script>
+<!-- password -->
+<script>
+  $(document).ready(function() {
+    $('#password').on('input', function() {
+      validatePassword();
+    });
+
+    $('#confirmPassword').on('input', function() {
+      validatePassword();
+    });
+  });
+
+  function validatePassword() {
+    var password = $('#password').val();
+    var confirmPassword = $('#confirmPassword').val();
+
+    if (password !== confirmPassword) {
+      // Passwords do not match
+      $('#password').css('border-color', 'red');
+      $('#confirmPassword').css('border-color', 'red');
+    } else {
+      // Passwords match
+      $('#password').css('border-color', '');
+      $('#confirmPassword').css('border-color', '');
+
+      // Check password strength using your preferred method/library
+      var passwordStrength = calculatePasswordStrength(password);
+
+      // Display password strength indicator
+      displayPasswordStrength(passwordStrength);
+    }
+  }
+
+  function calculatePasswordStrength(password) {
+    // Implement your own logic to calculate password strength
+    // You can use regular expressions, libraries, or your own algorithm
+
+    // Example: Simple length-based strength calculation
+    var lengthStrength = password.length / 10; // Assume maximum length is 10 characters
+    return Math.floor(lengthStrength * 100);
+  }
+
+  function displayPasswordStrength(strength) {
+    // Display the password strength indicator based on the strength value
+    // Customize this function according to your UI requirements
+    var indicatorElement = $('#password-strength-indicator');
+
+    if (strength >= 70) {
+      indicatorElement.text('STRONG');
+      indicatorElement.css('color', 'green');
+    } else if (strength >= 40) {
+      indicatorElement.text('MODERATE');
+      indicatorElement.css('color', 'orange');
+    } else {
+      indicatorElement.text('WEAK');
+      indicatorElement.css('color', 'red');
+    }
+  }
+</script>
 
 <%-include('../partials/user_footer')%>

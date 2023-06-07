@@ -137,6 +137,14 @@ router.get(
   "/unblock_user/:id",
   middleware.adminSession,
   adminController.unblockUser
-)
+);
+
+// delete order
+router.get(
+  "/remove_order/:id",
+  middleware.adminSession,
+  adminController.removeOrder
+  );
+
 
 module.exports = router;

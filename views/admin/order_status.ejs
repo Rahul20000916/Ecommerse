@@ -155,7 +155,9 @@
         <hr>
         <ul class="status-list">
             <li class="cancel">
-                <button  class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'packed')"><h5 style="color: red;">REMOVE ORDER</h5></button>
+                <a href="/admin/remove_order/<%= orders[0]._id %>">
+                <button  class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'remove')"><h5 style="color: red;">REMOVE ORDER</h5></button>
+                </a>
               </li>
               <hr>
 

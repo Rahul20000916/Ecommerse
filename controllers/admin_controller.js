@@ -344,4 +344,16 @@ module.exports = {
       console.log(err);
     }
   },
+  removeOrder:async(req, res) => {
+    try {
+      let id =req.params.id
+      console.log(id,"----------")
+      await adminHelper.removeOrder(req.params.id).then(()=>{
+        console.log("-------------------------------------------------------------")
+        res.redirect("/admin/manage_orders")
+      })
+    } catch (err) {
+      console.log(err);
+    }
+  },
 };
