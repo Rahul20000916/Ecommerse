@@ -219,6 +219,7 @@ loginDoneOtp: async (req, res) => {
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }
+      console.log(user,"------------------user------------------")
       let address = await userHelpers.getAddress(user._id);
       let orders =await userHelpers.getOrders(userId)
       res.render("user/profile",{user,cartCount,address,orders})
@@ -340,11 +341,11 @@ loginDoneOtp: async (req, res) => {
         cartCount = await userHelpers.getCartCount(user._id);
       }
       let orders =await userHelpers.getOneOrders(orderId)
+      console.log(orders,"------------------orders--------------------")
       let addrId = orders[0].address
       let addressId = new ObjectId(addrId );
       let addr = await userHelpers.getOrderAddress(addressId);
       let address =addr[0]
-      console.log(address,'------------------address-------------------')
       res.render("user/orders", {
         user,
         cartCount,
@@ -442,5 +443,29 @@ loginDoneOtp: async (req, res) => {
         console.log(err);
       }
     },
+
+    // cancel order
+
+    cancelOrder: (req, res) => {
+      try {
+        let ordId = req.params.id;
+        let orderId = new ObjectId(ordId);
+    
+        // Ensure that the cancelOrder function returns a promise
+        return userHelpers.cancelOrder(orderId)
+          .then(() => {
+            res.render("user/cancel_success");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    
+    
+    
+    
 };
 

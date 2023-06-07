@@ -75,4 +75,7 @@ router.get("/order_success",middleware.userSession,userController.success)
 // varify payment
 router.post("/verify-payment",middleware.userSession,userController.verifyPayment);
 
+// cancel order
+router.get("/cancel_order/:id",middleware.userSession,userController.cancelOrder)
+
 module.exports = router;

@@ -131,7 +131,14 @@
 </style>
       
 
-
+<!-- topbar -->
+<div class="container-fluid" style="background-color: rgb(255, 255, 255); height: 100px;">
+  <div class="row mt-1">
+      <h4 class="content-title card-title mt-3" style="color: #00000098; text-align: center;">ORDER DETAILS</h4>
+      <hr>
+  </div>
+</div>
+  <!-- /topbar -->
 <section>
  
     <div class="row">
@@ -144,17 +151,37 @@
   
 <div class="cardcontainer">
   <div class="card">
+    <% if (orders[0].orderstatus == 'placed') { %>
+      <div class="btn" style="pointer-events: none; background-color: #03f871a8;">Ordered</div>
+    <% } else { %>
       <div class="btn" style="pointer-events: none;">Ordered</div>
+    <% } %>
+    
       <div class="col-12 d-grid justify-content-center mt-1 mb-1" style="background-color: #f2f2f2;"><img style="width: 30px;" src="/images/user/buttons/down-arrow.png" alt="down-arrow"></div>
-      <div class="btn" style="pointer-events: none;">Packed</div>
+      <% if (orders[0].orderstatus == 'packed') { %>
+        <div class="btn" style="pointer-events: none; background-color: #03f871a8;">Packed</div>
+      <% } else { %>
+        <div class="btn" style="pointer-events: none;">Packed</div>
+      <% } %>
       <div class="col-12 d-grid justify-content-center mt-1 mb-1" style="background-color: #f2f2f2;"><img style="width: 30px;" src="/images/user/buttons/down-arrow.png" alt="down-arrow"></div>
-      <div class="btn" style="pointer-events: none;">Shipped</div>
+      <% if (orders[0].orderstatus == 'shipped') { %>
+        <div class="btn" style="pointer-events: none; background-color: #03f871a8;">Shipped</div>
+      <% } else { %>
+        <div class="btn" style="pointer-events: none;">Shipped</div>
+      <% } %>
       <div class="col-12 d-grid justify-content-center mt-1 mb-1" style="background-color: #f2f2f2;"><img style="width: 30px;" src="/images/user/buttons/down-arrow.png" alt="down-arrow"></div>
-      <div class="btn" style="pointer-events: none;">Delivered</div>
+      <% if (orders[0].orderstatus == 'delivered') { %>
+        <div class="btn" style="pointer-events: none; background-color: #03f871a8;">Delivered</div>
+      <% } else { %>
+        <div class="btn" style="pointer-events: none;">Delivered</div>
+      <% } %>
   </div>
 </div>
-
-<button style="pointer-events: none;" class="btn btn-fill-out col-md-12 mb-4 mt-40"> <h4 style="color: rgb(61, 61, 61);">Your order will be delivered as soon as possible.</h4></button>
+<% if (orders[0].orderstatus == 'canceled') { %>
+  <button style="pointer-events: none;" class="btn btn-fill-out col-md-12 mb-4 mt-40"> <h4 style="color: rgb(252, 59, 59);">Your order is canceled it will remove soon as possible</h4></button>
+<% } else { %>
+  <button style="pointer-events: none;" class="btn btn-fill-out col-md-12 mb-4 mt-40"> <h4 style="color: rgb(61, 61, 61);">Your order will be delivered as soon as possible.</h4></button>
+<% } %>
 
 <!-- card end -->
     </div>
@@ -193,7 +220,7 @@
                       <tr>
                         <th>Total</th>
                         <td colspan="2" class="product-subtotal">
-                          <span class="font-xl text-brand fw-900">Rs <%= products.total %></span>
+                          <span class="font-xl text-brand fw-900"><h4>Rs <%= products.total %></h4></span>
                         </td>
                       </tr>
                       <% })%>
@@ -207,8 +234,11 @@
           
         </div>
         <button id="addAddressButton" onclick="openModal()" class="btn btn-fill-out col-md-12 mb-1">VIEW DELIVERY ADDRESS</button>
-        <button class="btn btn-fill-out col-md-12 mb-4"> <h4 style="color: red;">CANCEL ORDER</h4></button>
-</section>
+        <a href="/cancel_order/<%= orders[0]._id %>" id="cancelOrderBtn">
+        <button class="btn btn-fill-out col-md-12 mb-4"> 
+          <h4 style="color: red;">CANCEL ORDER</h4>
+        </button></a> 
+        </section>
 
 <div id="addressModal" class="modal">
   <div class="modal-content">
@@ -275,4 +305,5 @@
   }
 
 </script>
+
 <%-include('../partials/user_footer')%>

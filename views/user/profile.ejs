@@ -89,7 +89,7 @@
                                 <div class="dashboard-menu">
                                     <ul class="nav flex-column" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="false"><i class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
+                                            <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="false"><i class="fi-rs-settings-sliders mr-10"></i>Profile</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
@@ -120,16 +120,16 @@
                                                 <form method="post" name="enq">
                                                     <div class="row">
                                                         <div class="form-group col-md-6">
-                                                            <label>Name <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="name" type="text">
+                                                            <label>Name <span class="required"></span></label>
+                                                            <input required="" class="form-control square" name="name" value="<%= user.name %>" type="text"disabled>
                                                         </div>
                                                         <div class="form-group col-md-6">
-                                                            <label>Mobile Number <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="Phone" type="number">
+                                                            <label>Mobile Number <span class="required"></span></label>
+                                                            <input required="" class="form-control square" name="Phone" value="<%= user.phone %>" type="number"disabled>
                                                         </div>
                                                         <div class="form-group col-md-12">
-                                                            <label>Email Address <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="email" type="email">
+                                                            <label>Email Address <span class="required"></span></label>
+                                                            <input required="" class="form-control square" name="email" value="<%= user.email %>" type="email"disabled>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <button id="editProfileButton" onclick="openModalProfile()" class="btn btn-fill-out col-md-12 mb-2 mt-2">EDIT ACCOUNT DETAILS</button>

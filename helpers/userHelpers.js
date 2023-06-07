@@ -215,6 +215,22 @@ module.exports = {
       }
     });
   },
+
+  // cancel order
+  cancelOrder: (orderId) => {
+    return new Promise((resolve, reject) => {
+      try {
+        db.orders.findOneAndUpdate({ _id: orderId }, { orderstatus: 'canceled' })
+          .then(() => {
+            console.log('Order canceled successfully.');
+            resolve(); // Resolve the promise to indicate successful completion
+          })
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  },
+  
   
   // generate razorpay
   generateRazorpay:(orderId,total)=>{
