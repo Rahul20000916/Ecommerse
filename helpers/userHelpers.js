@@ -218,9 +218,9 @@ module.exports = {
 
   // cancel order
   cancelOrder: (orderId) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
       try {
-        db.orders.findOneAndUpdate({ _id: orderId }, { orderstatus: 'canceled' })
+        await db.orders.findOneAndUpdate({ _id: orderId }, { orderstatus: 'canceled' })
           .then(() => {
             console.log('Order canceled successfully.');
             resolve(); // Resolve the promise to indicate successful completion
@@ -418,6 +418,18 @@ module.exports = {
       }
     });
   },
+
+  // find user
+  findUser :async(userId) => {
+    return new Promise(async(resolve, reject) => {
+      try {
+        let user = await db.users.find({ _id: userId })
+        resolve(user);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  },
   // get orders
   getOrders :async(userId) => {
     return new Promise(async(resolve, reject) => {
@@ -463,4 +475,55 @@ module.exports = {
       }
     })
   },
+
+  //update profile
+  updateProfile:(userId,data)=>{
+    return new Promise(async(resolve, reject) => {
+      try {
+        console.log(data,"--------------------------------")
+        console.log(userId)
+          await db.users.updateOne(
+          { _id: userId },
+          {
+            $set: {
+              name: data.name,
+              email: data.email,
+              phone: data.phone,
+            }
+          }
+        ).then(() => {
+            console.log('successfully updated.');
+            resolve()
+          })
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  },
+
+  //update password
+  updatePassword:(userId,data)=>{
+    return new Promise(async(resolve, reject) => {
+      try {
+        console.log(userId)
+        data.password = await bcrypt.hash(data.password, 10);
+        console.log(data.password,"--------------------------------")
+          await db.users.updateOne(
+          { _id: userId },
+          {
+            $set: {
+              password: data.password,
+            }
+          }
+        ).then(() => {
+            console.log('successfully updated.');
+            resolve()
+          })
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  },
+
+  
 };

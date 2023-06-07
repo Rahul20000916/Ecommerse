@@ -76,6 +76,12 @@ router.get("/order_success",middleware.userSession,userController.success)
 router.post("/verify-payment",middleware.userSession,userController.verifyPayment);
 
 // cancel order
-router.get("/cancel_order/:id",middleware.userSession,userController.cancelOrder)
+router.get("/cancel_order/:id",middleware.userSession,userController.cancelOrder);
+
+// edit profile
+router.post("/edit_profile/:id",middleware.userSession,userController.editProfile);
+
+// edit password
+router.post("/edit_password/:id",middleware.userSession,userController.editPassword);
 
 module.exports = router;

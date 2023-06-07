@@ -117,7 +117,6 @@
                                                 <h5>Account Details</h5>
                                             </div>
                                             <div class="card-body">
-                                                <form method="post" name="enq">
                                                     <div class="row">
                                                         <div class="form-group col-md-6">
                                                             <label>Name <span class="required"></span></label>
@@ -138,7 +137,6 @@
                                                             <button id="editPasswordButton" onclick="openModalPassword()"  class="btn btn-fill-out col-md-12 mb-2 mt-2">CHANGE PASSWORD</button>
                                                         </div>
                                                     </div>
-                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -265,19 +263,19 @@
       <span class="close" onclick="closeModalProfile()">&times;</span>
       <h4 class="text-center">EDIT PROFILE</h4>
       <hr>
-      <form method="post" action="/user/edit_profile">
+      <form method="post" action="/edit_profile/<%= user._id %>">
           <div class="form-group ">
-            <input type="text" required="" name="name" placeholder="Full name *" class="form-control">
+            <input type="text" required="" name="name" value="<%= user.name %>" placeholder="Full name *" class="form-control">
           </div>
  
         <hr>
         <div class="form-group">
-          <input type="text" name="email" required="" placeholder="Email Address *" class="form-control">
+          <input type="text" name="email" required="" value="<%= user.email %>" placeholder="Email Address *" class="form-control">
         </div>
      
         <hr>
         <div class="form-group">
-          <input required="" type="text" name="phone" placeholder="Phone *" class="form-control">
+          <input required="" type="text" name="phone" value="<%= user.phone %>" placeholder="Phone *" class="form-control">
         </div>
         <hr>
         <button type="submit" class="btn btn-fill-out col-md-12">Submit</button>
@@ -293,7 +291,7 @@
           <span class="close" onclick="closeModalPassword()">&times;</span>
           <h4 class="text-center">CREATE NEW PASSWORD</h4>
           <hr>
-          <form method="post" action="/user/edit_password">
+          <form method="post" action="/edit_password/<%= user._id %>">
        
             <div class="form-group">
               <input type="password" name="password" required="" placeholder="Enter new password*" class="form-control">
@@ -301,7 +299,7 @@
          
             <hr>
             <div class="form-group">
-              <input required="" type="password" name="password" placeholder="Confirm password *" class="form-control">
+              <input required="" type="password"  placeholder="Confirm password *" class="form-control">
             </div>
             <hr>
             <button type="submit" class="btn btn-fill-out col-md-12">Submit</button>

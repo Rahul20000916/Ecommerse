@@ -212,9 +212,10 @@ loginDoneOtp: async (req, res) => {
 
   profile: async(req, res) => {
     try {
-      let user = req.session.user;
       let usrId = req.session.user._id;
       let userId = new ObjectId(usrId);
+      let usr = await userHelpers.findUser(userId)
+      let user =usr[0]
       let cartCount = null;
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
@@ -463,7 +464,35 @@ loginDoneOtp: async (req, res) => {
         console.log(err);
       }
     },
-    
+
+    // edit profile
+
+    editProfile:async(req,res)=>{
+      try{
+        let usrId = req.params.id;
+        let userId = new ObjectId(usrId);
+        await userHelpers.updateProfile(userId,req.body).then(()=>{
+          res.redirect("/profile")
+        })
+      }catch(err){
+        console.log(err)
+      }
+
+    },
+
+    // edit password
+
+    editPassword:async(req,res)=>{
+      try{
+        let usrId = req.params.id;
+        let userId = new ObjectId(usrId);
+        await userHelpers.updatePassword(userId,req.body).then(()=>{
+          res.redirect("/profile")
+        })
+      }catch(err){
+        console.log(err)
+      }
+    },
     
     
     
