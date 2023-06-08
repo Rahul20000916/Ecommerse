@@ -243,8 +243,9 @@ module.exports = {
   // REMOVE ORDER
   removeOrder: (id) => {
     return new Promise(async (resolve, reject) => {
-      await db.users
-        .deleteOne({ _id: id })
+      let ordId= new ObjectId(id)
+      await db.orders
+        .deleteOne({ _id: ordId})
         .then((response) => {
           resolve(response);
         });

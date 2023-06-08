@@ -146,33 +146,39 @@
                                                 <h5 class="mb-0">Your Orders</h5>
                                             </div>
                                             <div class="card-body">
+                                              <% if (orders[0]>=0) { %>
                                                 <div class="table-responsive">
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Order</th>
-                                                                <th>Date</th>
-                                                                <th>Payment Mode</th>
-                                                                <th>Total</th>
-                                                                <th>Status</th>
-                                                                <th>Actions</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <% orders.forEach((data,index) => { %>
-                                                                
-                                                                <tr>
-                                                                    <td><%= index+1 %></td>
-                                                                    <td><%= data.date.toLocaleDateString() %></td>
-                                                                    <td><%= data.paymentmode %></td>
-                                                                    <td><%= data.total %></td>
-                                                                    <td><%= data.orderstatus %></td>
-                                                                    <td><a href="/order_status/<%= data._id %>" class="btn-small d-block btn">View</a></td>
-                                                                </tr>
-                                                            <% }) %>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                  <table class="table">
+                                                      <thead>
+                                                          <tr>
+                                                              <th>Order</th>
+                                                              <th>Date</th>
+                                                              <th>Payment Mode</th>
+                                                              <th>Total</th>
+                                                              <th>Status</th>
+                                                              <th>Actions</th>
+                                                          </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                          <% orders.forEach((data,index) => { %>
+                                                              
+                                                              <tr>
+                                                                  <td><%= index+1 %></td>
+                                                                  <td><%= data.date.toLocaleDateString() %></td>
+                                                                  <td><%= data.paymentmode %></td>
+                                                                  <td><%= data.total %></td>
+                                                                  <td><%= data.orderstatus %></td>
+                                                                  <td><a href="/order_status/<%= data._id %>" class="btn-small d-block btn">View</a></td>
+                                                              </tr>
+                                                          <% }) %>
+                                                      </tbody>
+                                                  </table>
+                                              </div>
+                                              <% } else { %>
+                                                <div class="text-center"><h3>NOTHING ORDERED YET!</h3></div>
+                                              <% } %>
+                                               
+                                               
                                             </div>
                                         </div>
                                     </div>
