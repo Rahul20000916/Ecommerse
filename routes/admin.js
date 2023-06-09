@@ -145,6 +145,29 @@ router.get(
   middleware.adminSession,
   adminController.removeOrder
   );
+// order packed
+router.get(
+  "/order_packed/:id",
+  middleware.adminSession,
+  adminController.orderPacked
+  );
+ // order shipped
+ router.get(
+  "/order_shipped/:id",
+  middleware.adminSession,
+  adminController.orderShipped
+  );
+ // order delivered
+ router.get(
+  "/order_delivered/:id",
+  middleware.adminSession,
+  adminController.orderDelivered
+  );
 
-
+// create report
+router.get(
+  "/create_report",
+  middleware.adminSession,
+  adminController.report
+)
 module.exports = router;

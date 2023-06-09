@@ -1,4 +1,43 @@
 <%-include('../partials/user_header')%>
+<style>
+  /* Hide the scrollbar */
+  .scroll-container::-webkit-scrollbar {
+    width: 0.5em;
+    background-color: white;
+  }
+  .scroll-container::-webkit-scrollbar-thumb {
+    background-color: white;
+  }
+</style>
+<style>
+  .toast-message {
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid lightgreen;
+  background-color: lightgreen;
+  border-radius: 3px;
+  animation: fadeOut 2s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+.message-text {
+  font-size: 14px;
+  color: white;
+}
+
+</style>
 <!-- view products -->
 <style>
   /* .product-item-inner {
@@ -71,19 +110,48 @@
     }
   }
 </style>
+<% if (typeof successMessage !== 'undefined') { %>
+  <div class="toast-message col-md-12 text-center">
+    <span class="message-text col-md-12 text-center"><%= successMessage %></span>
+  </div>  
+<% } %>
 <main class="wrapper">
   <section class="products pm">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-8">
           <article class="title text-center">
-            <h2 class="title-sec">Products</h2>
             <p class="sub-title">
               Latest Protraits <i class="uil uil-list-ui-alt"></i><i></i>
+              <hr>
+              <h5 class="content-title card-title mt-3" style="color: #00000098; text-align: center;">SEARCH WITH CATEGORY</h5>
+
             </p>
           </article>
         </div>
       </div>
+          <!-- categorize -->
+          <div class="container-fluid" style="background-color: rgb(255, 255, 255); height: 200px;">
+            <div class="row">
+              <div class="scroll-container  mb-4" style="max-height: 200px; overflow-y: scroll;">
+                <p style="color: rgba(0, 0, 0, 0.493); text-align: center;">( SIMPLIFYING THE ORDERING PROCESS FOR FINE ART )</p>
+                <form action="/category_filter" method="post">
+                  <% category.forEach(function(categoryName){ %>
+                  <button class="col-md-2 btn btn-fill-out" style="width: 200px;height: 60px;margin-left: 13px;">
+                    <input type="radio" name="<%= categoryName.categoryName %>">
+                    <%= categoryName.categoryName%>
+                  </button>
+                  <% })%>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div>
+            <button type="submit" class="col-md-12 btn btn-fill-out">SEARCH</button>
+          </div>
+        </form>
+
+  <!-- /categorize -->
       <div class="row">
 
         <!-- products-start  -->

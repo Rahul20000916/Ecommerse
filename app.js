@@ -1,19 +1,21 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
 const session = require ('express-session')
-var userRouter = require('./routes/user');
-var adminRouter = require('./routes/admin');
-var app = express();
-var multer = require('./multer/multer')
+let userRouter = require('./routes/user');
+let adminRouter = require('./routes/admin');
+let app = express();
+let multer = require('./multer/multer')
 const ConnectMongoDBSession = require('connect-mongodb-session');
+const { toast } = require('react-toastify');
+
 require('dotenv').config();
 
 const mongoDbSession=new ConnectMongoDBSession(session)
 // Database 
-var db = require ('./model/connection');
+let db = require ('./model/connection');
 const nocache = require('nocache');
 // End Database
 

@@ -97,6 +97,14 @@ module.exports = {
       });
     });
   },
+  // all category
+  allCategory :() => {
+    return new Promise(async (resolve, reject) => {
+      await db.categories.find({}).then((response) => {
+        resolve(response);
+      });
+    });
+  },
   viewProductDetails: (id) => {
     return new Promise(async (resolve, reject) => {
       try {

@@ -1,0 +1,80 @@
+<%-include('../partials/admin_header')%>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.wordexport.js"></script>
+    <!-- topbar -->
+<div class="container-fluid" style="background-color: rgb(255, 255, 255); height: 100px;">
+  <div class="row mt-1">
+      <h3 class="content-title card-title mt-3" style="color: #00000098; text-align: center;">REPORT</h3>
+      <button id="downloadBtn">Download Report</button>
+
+      <hr>
+  </div>
+</div>
+  <!-- /topbar -->
+<section>
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-md-12">
+        <div class="table-responsive">
+            <table id="dataTable" class="table table-hover mt-4">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Products Id</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Payment Mode</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Orders Status</th>
+                    <th scope="col">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% orders?.forEach(function(item, index) { %>
+                  <tr>
+                    <td><%= index + 1 %></td>
+                    <td>
+                      <% item.products.forEach(function(products, index) { %>
+                      <b><%= index + 1 %></b> <%= products._id %><br>
+                      <% }) %>
+                    </td>
+                    <td><%= item.date.toLocaleDateString() %></td>
+                    <td><%= item.paymentmode %></td>
+                    <td><%= item.address %></td>
+                    <td><%= item.orderstatus %></td>
+                    <td><p style="color: rgb(238, 54, 54);">Rs: <%= item.total %></p></td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+          
+    
+
+      </div>
+    </div>
+  </div>
+  
+  </div>
+</section>
+<script>
+    $(document).ready(function() {
+      // Function to convert the table to a Word document and trigger the download
+      function exportToWord() {
+        // Get the table HTML content
+        var tableHTML = $("#dataTable").prop("outerHTML");
+  
+        // Create a new Blob object with the HTML content
+        var blob = new Blob([tableHTML], { type: "application/msword" });
+  
+        // Generate a unique filename for the download
+        var fileName = "table_data_" + new Date().getTime() + ".doc";
+  
+        // Use the FileSaver.js library to trigger the download
+        saveAs(blob, fileName);
+      }
+  
+      // Add a click event listener to the download button
+      $("#downloadBtn").on("click", exportToWord);
+    });
+  </script>
+
+<%-include('../partials/admin_footer')%>

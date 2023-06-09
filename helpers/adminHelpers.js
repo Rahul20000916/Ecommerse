@@ -251,4 +251,33 @@ module.exports = {
         });
     });
   },
+  //order packed
+  orderPacked: async (orderId) => {
+    try {
+      await db.orders.updateOne({ _id: orderId }, { $set: { orderstatus: 'packed' } });
+      console.log('Order packed successfully.');
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  },
+    //order shipped
+    orderShipped: async (orderId) => {
+      try {
+        await db.orders.updateOne({ _id: orderId }, { $set: { orderstatus: 'shipped' } });
+        console.log('Order packed successfully.');
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    },  //order delivered
+    orderDelivered: async (orderId) => {
+      try {
+        await db.orders.updateOne({ _id: orderId }, { $set: { orderstatus: 'delivered' } });
+        console.log('Order packed successfully.');
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    },
 };

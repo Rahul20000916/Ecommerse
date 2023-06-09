@@ -2,6 +2,8 @@ const { response } = require("../app");
 const adminHelpers = require("../helpers/adminHelpers");
 const adminHelper = require("../helpers/adminHelpers");
 const db = require("../model/connection");
+const { ObjectId } = require("mongodb");
+
 
 const adminCred = {
   username: "admin@gmail.com",
@@ -353,4 +355,43 @@ module.exports = {
       console.log(err);
     }
   },
+  // order packed
+  orderPacked: async (req, res) => {
+    try {
+      const orderId = req.params.id;
+      await adminHelper.orderPacked(orderId);
+      res.redirect("/admin/vieworders/"+orderId)
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  // order shipped
+  orderShipped: async (req, res) => {
+    try {
+      const orderId = req.params.id;
+      await adminHelper.orderShipped(orderId);
+      res.redirect("/admin/vieworders/"+orderId)
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  // order delivered
+  orderDelivered: async (req, res) => {
+    try {
+      const orderId = req.params.id;
+      await adminHelper.orderDelivered(orderId);
+      res.redirect("/admin/vieworders/"+orderId)
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  //report
+  report:async(req,res)=>{
+    try{
+      let orders = await adminHelper.orders();    
+      res.render("admin/report",{orders})
+    }catch(err){
+      console.log(err)
+    }
+  }
 };

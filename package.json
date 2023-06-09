@@ -21,6 +21,7 @@
     "multer": "^1.4.5-lts.1",
     "nocache": "^3.0.4",
     "nodemon": "^2.0.22",
-    "razorpay": "^2.8.6"
+    "razorpay": "^2.8.6",
+    "react-toastify": "^9.1.3"
   }
 }

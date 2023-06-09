@@ -160,7 +160,7 @@ loginDoneOtp: async (req, res) => {
   viewProducts: async (req, res) => {
     try {
       const currentPage = parseInt(req.query.page) || 1; // Current page number, default to 1
-      const perPage = 6; // Number of products to display per page
+      const perPage = 8; // Number of products to display per page
       const startIndex = (currentPage - 1) * perPage; // Start index of the current page
       const endIndex = startIndex + perPage; // End index of the current page
   
@@ -169,25 +169,37 @@ loginDoneOtp: async (req, res) => {
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }
-  
+      const category = await userHelpers.allCategory();
       const allProducts = await userHelpers.viewProduct();
       const totalItems = allProducts.length;
       const totalPages = Math.ceil(totalItems / perPage);
-  
+      
       const paginatedProducts = allProducts.slice(startIndex, endIndex);
-  
       res.render("user/products", {
         viewProducts: paginatedProducts,
+        successMessage: req.session.successMessage,
         user,
         cartCount,
+        category,
         currentPage,
         totalPages
-      });
+      })
+      req.session.successMessage = undefined; // Clear the success message after displaying it
     } catch (err) {
       console.log(err);
     }
   },
   
+  // product filter
+  productFilter: (req,res)=>{
+  try{
+      let category = req.body
+      console.log(category,"--------------------------------")
+      res.redirect('/products');
+    }catch(err){
+      console.log(err)
+    }
+  },
 
   // view product details
 
@@ -283,6 +295,7 @@ loginDoneOtp: async (req, res) => {
       let productId = new ObjectId(proId);
       console.log(userId, productId);
       await userHelpers.addToCart(userId, productId).then((response) => {
+        req.session.successMessage = 'Added to cart successfully';
         res.redirect("/products");
       });
     } catch (err) {

@@ -83,9 +83,9 @@
                     <a href="/admin/edit_product/<%= viewProducts._id %>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-success"><p style="color: green;">Edit</p></a>   
                     <a href="/admin/delete_product/<%= viewProducts._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger" onclick="return deleteConfirmation(event)"><p style="color: red;">Delete</p></a>
                     <% if (viewProducts.block == true) { %>
-                      <a href="/admin/soft_undelete/<%= viewProducts._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger" ><p style="color: lawngreen;">Active</p></a>
+                      <a href="/admin/soft_undelete/<%= viewProducts._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger" onclick="return activeAlert(event)"><p style="color: lawngreen;">Active</p></a>
                     <% }else { %>
-                      <a href="/admin/soft_delete/<%= viewProducts._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger" ><p style="color: orange;">Inactive</p></a>
+                      <a href="/admin/soft_delete/<%= viewProducts._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger" onclick="return inactiveAlert(event)"><p style="color: orange;">Inactive</p></a>
                     <% }  %>   
                   </td>
                 </tr>

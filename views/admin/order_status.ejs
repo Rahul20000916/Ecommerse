@@ -156,23 +156,31 @@
         <ul class="status-list">
             <li class="cancel">
                 <a href="/admin/remove_order/<%= orders[0]._id %>">
-                <button  class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'remove')"><h5 style="color: red;">REMOVE ORDER</h5></button>
+                <button  class="btn btn-fill-out col-md-12"><h5 style="color: red;">REMOVE ORDER</h5></button>
                 </a>
               </li>
               <hr>
 
-          <li class="ordered">
-            <button class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'packed')"><h6 style="color: rgba(0, 128, 0, 0.493);">MARK AS PACKED</h6></button>
-          </li>
-          <hr>
-
           <li class="packed">
-            <button class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'shipped')"><h6 style="color: rgba(0, 128, 0, 0.774);">MARK AS SHIPPED</h6></button>
+            <a href="/admin/order_packed/<%= orders[0]._id %>">
+            <button class="btn btn-fill-out col-md-12">
+              <h6 style="color: rgba(0, 128, 0, 0.493);">MARK AS PACKED</h6>
+            </button>
+          </a>          
           </li>
           <hr>
 
           <li class="shipped">
-            <button class="btn btn-fill-out col-md-12" onclick="updateStatus('<%= orders._id %>', 'delivered')"><h6 style="color: green;">MARK AS DELIVERED</h6></button>
+            <a href="/admin/order_shipped/<%= orders[0]._id %>">
+            <button class="btn btn-fill-out col-md-12" ><h6 style="color: rgba(0, 128, 0, 0.774);">MARK AS SHIPPED</h6></button>
+          </a>          
+          </li>
+          <hr>
+
+          <li class="delivered">
+            <a href="/admin/order_delivered/<%= orders[0]._id %>">
+            <button class="btn btn-fill-out col-md-12" ><h6 style="color: green;">MARK AS DELIVERED</h6></button>
+          </a>
           </li>
           <hr>
 
@@ -310,4 +318,5 @@
 
   </script>
 
+  
 <%-include('../partials/admin_footer')%>
