@@ -12,7 +12,9 @@ module.exports = {
     if (req.session.adminLogggedIn) {
       next();
     } else {
-      res.render("admin/login");
+      let loginErr = req.session.adminLogggedIn;
+      req.session.adminLogggedIn = null;
+      res.render("admin/login",{loginErr});
     }
   },
 };
