@@ -67,7 +67,7 @@ router.post("/user/place_order",middleware.userSession,userController.addAddress
 router.post("/user/address",middleware.userSession,userController.userAddAddress);
 
 // delete address
-router.post("/delete_address/:id",middleware.userSession,userController.deleteAddress);
+router.get("/delete_address/:id",middleware.userSession,userController.deleteAddress);
 
 // place orders
 router.post("/order_placed",middleware.userSession,userController.postOders);

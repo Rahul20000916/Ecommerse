@@ -227,10 +227,7 @@
                                                         <p><strong>Email:</strong> <%= element.email %></p>
                                                         </div>
                                                         <div class="row">
-                                                          <button onclick="openAlertModal()">Open Modal</button>
-                                                            <form action="/delete_address/<%= element._id %>" method="post" class="col-md-6">
-                                                                <button style="width: 370px;" class="btn btn-fill-out mt-1 mb-3 m-3 " type="submit" ><h6 style="color: red;"> REMOVE ADDRESS</h6></button>
-                                                            </form>
+                                                          <button style="width: 380px;" class="btn btn-fill-out mt-1 mb-3 m-4 " onclick="openAlertModal('<%= element._id %>')"><h6 style="color: red;"> REMOVE ADDRESS</h6></button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -257,7 +254,6 @@
           <div class="form-group ">
             <input type="text" required="" name="name" placeholder="Full name *" class="form-control">
           </div>
- 
         <hr>
         <div class="form-group">
           <input type="text" name="address" required="" placeholder="Address *" class="form-control">
@@ -285,7 +281,7 @@
     <hr>
   </div>
 
-     <!-- The Modal Profile Edit-->
+      <!-- The Modal Profile Edit-->
 <div id="profileModal" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
@@ -296,12 +292,10 @@
           <div class="form-group ">
             <input type="text" required="" name="name" value="<%= user.name %>" placeholder="Full name *" class="form-control">
           </div>
- 
         <hr>
         <div class="form-group">
           <input type="text" name="email" required="" value="<%= user.email %>" placeholder="Email Address *" class="form-control">
         </div>
-     
         <hr>
         <div class="form-group">
           <input required="" type="text" name="phone" value="<%= user.phone %>" placeholder="Phone *" class="form-control">
@@ -313,8 +307,8 @@
     <hr>
   </div>
 
-     <!-- The Modal Password Edit-->
-     <div id="passwordModal" class="modal">
+      <!-- The Modal Password Edit-->
+      <div id="passwordModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
           <span class="close" onclick="closeModalPassword()">&times;</span>
@@ -325,8 +319,7 @@
 
             <div class="form-group">
               <input type="password" id="password" name="password" required="" placeholder="Enter new password*" class="form-control">
-            </div>
-                   
+            </div>                  
             <hr>
             <div class="form-group">
               <input type="password" id="confirmPassword" required="" placeholder="Confirm password*" class="form-control">
@@ -347,31 +340,31 @@
 
       <!-- Buttons -->
       <div class="alert-modal-buttons">
-          <button onclick="submitAlert()">Submit</button>
-          <button onclick="closeAlertModal()">Cancel</button>
+          <button class="btn" onclick="submitAlert()"><img src="images/user/buttons/check.png" alt="submit"></button>
+          <button class="btn" onclick="closeAlertModal()"><img src="images/user/buttons/delete.png" alt="submit"></button>
       </div>
   </div>
 </div>
 
 <script>
-  // Get the modal element
   const alertModal = document.getElementById('alertModal');
-
-  // Function to open the modal
-  function openAlertModal() {
-      alertModal.style.display = 'block';
+  let addressId;
+  function openAlertModal(id) {
+    addressId = id;
+    alertModal.style.display = 'block';
   }
-
-  // Function to close the modal
   function closeAlertModal() {
       alertModal.style.display = 'none';
   }
-
-  // Function to handle form submission
   function submitAlert() {
-      // Add your code to handle form submission here
-      console.log('Form submitted!');
       closeAlertModal();
+      $.ajax({
+    url: '/delete_address/'+addressId,
+    type: 'GET',
+    success: function(response) {
+      location.reload();
+    },
+  });
   }
 </script>
 

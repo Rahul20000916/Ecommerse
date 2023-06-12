@@ -398,7 +398,7 @@ module.exports = {
       let id = req.params.id;
       let addressId = new ObjectId(id);
       await userHelpers.deleteAddress(addressId).then((response) => {
-        res.redirect("/profile");
+        res.json({ message: 'Address deleted successfully' });
       });
     } catch (err) {
       console.log(err);
