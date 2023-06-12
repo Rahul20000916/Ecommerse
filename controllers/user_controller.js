@@ -13,8 +13,8 @@ module.exports = {
         let cartCount = null;
         cartCount = await userHelpers.getCartCount(user._id);
         res.render("user/index", { user, cartCount });
-      }else{
-        res.redirect("/login")
+      } else {
+        res.redirect("/login");
       }
     } catch (err) {
       console.log(err);
@@ -91,23 +91,23 @@ module.exports = {
       console.log(err);
     }
   },
-// do login with otp
-loginDoneOtp: async (req, res) => {
-  try {
-    let number = req.body.Phone;
-    userHelpers.doLoginWithOtp(number).then((response) => {
-    if (response.status) {
-      req.session.loggedIn = true;
-      req.session.user = response.user;
-      res.redirect("/");
-    } else {
-      res.redirect("/login");
+  // do login with otp
+  loginDoneOtp: async (req, res) => {
+    try {
+      let number = req.body.Phone;
+      userHelpers.doLoginWithOtp(number).then((response) => {
+        if (response.status) {
+          req.session.loggedIn = true;
+          req.session.user = response.user;
+          res.redirect("/");
+        } else {
+          res.redirect("/login");
+        }
+      });
+    } catch (err) {
+      console.log(err);
     }
-  });
-  } catch (err) {
-    console.log(err);
-  }
-},
+  },
   // otp page
 
   otpPage: async (req, res) => {
@@ -122,26 +122,26 @@ loginDoneOtp: async (req, res) => {
   },
 
   // ort login
-  otpLogin:async (req, res) => {
+  otpLogin: async (req, res) => {
     try {
       let user = req.session.loggedIn;
       let cartCount = null;
       let number = req.body.number; // Access the number from req.body
-      console.log(number)
+      console.log(number);
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }
-      userHelpers.checkphonenumber(number).then((response)=>{
+      userHelpers.checkphonenumber(number).then((response) => {
         if (response) {
-            console.log("number verified");
-            // Number is registered
-            res.json({ registered: true });
-          } else {
-            console.log("number not registerd");
-            // Number is not registered
-            res.json({ registered: false });
-          }
-        })
+          console.log("number verified");
+          // Number is registered
+          res.json({ registered: true });
+        } else {
+          console.log("number not registerd");
+          // Number is not registered
+          res.json({ registered: false });
+        }
+      });
     } catch (err) {}
   },
   // logout
@@ -163,7 +163,7 @@ loginDoneOtp: async (req, res) => {
       const perPage = 8; // Number of products to display per page
       const startIndex = (currentPage - 1) * perPage; // Start index of the current page
       const endIndex = startIndex + perPage; // End index of the current page
-  
+
       let user = req.session.loggedIn;
       let cartCount = null;
       if (user) {
@@ -173,31 +173,28 @@ loginDoneOtp: async (req, res) => {
       const allProducts = await userHelpers.viewProduct();
       const totalItems = allProducts.length;
       const totalPages = Math.ceil(totalItems / perPage);
-      
+
       const paginatedProducts = allProducts.slice(startIndex, endIndex);
       res.render("user/products", {
         viewProducts: paginatedProducts,
-        successMessage: req.session.successMessage,
         user,
         cartCount,
         category,
         currentPage,
-        totalPages
-      })
-      req.session.successMessage = undefined; // Clear the success message after displaying it
+        totalPages,
+      });
     } catch (err) {
       console.log(err);
     }
   },
-  
+
   // product filter
-  productFilter: (req,res)=>{
-  try{
-      let category = req.body
-      console.log(category,"--------------------------------")
-      res.redirect('/products');
-    }catch(err){
-      console.log(err)
+  productFilter: (req, res) => {
+    try {
+      let category = req.body;
+      res.redirect("/products");
+    } catch (err) {
+      console.log(err);
     }
   },
 
@@ -222,20 +219,20 @@ loginDoneOtp: async (req, res) => {
 
   // profile page
 
-  profile: async(req, res) => {
+  profile: async (req, res) => {
     try {
       let usrId = req.session.user._id;
       let userId = new ObjectId(usrId);
-      let usr = await userHelpers.findUser(userId)
-      let user =usr[0]
+      let usr = await userHelpers.findUser(userId);
+      let user = usr[0];
       let cartCount = null;
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }
-      console.log(user,"------------------user------------------")
+      console.log(user, "------------------user------------------");
       let address = await userHelpers.getAddress(user._id);
-      let orders =await userHelpers.getOrders(userId)
-      res.render("user/profile",{user,cartCount,address,orders})
+      let orders = await userHelpers.getOrders(userId);
+      res.render("user/profile", { user, cartCount, address, orders });
     } catch (err) {
       console.log(err);
     }
@@ -295,7 +292,6 @@ loginDoneOtp: async (req, res) => {
       let productId = new ObjectId(proId);
       console.log(userId, productId);
       await userHelpers.addToCart(userId, productId).then((response) => {
-        req.session.successMessage = 'Added to cart successfully';
         res.redirect("/products");
       });
     } catch (err) {
@@ -345,7 +341,7 @@ loginDoneOtp: async (req, res) => {
   },
 
   // get orders
-  getOrder : async(req,res)=>{
+  getOrder: async (req, res) => {
     try {
       let user = req.session.user;
       let odrId = req.params.id;
@@ -354,22 +350,21 @@ loginDoneOtp: async (req, res) => {
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }
-      let orders =await userHelpers.getOneOrders(orderId)
-      console.log(orders,"------------------orders--------------------")
-      let addrId = orders[0].address
-      let addressId = new ObjectId(addrId );
+      let orders = await userHelpers.getOneOrders(orderId);
+      console.log(orders, "------------------orders--------------------");
+      let addrId = orders[0].address;
+      let addressId = new ObjectId(addrId);
       let addr = await userHelpers.getOrderAddress(addressId);
-      let address =addr[0]
+      let address = addr[0];
       res.render("user/orders", {
         user,
         cartCount,
         orders,
-        address
+        address,
       });
     } catch (err) {
       console.log(err);
     }
-
   },
 
   // add address
@@ -401,7 +396,7 @@ loginDoneOtp: async (req, res) => {
   deleteAddress: async (req, res) => {
     try {
       let id = req.params.id;
-      let addressId = new ObjectId(id)
+      let addressId = new ObjectId(id);
       await userHelpers.deleteAddress(addressId).then((response) => {
         res.redirect("/profile");
       });
@@ -424,15 +419,17 @@ loginDoneOtp: async (req, res) => {
           let formData = response;
           await userHelpers.removeCartItems(usrId);
           await userHelpers.inventory(products);
-          if (formData.paymentmode === 'cash_on_delivery') {
-            res.json({codSucces:true});
-          }else{
-            await userHelpers.findOrderId(formData).then(async(response)=>{
-              let orderId= response
-              await userHelpers.generateRazorpay(orderId,total).then((response)=>{
-                res.json(response)
-              })
-            })
+          if (formData.paymentmode === "cash_on_delivery") {
+            res.json({ codSucces: true });
+          } else {
+            await userHelpers.findOrderId(formData).then(async (response) => {
+              let orderId = response;
+              await userHelpers
+                .generateRazorpay(orderId, total)
+                .then((response) => {
+                  res.json(response);
+                });
+            });
           }
         });
     } catch (err) {
@@ -447,67 +444,63 @@ loginDoneOtp: async (req, res) => {
       console.log(err);
     }
   },
-    // varify payment
-    verifyPayment :(req,res)=>{
-      try{
-        console.log(req.body)
-        console.log("-----------------payment done---------------------")
-        res.json({opSucces:true});
-      }catch(err){
-        console.log(err);
-      }
-    },
+  // varify payment
+  verifyPayment: (req, res) => {
+    try {
+      console.log(req.body);
+      console.log("-----------------payment done---------------------");
+      res.json({ opSucces: true });
+    } catch (err) {
+      console.log(err);
+    }
+  },
 
-    // cancel order
+  // cancel order
 
-    cancelOrder: (req, res) => {
-      try {
-        let ordId = req.params.id;
-        let orderId = new ObjectId(ordId);
-    
-        // Ensure that the cancelOrder function returns a promise
-        return userHelpers.cancelOrder(orderId)
-          .then(() => {
-            res.render("user/cancel_success");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } catch (err) {
-        console.log(err);
-      }
-    },
+  cancelOrder: (req, res) => {
+    try {
+      let ordId = req.params.id;
+      let orderId = new ObjectId(ordId);
 
-    // edit profile
-
-    editProfile:async(req,res)=>{
-      try{
-        let usrId = req.params.id;
-        let userId = new ObjectId(usrId);
-        await userHelpers.updateProfile(userId,req.body).then(()=>{
-          res.redirect("/profile")
+      // Ensure that the cancelOrder function returns a promise
+      return userHelpers
+        .cancelOrder(orderId)
+        .then(() => {
+          res.render("user/cancel_success");
         })
-      }catch(err){
-        console.log(err)
-      }
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  },
 
-    },
+  // edit profile
 
-    // edit password
+  editProfile: async (req, res) => {
+    try {
+      let usrId = req.params.id;
+      let userId = new ObjectId(usrId);
+      await userHelpers.updateProfile(userId, req.body).then(() => {
+        res.redirect("/profile");
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  },
 
-    editPassword:async(req,res)=>{
-      try{
-        let usrId = req.params.id;
-        let userId = new ObjectId(usrId);
-        await userHelpers.updatePassword(userId,req.body).then(()=>{
-          res.redirect("/profile")
-        })
-      }catch(err){
-        console.log(err)
-      }
-    },
-    
-    
-    
+  // edit password
+
+  editPassword: async (req, res) => {
+    try {
+      let usrId = req.params.id;
+      let userId = new ObjectId(usrId);
+      await userHelpers.updatePassword(userId, req.body).then(() => {
+        res.redirect("/profile");
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  },
 };
-

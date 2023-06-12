@@ -110,7 +110,6 @@ const addressSchema = new mongoose.Schema({
 });
 // orders
 const ordersSchema = new mongoose.Schema({
-
   userid: {
     type: mongoose.SchemaTypes.ObjectId,
   },

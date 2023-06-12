@@ -1,16 +1,15 @@
 const { response } = require("express");
 const db = require("../model/connection");
 const { ObjectId } = require("mongodb");
-const Razorpay = require('razorpay');
+const Razorpay = require("razorpay");
 
 const bcrypt = require("bcrypt");
 
 // razor pay
 var instance = new Razorpay({
-  key_id: 'rzp_test_onTZMcpnZgRY0j',
-  key_secret: 'd4xfSpxnHiRmdYyfnVIkvAkV',
+  key_id: "rzp_test_onTZMcpnZgRY0j",
+  key_secret: "d4xfSpxnHiRmdYyfnVIkvAkV",
 });
-
 
 module.exports = {
   doSignup: (userData) => {
@@ -35,10 +34,13 @@ module.exports = {
       let loginStatus = false;
       let response = {};
       let user = await db.users.findOne({ email: userData.Email }); // Changed from 'userData.Email' to 'userData.email'
-  
-      if (user) { // Moved the check for 'user' inside the 'if' condition
-        if (user.block === false) { // Changed from 'user.block == false' to 'user.block === false'
-          bcrypt.compare(userData.Password, user.password) // Changed from 'userData.Password' to 'userData.password'
+
+      if (user) {
+        // Moved the check for 'user' inside the 'if' condition
+        if (user.block === false) {
+          // Changed from 'user.block == false' to 'user.block === false'
+          bcrypt
+            .compare(userData.Password, user.password) // Changed from 'userData.Password' to 'userData.password'
             .then((status) => {
               if (status) {
                 console.log("Login success");
@@ -60,32 +62,28 @@ module.exports = {
       }
     });
   },
-  
 
   // otp login done
-  doLoginWithOtp:(number) => {
+  doLoginWithOtp: (number) => {
     return new Promise(async (resolve, reject) => {
-      try{let loginStatus = false;
-      let response = {};
-      await db.users.findOne({ phone: number }).then((user)=>{
-        if (user) {
-          console.log("login Success");
-          response.user = user;
-          response.status = true;
-          resolve(response);
-        }
-        else {
-        console.log("Login Failed");
-        resolve({ status: false });
-}
-
-      });
-    }
-      catch(err){
-        console.log("ERROR OCCURED",err)
-        reject(err)
+      try {
+        let loginStatus = false;
+        let response = {};
+        await db.users.findOne({ phone: number }).then((user) => {
+          if (user) {
+            console.log("login Success");
+            response.user = user;
+            response.status = true;
+            resolve(response);
+          } else {
+            console.log("Login Failed");
+            resolve({ status: false });
+          }
+        });
+      } catch (err) {
+        console.log("ERROR OCCURED", err);
+        reject(err);
       }
-    
     });
   },
   // view products
@@ -98,7 +96,7 @@ module.exports = {
     });
   },
   // all category
-  allCategory :() => {
+  allCategory: () => {
     return new Promise(async (resolve, reject) => {
       await db.categories.find({}).then((response) => {
         resolve(response);
@@ -226,36 +224,36 @@ module.exports = {
 
   // cancel order
   cancelOrder: (orderId) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        await db.orders.findOneAndUpdate({ _id: orderId }, { orderstatus: 'canceled' })
+        await db.orders
+          .findOneAndUpdate({ _id: orderId }, { orderstatus: "canceled" })
           .then(() => {
-            console.log('Order canceled successfully.');
+            console.log("Order canceled successfully.");
             resolve(); // Resolve the promise to indicate successful completion
-          })
+          });
       } catch (err) {
         console.log(err);
       }
     });
   },
-  
-  
+
   // generate razorpay
-  generateRazorpay:(orderId,total)=>{
-    return new Promise(async(resolve,reject)=>{
-      try{
-        var option ={
+  generateRazorpay: (orderId, total) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        var option = {
           amount: total,
-          currency: 'INR',
-          receipt: ""+orderId,
-        }
-        instance.orders.create(option,(err,order)=>{
-          resolve(order)
-        })
-      }catch(err){
+          currency: "INR",
+          receipt: "" + orderId,
+        };
+        instance.orders.create(option, (err, order) => {
+          resolve(order);
+        });
+      } catch (err) {
         console.log(err);
       }
-    })
+    });
   },
   // get cart products
   getCartProducts: (userId) => {
@@ -312,18 +310,17 @@ module.exports = {
   },
 
   // check user with phone number
-  checkphonenumber:(phonenumber)=>{
+  checkphonenumber: (phonenumber) => {
     return new Promise((resolve, reject) => {
-      db.users.findOne({ phone: phonenumber })
-      .then((data) => {
+      db.users.findOne({ phone: phonenumber }).then((data) => {
         console.log(data);
-        if(data){
-          resolve(data)
-        }else{
-          reject()
+        if (data) {
+          resolve(data);
+        } else {
+          reject();
         }
-      })
-    })
+      });
+    });
   },
 
   // total amount
@@ -380,11 +377,10 @@ module.exports = {
           zipcode: data.zipcode,
           phone: data.phone,
           email: data.email,
-          type : data.type,
+          type: data.type,
         };
-          db.addresses.create(userAdress);
-          resolve();
-        
+        db.addresses.create(userAdress);
+        resolve();
       } catch (err) {
         console.log(err);
       }
@@ -395,8 +391,8 @@ module.exports = {
   deleteAddress: (id) => {
     return new Promise(async (resolve, reject) => {
       try {
-          await db.addresses.deleteOne({_id:id});
-          resolve(); 
+        await db.addresses.deleteOne({ _id: id });
+        resolve();
       } catch (err) {
         console.log(err);
       }
@@ -404,22 +400,22 @@ module.exports = {
   },
 
   // get address
-  getAddress: async(userId) => {
-    return new Promise(async(resolve, reject) => {
+  getAddress: async (userId) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        let address = await db.addresses.find({ userid: userId })
+        let address = await db.addresses.find({ userid: userId });
         resolve(address);
       } catch (err) {
         console.log(err);
       }
     });
   },
-  
+
   // get order address
-  getOrderAddress: async(addressId) => {
-    return new Promise(async(resolve, reject) => {
+  getOrderAddress: async (addressId) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        let address = await db.addresses.find({ _id: addressId })
+        let address = await db.addresses.find({ _id: addressId });
         resolve(address);
       } catch (err) {
         console.log(err);
@@ -428,10 +424,10 @@ module.exports = {
   },
 
   // find user
-  findUser :async(userId) => {
-    return new Promise(async(resolve, reject) => {
+  findUser: async (userId) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        let user = await db.users.find({ _id: userId })
+        let user = await db.users.find({ _id: userId });
         resolve(user);
       } catch (err) {
         console.log(err);
@@ -439,10 +435,10 @@ module.exports = {
     });
   },
   // get orders
-  getOrders :async(userId) => {
-    return new Promise(async(resolve, reject) => {
+  getOrders: async (userId) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        let orders = await db.orders.find({ userid: userId })
+        let orders = await db.orders.find({ userid: userId });
         resolve(orders);
       } catch (err) {
         console.log(err);
@@ -450,59 +446,61 @@ module.exports = {
     });
   },
   // get single order
-  getOneOrders :async(orderId) => {
-    return new Promise(async(resolve, reject) => {
+  getOneOrders: async (orderId) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        let orders = await db.orders.find({ _id: orderId })
+        let orders = await db.orders.find({ _id: orderId });
         resolve(orders);
       } catch (err) {
         console.log(err);
       }
     });
   },
-  
+
   // post orders
-  postUserOders: async(userId,products,total,paymentMode,address)=>{
-    return new Promise(async(resolve,reject)=>{
-      try{
+  postUserOders: async (userId, products, total, paymentMode, address) => {
+    return new Promise(async (resolve, reject) => {
+      try {
         let orders = {
           userid: userId,
           address: address,
           products: products,
-          date :new Date().toDateString(),
-          coupon:'no coupon applied',
-          total : total,
-          paymentmode:paymentMode,
-          paymentstatus:'pending',
-          orderstatus:'placed',
+          date: new Date().toDateString(),
+          coupon: "no coupon applied",
+          total: total,
+          paymentmode: paymentMode,
+          paymentstatus: "pending",
+          orderstatus: "placed",
         };
-          db.orders.create(orders);
-          resolve(orders);
-      }catch(err){
-        console.log(err)
+        db.orders.create(orders);
+        resolve(orders);
+      } catch (err) {
+        console.log(err);
       }
-    })
+    });
   },
 
   //update profile
-  updateProfile:(userId,data)=>{
-    return new Promise(async(resolve, reject) => {
+  updateProfile: (userId, data) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        console.log(data,"--------------------------------")
-        console.log(userId)
-          await db.users.updateOne(
-          { _id: userId },
-          {
-            $set: {
-              name: data.name,
-              email: data.email,
-              phone: data.phone,
+        console.log(data, "--------------------------------");
+        console.log(userId);
+        await db.users
+          .updateOne(
+            { _id: userId },
+            {
+              $set: {
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+              },
             }
-          }
-        ).then(() => {
-            console.log('successfully updated.');
-            resolve()
-          })
+          )
+          .then(() => {
+            console.log("successfully updated.");
+            resolve();
+          });
       } catch (err) {
         console.log(err);
       }
@@ -510,28 +508,28 @@ module.exports = {
   },
 
   //update password
-  updatePassword:(userId,data)=>{
-    return new Promise(async(resolve, reject) => {
+  updatePassword: (userId, data) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        console.log(userId)
+        console.log(userId);
         data.password = await bcrypt.hash(data.password, 10);
-        console.log(data.password,"--------------------------------")
-          await db.users.updateOne(
-          { _id: userId },
-          {
-            $set: {
-              password: data.password,
+        console.log(data.password, "--------------------------------");
+        await db.users
+          .updateOne(
+            { _id: userId },
+            {
+              $set: {
+                password: data.password,
+              },
             }
-          }
-        ).then(() => {
-            console.log('successfully updated.');
-            resolve()
-          })
+          )
+          .then(() => {
+            console.log("successfully updated.");
+            resolve();
+          });
       } catch (err) {
         console.log(err);
       }
     });
   },
-
-  
 };

@@ -1,5 +1,32 @@
 <%-include('../partials/user_header')%>
-
+<!-- alert modal -->
+<style>
+  .alert-modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.63);
+  }
+  
+  .alert-modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 20px solid #c4c4c4d2;
+      border-radius:80px;
+      width: 40%;
+  }
+  
+  .alert-modal-buttons {
+      text-align: center;
+      margin-top: 20px;
+  }
+</style>
 <style>
     /* CSS for the modal */
     .modal {
@@ -200,6 +227,7 @@
                                                         <p><strong>Email:</strong> <%= element.email %></p>
                                                         </div>
                                                         <div class="row">
+                                                          <button onclick="openAlertModal()">Open Modal</button>
                                                             <form action="/delete_address/<%= element._id %>" method="post" class="col-md-6">
                                                                 <button style="width: 370px;" class="btn btn-fill-out mt-1 mb-3 m-3 " type="submit" ><h6 style="color: red;"> REMOVE ADDRESS</h6></button>
                                                             </form>
@@ -310,6 +338,43 @@
         <hr>
       </div>
     
+<!-- Alert Modal -->
+<div id="alertModal" class="alert-modal">
+  <!-- Modal content -->
+  <div class="alert-modal-content">
+      <h3 class="text-center" style="color: red;">Warning!</h3>
+      <h4 class="text-center" style="color: #7c7c7c;">Are you sure you want to proceed?</h4>
+
+      <!-- Buttons -->
+      <div class="alert-modal-buttons">
+          <button onclick="submitAlert()">Submit</button>
+          <button onclick="closeAlertModal()">Cancel</button>
+      </div>
+  </div>
+</div>
+
+<script>
+  // Get the modal element
+  const alertModal = document.getElementById('alertModal');
+
+  // Function to open the modal
+  function openAlertModal() {
+      alertModal.style.display = 'block';
+  }
+
+  // Function to close the modal
+  function closeAlertModal() {
+      alertModal.style.display = 'none';
+  }
+
+  // Function to handle form submission
+  function submitAlert() {
+      // Add your code to handle form submission here
+      console.log('Form submitted!');
+      closeAlertModal();
+  }
+</script>
+
 
   <script>
     var modal = document.getElementById("addressModal");

@@ -4,7 +4,6 @@ const adminHelper = require("../helpers/adminHelpers");
 const db = require("../model/connection");
 const { ObjectId } = require("mongodb");
 
-
 const adminCred = {
   username: "admin@gmail.com",
   password: "Admin@123",
@@ -111,45 +110,45 @@ module.exports = {
     try {
       const page = parseInt(req.query.page) || 1; // Get the current page from the query parameter, default to 1 if not provided
       const pageSize = 5; // Number of orders to show per page
-  
+
       // Fetch all orders
       let orders = await adminHelper.orders();
-  
+
       // Reverse the order of the orders array
       orders.reverse();
-  
+
       const totalOrders = orders.length;
       const totalPages = Math.ceil(totalOrders / pageSize);
-  
+
       // Calculate the start and end index of orders for the current page
       const startIndex = (page - 1) * pageSize;
       const endIndex = startIndex + pageSize;
-  
+
       // Get the orders for the current page
       const currentPageOrders = orders.slice(startIndex, endIndex);
-  
+
       res.render("admin/manage_orders", {
         orders: currentPageOrders,
         currentPage: page,
-        totalPages: totalPages
+        totalPages: totalPages,
       });
     } catch (err) {
       console.log(err);
     }
   },
-  
+
   // view orders
-  viewOrders : async (req, res) => {
+  viewOrders: async (req, res) => {
     try {
-       let orderId = req.params.id
-       console.log(orderId)
-       let orders = await adminHelper.viewOrders(orderId); 
-       let addressId = orders[0].address
-       let addresss = await adminHelper.getOrderAddress(addressId)
-       let address=addresss[0]
-       console.log(address)
-       console.log(orders)
-       res.render("admin/order_status",{orders,address})
+      let orderId = req.params.id;
+      console.log(orderId);
+      let orders = await adminHelper.viewOrders(orderId);
+      let addressId = orders[0].address;
+      let addresss = await adminHelper.getOrderAddress(addressId);
+      let address = addresss[0];
+      console.log(address);
+      console.log(orders);
+      res.render("admin/order_status", { orders, address });
     } catch (err) {
       console.log(err);
     }
@@ -158,26 +157,26 @@ module.exports = {
   manageProducts: async (req, res) => {
     try {
       const currentPage = parseInt(req.query.page) || 1; // Current page number, default to 1
-      const perPage =5; // Number of items to display per page
+      const perPage = 5; // Number of items to display per page
       const startIndex = (currentPage - 1) * perPage; // Start index of the current page
       const endIndex = startIndex + perPage; // End index of the current page
-  
+
       const viewProduct = await adminHelper.viewAddProduct();
       const totalItems = viewProduct.length;
       const totalPages = Math.ceil(totalItems / perPage);
-  
+
       const paginatedProducts = viewProduct.slice(startIndex, endIndex);
-  
+
       res.render("admin/manage_products", {
         viewProduct: paginatedProducts,
         currentPage,
-        totalPages
+        totalPages,
       });
     } catch (err) {
       console.log(err);
     }
   },
-  
+
   // DELETE PROUCT
   deleteProduct: (req, res) => {
     try {
@@ -190,8 +189,8 @@ module.exports = {
     }
   },
 
-   // SOFT DELETE
-   softDelete: (req, res) => {
+  // SOFT DELETE
+  softDelete: (req, res) => {
     try {
       adminHelper.productInactive(req.params.id).then((response) => {
         console.log(req.params.id);
@@ -202,7 +201,7 @@ module.exports = {
     }
   },
   // SOFT UNDELETE
-  softUnDelete : (req, res) => {
+  softUnDelete: (req, res) => {
     try {
       adminHelper.productActive(req.params.id).then((response) => {
         res.redirect("/admin/manage_products");
@@ -229,7 +228,6 @@ module.exports = {
     }
   },
 
-
   // CATEGORIES  PAGE
   getCategories: (req, res) => {
     try {
@@ -245,7 +243,7 @@ module.exports = {
   // ADD CATEGORIES
   addCategories: (req, res) => {
     try {
-      let data=req.body
+      let data = req.body;
       adminHelper.addCategories(data).then((response) => {
         res.redirect("/admin/add_categories");
       });
@@ -267,13 +265,13 @@ module.exports = {
   // UPDATE CATEGORY
   updateCategory: (req, res) => {
     try {
-      const id= req.params.id;
-      adminHelper.updateCategories(id,req.body ).then((response) => {
-        console.log(response)
+      const id = req.params.id;
+      adminHelper.updateCategories(id, req.body).then((response) => {
+        console.log(response);
         res.redirect("/admin/add_categories");
       });
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   },
 
@@ -295,23 +293,23 @@ module.exports = {
       const perPage = 7; // Number of users to display per page
       const startIndex = (currentPage - 1) * perPage; // Start index of the current page
       const endIndex = startIndex + perPage; // End index of the current page
-  
+
       const allUsers = await adminHelpers.viewSignedUsers();
       const totalItems = allUsers.length;
       const totalPages = Math.ceil(totalItems / perPage);
-  
+
       const paginatedUsers = allUsers.slice(startIndex, endIndex);
-  
+
       res.render("admin/manage_users", {
         viewUsers: paginatedUsers,
         currentPage,
-        totalPages
+        totalPages,
       });
     } catch (err) {
       console.log(err);
     }
   },
-  
+
   // DELETE USER
   deleteUser: (req, res) => {
     try {
@@ -346,11 +344,11 @@ module.exports = {
       console.log(err);
     }
   },
-  removeOrder:async(req, res) => {
-    try {    
-      await adminHelper.removeOrder(req.params.id).then(()=>{
-        res.redirect("/admin/manage_orders")
-      })
+  removeOrder: async (req, res) => {
+    try {
+      await adminHelper.removeOrder(req.params.id).then(() => {
+        res.redirect("/admin/manage_orders");
+      });
     } catch (err) {
       console.log(err);
     }
@@ -360,7 +358,7 @@ module.exports = {
     try {
       const orderId = req.params.id;
       await adminHelper.orderPacked(orderId);
-      res.redirect("/admin/vieworders/"+orderId)
+      res.redirect("/admin/vieworders/" + orderId);
     } catch (err) {
       console.log(err);
     }
@@ -370,7 +368,7 @@ module.exports = {
     try {
       const orderId = req.params.id;
       await adminHelper.orderShipped(orderId);
-      res.redirect("/admin/vieworders/"+orderId)
+      res.redirect("/admin/vieworders/" + orderId);
     } catch (err) {
       console.log(err);
     }
@@ -380,18 +378,18 @@ module.exports = {
     try {
       const orderId = req.params.id;
       await adminHelper.orderDelivered(orderId);
-      res.redirect("/admin/vieworders/"+orderId)
+      res.redirect("/admin/vieworders/" + orderId);
     } catch (err) {
       console.log(err);
     }
   },
   //report
-  report:async(req,res)=>{
-    try{
-      let orders = await adminHelper.orders();    
-      res.render("admin/report",{orders})
-    }catch(err){
-      console.log(err)
+  report: async (req, res) => {
+    try {
+      let orders = await adminHelper.orders();
+      res.render("admin/report", { orders });
+    } catch (err) {
+      console.log(err);
     }
-  }
+  },
 };

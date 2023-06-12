@@ -19,33 +19,33 @@ module.exports = {
     });
   },
   // ORDERS
-  orders:()=>{
-    return new Promise(async(resolve, reject) => {
-       await db.orders.find().then((response)=>{
-        resolve(response)
-       })
+  orders: () => {
+    return new Promise(async (resolve, reject) => {
+      await db.orders.find().then((response) => {
+        resolve(response);
+      });
     });
   },
   // ORDERS WITH ID
 
-  viewOrders:(id)=>{
+  viewOrders: (id) => {
     let ordId = new ObjectId(id);
-    return new Promise(async(resolve, reject) => {
-      await db.orders.find({_id:ordId}).then((response)=>{
-       resolve(response)
-      })
-   });
+    return new Promise(async (resolve, reject) => {
+      await db.orders.find({ _id: ordId }).then((response) => {
+        resolve(response);
+      });
+    });
   },
 
- // ORDERED ADDRESS
- getOrderAddress: (id)=>{
-  let addressId = new ObjectId(id);
-  return new Promise(async(resolve, reject) => {
-    await db.addresses.find({_id:addressId}).then((response)=>{
-    resolve(response)
-    })
- });
-},
+  // ORDERED ADDRESS
+  getOrderAddress: (id) => {
+    let addressId = new ObjectId(id);
+    return new Promise(async (resolve, reject) => {
+      await db.addresses.find({ _id: addressId }).then((response) => {
+        resolve(response);
+      });
+    });
+  },
   // UPDATE PRODUCT
   updateProducts: (id, productData, filenames) => {
     return new Promise((resolve, reject) => {
@@ -57,16 +57,14 @@ module.exports = {
           price: productData.Price,
           block: false,
         };
-  
+
         if (filenames.length > 0) {
           updateData.image = filenames;
         }
-  
-        db.products
-          .updateOne({ _id: id }, { $set: updateData })
-          .then(() => {
-            resolve();
-          });
+
+        db.products.updateOne({ _id: id }, { $set: updateData }).then(() => {
+          resolve();
+        });
       } catch (error) {
         console.log(error);
       }
@@ -84,34 +82,41 @@ module.exports = {
   addCategories: (categoryData) => {
     return new Promise(async (resolve, reject) => {
       // Check if categoryName already exists in the database
-      const existingCategory = await db.categories.findOne({ categoryName: categoryData.Name });
-  
+      const existingCategory = await db.categories.findOne({
+        categoryName: categoryData.Name,
+      });
+
       if (existingCategory) {
-        resolve({ added: false, message: 'Category already exists' });
+        resolve({ added: false, message: "Category already exists" });
       } else {
         const uploadCategory = new db.categories({
           categoryName: categoryData.Name,
           description: categoryData.Description,
         });
-        
-        uploadCategory.save().then((data) => {
-          resolve({ added: true });
-        }).catch((error) => {
-          reject(error);
-        });
+
+        uploadCategory
+          .save()
+          .then((data) => {
+            resolve({ added: true });
+          })
+          .catch((error) => {
+            reject(error);
+          });
       }
     });
   },
-  
+
   //UPDATE CATERGORY
   updateCategories: (id, categoryData) => {
     return new Promise(async (resolve, reject) => {
       try {
         // Check if categoryName already exists in the database
-        const existingCategory = await db.categories.findOne({ categoryName: categoryData.Name });
-  
+        const existingCategory = await db.categories.findOne({
+          categoryName: categoryData.Name,
+        });
+
         if (existingCategory && existingCategory._id.toString() !== id) {
-          resolve({ updated: false, message: 'Category name already exists' });
+          resolve({ updated: false, message: "Category name already exists" });
         } else {
           await db.categories.updateOne(
             { _id: id },
@@ -129,7 +134,7 @@ module.exports = {
       }
     });
   },
-  
+
   // GET CATEGORY
 
   viewAddCategory: () => {
@@ -165,7 +170,7 @@ module.exports = {
     });
   },
   // SOFT DELETE
-  productInactive :(id)=>{
+  productInactive: (id) => {
     return new Promise(async (resolve, reject) => {
       await db.products
         .updateOne({ _id: id }, { $set: { block: true } })
@@ -175,7 +180,7 @@ module.exports = {
     });
   },
   // SOFT UNDELETE
-  productActive :(id)=>{
+  productActive: (id) => {
     return new Promise(async (resolve, reject) => {
       await db.products
         .updateOne({ _id: id }, { $set: { block: false } })
@@ -243,41 +248,48 @@ module.exports = {
   // REMOVE ORDER
   removeOrder: (id) => {
     return new Promise(async (resolve, reject) => {
-      let ordId= new ObjectId(id)
-      await db.orders
-        .deleteOne({ _id: ordId})
-        .then((response) => {
-          resolve(response);
-        });
+      let ordId = new ObjectId(id);
+      await db.orders.deleteOne({ _id: ordId }).then((response) => {
+        resolve(response);
+      });
     });
   },
   //order packed
   orderPacked: async (orderId) => {
     try {
-      await db.orders.updateOne({ _id: orderId }, { $set: { orderstatus: 'packed' } });
-      console.log('Order packed successfully.');
+      await db.orders.updateOne(
+        { _id: orderId },
+        { $set: { orderstatus: "packed" } }
+      );
+      console.log("Order packed successfully.");
     } catch (err) {
       console.log(err);
       throw err;
     }
   },
-    //order shipped
-    orderShipped: async (orderId) => {
-      try {
-        await db.orders.updateOne({ _id: orderId }, { $set: { orderstatus: 'shipped' } });
-        console.log('Order packed successfully.');
-      } catch (err) {
-        console.log(err);
-        throw err;
-      }
-    },  //order delivered
-    orderDelivered: async (orderId) => {
-      try {
-        await db.orders.updateOne({ _id: orderId }, { $set: { orderstatus: 'delivered' } });
-        console.log('Order packed successfully.');
-      } catch (err) {
-        console.log(err);
-        throw err;
-      }
-    },
+  //order shipped
+  orderShipped: async (orderId) => {
+    try {
+      await db.orders.updateOne(
+        { _id: orderId },
+        { $set: { orderstatus: "shipped" } }
+      );
+      console.log("Order packed successfully.");
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }, //order delivered
+  orderDelivered: async (orderId) => {
+    try {
+      await db.orders.updateOne(
+        { _id: orderId },
+        { $set: { orderstatus: "delivered" } }
+      );
+      console.log("Order packed successfully.");
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  },
 };

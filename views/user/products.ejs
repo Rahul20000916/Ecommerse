@@ -9,35 +9,7 @@
     background-color: white;
   }
 </style>
-<style>
-  .toast-message {
-  display: inline-block;
-  padding: 10px;
-  border: 1px solid lightgreen;
-  background-color: lightgreen;
-  border-radius: 3px;
-  animation: fadeOut 2s ease-in-out forwards;
-}
 
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    display: none;
-  }
-}
-
-.message-text {
-  font-size: 14px;
-  color: white;
-}
-
-</style>
 <!-- view products -->
 <style>
   /* .product-item-inner {
@@ -110,11 +82,7 @@
     }
   }
 </style>
-<% if (typeof successMessage !== 'undefined') { %>
-  <div class="toast-message col-md-12 text-center">
-    <span class="message-text col-md-12 text-center"><%= successMessage %></span>
-  </div>  
-<% } %>
+
 <main class="wrapper">
   <section class="products pm">
     <div class="container">
