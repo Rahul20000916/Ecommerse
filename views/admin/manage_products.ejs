@@ -233,6 +233,8 @@
 
 <script>
   const alertModal = document.getElementById('deleteAlertModal');
+  var messageModal = document.getElementById('messageAlertModal');// message modal
+  var activeAlertMessage = document.getElementById('activeAlertMessage'); // message content
   let addressId;
   function deleteAlertModal(id) {
     addressId = id;
@@ -247,7 +249,17 @@
     url: '/admin/delete_product/'+addressId,
     type: 'GET',
     success: function(response) {
-      location.reload();
+      var message = response.message
+      if (message) {
+      activeAlertMessage.textContent = message;
+      messageModal.style.display = 'block';
+
+      // Remove the modal after 2 seconds
+      setTimeout(function() {
+        messageCloseAlert();
+        location.reload();
+      }, 2100);
+    }
     },
   });
   }
@@ -274,7 +286,7 @@
     url: '/admin/soft_undelete/'+activeAddressId,
     type: 'GET',
     success: function(response) {
-      const message = response.message
+      var message = response.message
       if (message) {
       activeAlertMessage.textContent = message;
       messageModal.style.display = 'block';
@@ -292,6 +304,8 @@
 <!-- inative alert modal -->
 <script>
   const inactiveAlertModal = document.getElementById('inactiveAlertModal');
+  var messageModal = document.getElementById('messageAlertModal');// message modal
+  var activeAlertMessage = document.getElementById('activeAlertMessage'); // message content
   let inactiveAddressId;
   function inactiveAlert(id) {
     inactiveAddressId = id;
@@ -306,7 +320,17 @@
     url: '/admin/soft_delete/'+inactiveAddressId,
     type: 'GET',
     success: function(response) {
-      location.reload();
+      var message = response.message
+      if (message) {
+      activeAlertMessage.textContent = message;
+      messageModal.style.display = 'block';
+
+      // Remove the modal after 2 seconds
+      setTimeout(function() {
+        messageCloseAlert();
+        location.reload();
+      }, 2100);
+    }
     },
   });
   }
