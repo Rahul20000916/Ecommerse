@@ -182,7 +182,7 @@ module.exports = {
     try {
       adminHelper.deleteProduct(req.params.id).then((response) => {
         console.log(req.params.id);
-        res.redirect("/admin/manage_products");
+        res.json({ message: 'product deleted successfully' });
       });
     } catch (err) {
       console.log(err);
@@ -194,7 +194,7 @@ module.exports = {
     try {
       adminHelper.productInactive(req.params.id).then((response) => {
         console.log(req.params.id);
-        res.redirect("/admin/manage_products");
+        res.json({ message: 'product Inactivated successfully' });
       });
     } catch (err) {
       console.log(err);
@@ -204,7 +204,7 @@ module.exports = {
   softUnDelete: (req, res) => {
     try {
       adminHelper.productActive(req.params.id).then((response) => {
-        res.redirect("/admin/manage_products");
+        res.json({ message: 'product Activated successfully' });
       });
     } catch (err) {
       console.log(err);

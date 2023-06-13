@@ -1,4 +1,33 @@
 <%-include('../partials/admin_header')%>
+<!-- alert modal -->
+<style>
+  .alert-modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.63);
+  }
+  
+  .alert-modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 20px solid #c4c4c4d2;
+      border-radius:80px;
+      width: 40%;
+  }
+  
+  .alert-modal-buttons {
+      text-align: center;
+      margin-top: 20px;
+  }
+</style>
+
 <style>
 .pagination {
   list-style: none;
@@ -81,11 +110,11 @@
                   </td>
                   <td class="text-center">
                     <a href="/admin/edit_product/<%= viewProducts._id %>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-success"><p style="color: green;">Edit</p></a>   
-                    <a href="/admin/delete_product/<%= viewProducts._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger" onclick="return deleteConfirmation(event)"><p style="color: red;">Delete</p></a>
+                    <button style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger" onclick="deleteAlertModal('<%= viewProducts._id %>')"><p style="color: red;">Delete</p></button>
                     <% if (viewProducts.block == true) { %>
-                      <a href="/admin/soft_undelete/<%= viewProducts._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger" onclick="return activeAlert(event)"><p style="color: lawngreen;">Active</p></a>
+                      <button style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger" onclick="activeAlert('<%= viewProducts._id %>')"><p style="color: lawngreen;">Active</p></button>
                     <% }else { %>
-                      <a href="/admin/soft_delete/<%= viewProducts._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger" onclick="return inactiveAlert(event)"><p style="color: orange;">Inactive</p></a>
+                      <button style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger" onclick="inactiveAlert('<%= viewProducts._id %>')"><p style="color: orange;">Inactive</p></button>
                     <% }  %>   
                   </td>
                 </tr>
@@ -119,75 +148,114 @@
     </ul>
   </div>
 </section>
+   
+<!--  Delete Alert Modal -->
+<div id="deleteAlertModal" class="alert-modal">
+  <!-- Modal content -->
+  <div class="alert-modal-content">
+      <h3 class="text-center" style="color: red;">Warning!</h3>
+      <h4 class="text-center" style="color: #7c7c7c;">Are you sure you want to proceed?</h4>
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+      <!-- Buttons -->
+      <div class="alert-modal-buttons">
+          <button class="btn" onclick="submitAlert()"><img src="/admin_assets/assets/imgs/buttons/check.png" alt="submit"></button>
+          <button class="btn" onclick="closeAlertModal()"><img src="/admin_assets/assets/imgs/buttons/delete.png" alt="cancel"></button>
+      </div>
+  </div>
+</div>
+
+<!--  Active Alert Modal -->
+<div id="activeAlertModal" class="alert-modal">
+  <!-- Modal content -->
+  <div class="alert-modal-content">
+      <h3 class="text-center" style="color: red;">Warning!</h3>
+      <h4 class="text-center" style="color: #7c7c7c;">Are you sure you want to proceed?</h4>
+
+      <!-- Buttons -->
+      <div class="alert-modal-buttons">
+          <button class="btn" onclick="activeSubmitAlert()"><img src="/admin_assets/assets/imgs/buttons/check.png" alt="submit"></button>
+          <button class="btn" onclick="activeCloseAlert()"><img src="/admin_assets/assets/imgs/buttons/delete.png" alt="cancel"></button>
+      </div>
+  </div>
+</div>
+<!--  Inactive Alert Modal -->
+<div id="inactiveAlertModal" class="alert-modal">
+  <!-- Modal content -->
+  <div class="alert-modal-content">
+      <h3 class="text-center" style="color: red;">Warning!</h3>
+      <h4 class="text-center" style="color: #7c7c7c;">Are you sure you want to proceed?</h4>
+
+      <!-- Buttons -->
+      <div class="alert-modal-buttons">
+          <button class="btn" onclick="inactiveSubmitAlert()"><img src="/admin_assets/assets/imgs/buttons/check.png" alt="submit"></button>
+          <button class="btn" onclick="inactiveCloseAlert()"><img src="/admin_assets/assets/imgs/buttons/delete.png" alt="cancel"></button>
+      </div>
+  </div>
+</div>
+
 <script>
-  function deleteConfirmation(event) {
-    event.preventDefault(); // Prevent the default link behavior
-    
-    // Display the SweetAlert confirmation dialog
-    swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this product!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    })
-    .then((willDelete) => {
-      if (willDelete) {
-        // If the user confirms the deletion, proceed with the link navigation
-        window.location.href = event.target.href;
-      }
-    });
+  const alertModal = document.getElementById('deleteAlertModal');
+  let addressId;
+  function deleteAlertModal(id) {
+    addressId = id;
+    alertModal.style.display = 'block';
   }
-  function activeAlert(event) {
-    event.preventDefault(); // Prevent the default link behavior
-
-    // Fetch the image URL
-    // Replace `imageUrl` with the actual URL of the image
-    const imageUrl = "https://example.com/path/to/product-image.jpg";
-
-    // Display the SweetAlert question dialog
-    swal({
-      title: "Are you sure?",
-      text: "Do you want to activate this product?",
-      icon: "warning",
-      buttons: ["No", "Yes"], // Use buttons array for the question dialog
-    })
-    .then((isConfirmed) => {
-      if (isConfirmed) {
-        // If the user confirms the activation, proceed with the link navigation
-        window.location.href = event.target.href;
-
-        // Set the image source dynamically
-        document.getElementById("productImage").src = imageUrl;
-      }
-    });
+  function closeAlertModal() {
+      alertModal.style.display = 'none';
   }
-  function inactiveAlert(event) {
-    event.preventDefault(); // Prevent the default link behavior
-
-    // Fetch the image URL
-    // Replace `imageUrl` with the actual URL of the image
-    const imageUrl = "https://example.com/path/to/product-image.jpg";
-
-    // Display the SweetAlert question dialog
-    swal({
-      title: "Are you sure?",
-      text: "Do you want to Inactivate this product?",
-      icon: "warning",
-      buttons: ["No", "Yes"], // Use buttons array for the question dialog
-    })
-    .then((isConfirmed) => {
-      if (isConfirmed) {
-        // If the user confirms the activation, proceed with the link navigation
-        window.location.href = event.target.href;
-
-        // Set the image source dynamically
-        document.getElementById("productImage").src = imageUrl;
-      }
-    });
+  function submitAlert() {
+      closeAlertModal();
+      $.ajax({
+    url: '/admin/delete_product/'+addressId,
+    type: 'GET',
+    success: function(response) {
+      location.reload();
+    },
+  });
   }
 </script>
-
+<!-- ative alert modal -->
+<script>
+  const activeAlertModal = document.getElementById('activeAlertModal');
+  let activeAddressId;
+  function activeAlert(id) {
+    activeAddressId = id;
+    activeAlertModal.style.display = 'block';
+  }
+  function activeCloseAlert() {
+    activeAlertModal.style.display = 'none';
+  }
+  function activeSubmitAlert() {
+    activeCloseAlert();
+      $.ajax({
+    url: '/admin/soft_undelete/'+activeAddressId,
+    type: 'GET',
+    success: function(response) {
+      location.reload();
+    },
+  });
+  }
+</script>
+<!-- inative alert modal -->
+<script>
+  const inactiveAlertModal = document.getElementById('inactiveAlertModal');
+  let inactiveAddressId;
+  function inactiveAlert(id) {
+    inactiveAddressId = id;
+    inactiveAlertModal.style.display = 'block';
+  }
+  function inactiveCloseAlert() {
+    inactiveAlertModal.style.display = 'none';
+  }
+  function inactiveSubmitAlert() {
+    inactiveCloseAlert();
+      $.ajax({
+    url: '/admin/soft_delete/'+inactiveAddressId,
+    type: 'GET',
+    success: function(response) {
+      location.reload();
+    },
+  });
+  }
+</script>
 <%-include('../partials/admin_footer')%>
