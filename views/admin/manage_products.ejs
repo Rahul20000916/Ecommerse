@@ -1,4 +1,36 @@
 <%-include('../partials/admin_header')%>
+<style>
+  /* Message Modal styles */
+  .message-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.274);
+  }
+
+  .message-modal-content {
+    background-color: #ffffff;
+    margin: 6% auto;
+    padding: 20px;
+    border: 10px solid #888888cb;
+    border-radius: 250px;
+    width: 30%;
+  }
+  @keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
+</style>
 <!-- alert modal -->
 <style>
   .alert-modal {
@@ -192,6 +224,12 @@
       </div>
   </div>
 </div>
+  <!-- Modal message -->
+  <div id="messageAlertModal" class="message-modal">
+    <div class="message-modal-content mb-0">
+      <h6 id="activeAlertMessage" class="text-center blink" style="color: rgb(253, 69, 69);text-transform: uppercase;"></h6>
+    </div>
+  </div>
 
 <script>
   const alertModal = document.getElementById('deleteAlertModal');
@@ -217,7 +255,12 @@
 <!-- ative alert modal -->
 <script>
   const activeAlertModal = document.getElementById('activeAlertModal');
+    var messageModal = document.getElementById('messageAlertModal');// message modal
+    var activeAlertMessage = document.getElementById('activeAlertMessage'); // message content
   let activeAddressId;
+  function messageCloseAlert() {
+      messageModal.style.display = 'none';
+    }
   function activeAlert(id) {
     activeAddressId = id;
     activeAlertModal.style.display = 'block';
@@ -231,7 +274,17 @@
     url: '/admin/soft_undelete/'+activeAddressId,
     type: 'GET',
     success: function(response) {
-      location.reload();
+      const message = response.message
+      if (message) {
+      activeAlertMessage.textContent = message;
+      messageModal.style.display = 'block';
+
+      // Remove the modal after 2 seconds
+      setTimeout(function() {
+        messageCloseAlert();
+        location.reload();
+      }, 2100);
+    }
     },
   });
   }
