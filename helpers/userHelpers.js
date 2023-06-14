@@ -493,6 +493,7 @@ module.exports = {
           paymentmode: paymentMode,
           paymentstatus: "pending",
           orderstatus: "placed",
+          returnstatus:null,
         };
         db.orders.create(orders);
         resolve(orders);

@@ -149,6 +149,9 @@ const ordersSchema = new mongoose.Schema({
   orderstatus: {
     type: String,
   },
+  returnstatus: {
+    type: String,
+  },
 });
 module.exports = {
   products: mongoose.model("products", productSchema),

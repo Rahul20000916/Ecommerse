@@ -169,7 +169,30 @@ router.get(
   middleware.adminSession,
   adminController.orderDelivered
   );
-
+ // return rejected
+  router.get(
+  "/remove_return_order/:id",
+  middleware.adminSession,
+  adminController.returnReject
+  );
+   // return approved
+   router.get(
+    "/return_approved/:id",
+    middleware.adminSession,
+    adminController.returnApproved
+    );
+  // return picked
+    router.get(
+      "/return_picked/:id",
+      middleware.adminSession,
+      adminController.returnPicked
+      );
+    // return refund
+    router.get(
+      "/return_refund/:id",
+      middleware.adminSession,
+      adminController.returnRefund
+      );
 // create report
 router.get(
   "/create_report",

@@ -21,11 +21,20 @@ module.exports = {
   // ORDERS
   orders: () => {
     return new Promise(async (resolve, reject) => {
-      await db.orders.find().then((response) => {
+      await db.orders.find({ orderstatus: { $ne: "return" } })
+      .then((response) => {
         resolve(response);
       });
     });
   },
+    // RETURN ORDERS
+    returnOrders: () => {
+      return new Promise(async (resolve, reject) => {
+        await db.orders.find({orderstatus: "return",}).then((response) => {
+          resolve(response);
+        });
+      });
+    },
   // ORDERS WITH ID
 
   viewOrders: (id) => {
@@ -296,6 +305,62 @@ module.exports = {
                 } }
       );
       console.log("Order packed successfully.");
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  },
+  // return rejected
+  returnReject:async (orderId) => {
+    try {
+      await db.orders.updateOne(
+        { _id: orderId },
+        { $set: { returnstatus: "rejected",
+                } }
+      );
+      console.log("Return rejected successfully.");
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  },
+  // return approved
+  returnApproved:async (orderId) => {
+    try {
+      await db.orders.updateOne(
+        { _id: orderId },
+        { $set: { returnstatus: "approved",
+                } }
+      );
+      console.log("Return approved successfully.");
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  },
+  // return picked
+  returnPicked:async (orderId) => {
+    try {
+      await db.orders.updateOne(
+        { _id: orderId },
+        { $set: { returnstatus: "picked",
+                } }
+      );
+      console.log("Return picked successfully.");
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  },
+  //return refunded
+  returnRefund:async (orderId) => {
+    try {
+      await db.orders.updateOne(
+        { _id: orderId },
+        { $set: { returnstatus: "refund",
+                } }
+      );
+      console.log("Return refunded successfully.");
     } catch (err) {
       console.log(err);
       throw err;

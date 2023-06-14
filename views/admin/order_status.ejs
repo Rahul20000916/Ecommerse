@@ -154,7 +154,36 @@
     <div class="card">
         <hr>
         <ul class="status-list">
-          <% if (orders[0].orderstatus == 'canceled') { %>
+        <% if (orders[0].orderstatus == 'return') { %>
+      <li>
+        <a href="/admin/remove_return_order/<%= orders[0]._id %>">
+          <button  class="btn btn-fill-out col-md-12"><h5 style="color: red;">MARK AS RETURN REJECTED</h5></button>
+        </a>
+      </li>
+      <hr>
+      <li>
+        <a href="/admin/return_approved/<%= orders[0]._id %>">
+        <button class="btn btn-fill-out col-md-12">
+          <h6 style="color: rgba(0, 128, 0, 0.493);">MARK AS RETURN APPROVED</h6>
+        </button>
+      </a>          
+      </li>
+      <hr>
+
+      <li>
+        <a href="/admin/return_picked/<%= orders[0]._id %>">
+        <button class="btn btn-fill-out col-md-12" ><h6 style="color: rgba(0, 128, 0, 0.774);">MARK AS ORDER PICKED</h6></button>
+      </a>          
+      </li>
+      <hr>
+
+      <li>
+        <a href="/admin/return_refund/<%= orders[0]._id %>">
+        <button class="btn btn-fill-out col-md-12" ><h6 style="color: green;">MARK AS REFUNDED</h6></button>
+      </a>
+      </li>
+      <hr>     
+          <% } else if (orders[0].orderstatus == 'canceled') { %>
             <li class="cancel">
               <a href="/admin/remove_order/<%= orders[0]._id %>">
               <button  class="btn btn-fill-out col-md-12"><h5 style="color: red;">REMOVE ORDER</h5></button>
@@ -247,7 +276,16 @@
                   </table>
                   <button id="addAddressButton" onclick="openModal()" class="btn btn-fill-out col-md-12 mb-1">VIEW ADDRESS</button>
                   <div>
-                    <button id="addAddressButton" class="btn btn-fill-out col-md-12 mb-1"><h6 style="color: rgba(255, 68, 0, 0.589);">ORDER STATUS </h6><h5 style="color: red;"><%= orders[0].orderstatus %></h5></button>
+                    <% if (orders[0].orderstatus == 'return') { %>
+                      <% if (orders[0].returnstatus) { %>
+                        <button id="addAddressButton" class="btn btn-fill-out col-md-12 mb-1"><h6 style="color: rgba(255, 68, 0, 0.589);">ORDER STATUS </h6><h5 style="color: red;"><%= orders[0].returnstatus %></h5></button>
+                        <% } else { %>
+                        <button id="addAddressButton" class="btn btn-fill-out col-md-12 mb-1"><h6 style="color: rgba(255, 68, 0, 0.589);">ORDER STATUS </h6><h5 style="color: red;"><%= orders[0].orderstatus %></h5></button>
+                        <% } %>
+                    <% } else {  %>
+                      <button id="addAddressButton" class="btn btn-fill-out col-md-12 mb-1"><h6 style="color: rgba(255, 68, 0, 0.589);">ORDER STATUS </h6><h5 style="color: red;"><%= orders[0].orderstatus %></h5></button>
+                    <% } %>
+                    
                   </div>
                 </div>
               </div>

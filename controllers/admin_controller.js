@@ -144,7 +144,7 @@ module.exports = {
         const pageSize = 5; // Number of orders to show per page
   
         // Fetch all orders
-        let orders = await adminHelper.orders();
+        let orders = await adminHelper.returnOrders();
   
         // Reverse the order of the orders array
         orders.reverse();
@@ -410,6 +410,46 @@ module.exports = {
     try {
       const orderId = req.params.id;
       await adminHelper.orderDelivered(orderId);
+      res.redirect("/admin/vieworders/" + orderId);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  // return reject
+  returnReject:async (req, res) => {
+    try {
+      const orderId = req.params.id;
+      await adminHelper.returnReject(orderId);
+      res.redirect("/admin/vieworders/" + orderId);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  // return approved
+  returnApproved:async (req, res) => {
+    try {
+      const orderId = req.params.id;
+      await adminHelper.returnApproved(orderId);
+      res.redirect("/admin/vieworders/" + orderId);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  // return picked
+  returnPicked:async (req, res) => {
+    try {
+      const orderId = req.params.id;
+      await adminHelper.returnPicked(orderId);
+      res.redirect("/admin/vieworders/" + orderId);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  // return refund
+  returnRefund:async (req, res) => {
+    try {
+      const orderId = req.params.id;
+      await adminHelper.returnRefund(orderId);
       res.redirect("/admin/vieworders/" + orderId);
     } catch (err) {
       console.log(err);
