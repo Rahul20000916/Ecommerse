@@ -62,11 +62,16 @@ module.exports = {
     try {
       let user = req.session.loggedIn;
       let cartCount = null;
+      let code = req.body.Referal;
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }
-      userHelpers.doSignup(req.body).then((response) => {
+      userHelpers.doSignup(req.body).then(async(response) => {
         console.log(response);
+        let referal = response.referal;
+        let point =await userHelpers.walletPoint(referal)
+        let referalPoint = point+5;
+        await userHelpers.addPoint(referal,referalPoint)
         res.render("user/login", { user, cartCount });
       });
     } catch (err) {

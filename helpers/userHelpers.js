@@ -33,7 +33,24 @@ module.exports = {
       });
     });
   },
-
+  // walet point
+  walletPoint:(referalCode)=>{
+    return new Promise(async(resolve,reject)=>{
+      await db.findOne(              
+        { referal: referalCode }
+        ).then((response)=>{
+          resolve(response.walletpoint);
+        })
+    })
+  }, 
+  // add referal points
+  addPoint:(referalCode,point)=>{
+    return new Promise(async(resolve,reject)=>{
+      await db.updateOne(              
+        { referal: referalCode },
+        { $push: { walletpoint: point } });
+    })
+  }, 
   doLogin: (userData) => {
     return new Promise(async (resolve, reject) => {
       let loginStatus = false;
