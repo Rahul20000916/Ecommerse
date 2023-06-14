@@ -208,7 +208,11 @@
 <% } else if(orders[0].orderstatus == 'delivered') { %>
   <button style="pointer-events: none;" class="btn btn-fill-out col-md-12 mb-4 mt-40"> <h4 style="color: rgb(61, 61, 61);">Your order is delivered.</h4></button>
   <% } else if(orders[0].orderstatus == 'return') { %>
-  <button style="pointer-events: none;" class="btn btn-fill-out col-md-12 mb-4 mt-40"> <h4 style="color: rgb(61, 61, 61);">Your order is returning.</h4></button>
+    <% if (orders[0].returnstatus == 'rejected') { %>
+      <button style="pointer-events: none;" class="btn btn-fill-out col-md-12 mb-4 mt-40"> <h4 style="color: rgb(61, 61, 61);">Sorry, your order can not be returnable.</h4></button>
+    <% } else { %>
+      <button style="pointer-events: none;" class="btn btn-fill-out col-md-12 mb-4 mt-40"> <h4 style="color: rgb(61, 61, 61);">Your order is returning.</h4></button>
+    <% } %>
   <% } else { %>
   <button style="pointer-events: none;" class="btn btn-fill-out col-md-12 mb-4 mt-40"> <h4 style="color: rgb(61, 61, 61);">Your order will be delivered as soon as possible.</h4></button>
 <% } %>
