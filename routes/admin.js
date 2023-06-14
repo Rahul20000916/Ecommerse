@@ -37,6 +37,12 @@ router.get(
   middleware.adminSession,
   adminController.manageOrders
 )
+// manage returns
+router.get(
+  "/manage_returns",
+  middleware.adminSession,
+  adminController.manageReturns
+)
 // view orders
 router.get(
   "/vieworders/:id",

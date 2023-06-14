@@ -1,0 +1,198 @@
+<%-include('../partials/admin_header')%>
+<style>
+    .pagination {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .pagination li {
+      margin: 0;
+    }
+    
+    .pagination li a {
+      font-size: 12px; /* Adjust the font size as needed */
+      padding: 5px 10px;
+      color: white; /* Set default color to white */
+    }
+    
+    .pagination li.active a {
+      font-weight: bold;
+      background-color: #f0f0f0; /* Set selected background color to lighter gray */
+      color: #b9b6b6; /* Set selected text color to darker gray */
+    }
+    
+    .pagination li:not(.active) a:hover {
+      background-color: #CCCCCC; /* Set hover background color to lighter gray */
+      color: #a5a3a3; /* Set hover text color to darker gray */
+    }
+    
+    </style>
+    <!-- topbar -->
+<div class="container-fluid" style="background-color: rgb(255, 255, 255); height: 100px;">
+  <div class="row mt-1">
+      <h3 class="content-title card-title mt-3" style="color: #00000098; text-align: center;">MANAGE ORDERS</h3>
+      <p style="color: rgba(0, 0, 0, 0.493); text-align: center;">( SIMPLIFYING THE ORDERING PROCESS FOR FINE ART )</p>
+      <hr>
+  </div>
+</div>
+  <!-- /topbar -->
+<section>
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <!-- Pagination links -->
+          <table class="table table-hover mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Products Id</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Payment Mode</th>
+                    <th scope="col">Payment Status</th>
+                    <th scope="col">Orders Status</th>
+                    <th scope="col">total</th>
+                    <th scope="col" class="text-center" colspan="3">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+              <% orders?.forEach(function(item, index) { %>
+              <tr>
+                  <td>
+                      <%= index + 1 %>
+                  </td>
+                  <td>
+                      <% item.products.forEach(function(products, index) { %>
+                      <b><%= index + 1 %></b> <%= products._id %>
+                      <br>
+                      <% }) %>
+                  </td>
+                  <td>
+                    <%= item.date.toLocaleDateString() %>
+                  </td>
+                  <td>
+                      <%= item.paymentmode %>
+                  </td>
+                  <td>
+                      <%= item.paymentstatus %>
+                  </td>
+                  <td>
+                      <%= item.orderstatus %>
+                  </td>
+                  <td>
+                      <p style="color: rgb(238, 54, 54);">
+                          Rs: <%= item.total %>
+                      </p>
+                  </td>
+                  <td class="text-center">
+                      <a href="/admin/vieworders/<%= item._id %>" class="btn btn-xs btn-success" style="background-color: rgba(253, 253, 253, 0.712);">View More</a>
+                  </td>
+              </tr>
+              <% }) %>
+          </tbody>
+          
+        </table>
+
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="pagination-container mt-2 mb-2">
+    <ul class="pagination">
+      <% if (currentPage > 1) { %>
+        <li class="page-item">
+          <a class="page-link" href="?page=<%= currentPage - 1 %>">&laquo; Previous</a>
+        </li>
+      <% } %>
+    
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <li class="page-item <% if (currentPage === i) { %> active <% } %>">
+          <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+        </li>
+      <% } %>
+    
+      <% if (currentPage < totalPages) { %>
+        <li class="page-item">
+          <a class="page-link" href="?page=<%= currentPage + 1 %>">Next &raquo;</a>
+        </li>
+      <% } %>
+    </ul>
+  </div>
+  </div>
+</section>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  function deleteConfirmation(event) {
+    event.preventDefault(); // Prevent the default link behavior
+    
+    // Display the SweetAlert confirmation dialog
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this product!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        // If the user confirms the deletion, proceed with the link navigation
+        window.location.href = event.target.href;
+      }
+    });
+  }
+  function activeAlert(event) {
+    event.preventDefault(); // Prevent the default link behavior
+
+    // Fetch the image URL
+    // Replace `imageUrl` with the actual URL of the image
+    const imageUrl = "https://example.com/path/to/product-image.jpg";
+
+    // Display the SweetAlert question dialog
+    swal({
+      title: "Are you sure?",
+      text: "Do you want to activate this product?",
+      icon: "warning",
+      buttons: ["No", "Yes"], // Use buttons array for the question dialog
+    })
+    .then((isConfirmed) => {
+      if (isConfirmed) {
+        // If the user confirms the activation, proceed with the link navigation
+        window.location.href = event.target.href;
+
+        // Set the image source dynamically
+        document.getElementById("productImage").src = imageUrl;
+      }
+    });
+  }
+  function inactiveAlert(event) {
+    event.preventDefault(); // Prevent the default link behavior
+
+    // Fetch the image URL
+    // Replace `imageUrl` with the actual URL of the image
+    const imageUrl = "https://example.com/path/to/product-image.jpg";
+
+    // Display the SweetAlert question dialog
+    swal({
+      title: "Are you sure?",
+      text: "Do you want to Inactivate this product?",
+      icon: "warning",
+      buttons: ["No", "Yes"], // Use buttons array for the question dialog
+    })
+    .then((isConfirmed) => {
+      if (isConfirmed) {
+        // If the user confirms the activation, proceed with the link navigation
+        window.location.href = event.target.href;
+
+        // Set the image source dynamically
+        document.getElementById("productImage").src = imageUrl;
+      }
+    });
+  }
+</script>
+
+<%-include('../partials/admin_footer')%>
