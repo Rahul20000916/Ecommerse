@@ -151,6 +151,31 @@
   
 <div class="cardcontainer">
   <div class="card">
+    <% if (orders[0].orderstatus == 'return') { %>
+      <% if (orders[0].returnstatus == null) { %>
+        <div class="btn" style="pointer-events: none; background-color: #03f871a8;">Return</div>
+      <% } else { %>
+        <div class="btn" style="pointer-events: none;">Return</div>
+      <% } %>
+        <div class="col-12 d-grid justify-content-center mt-1 mb-1" style="background-color: #f2f2f2;"><img style="width: 30px;" src="/images/user/buttons/down-arrow.png" alt="down-arrow"></div>
+        <% if (orders[0].returnstatus == 'approved') { %>
+          <div class="btn" style="pointer-events: none; background-color: #03f871a8;">Return approved</div>
+        <% } else { %>
+          <div class="btn" style="pointer-events: none;">Return approved</div>
+        <% } %>
+        <div class="col-12 d-grid justify-content-center mt-1 mb-1" style="background-color: #f2f2f2;"><img style="width: 30px;" src="/images/user/buttons/down-arrow.png" alt="down-arrow"></div>
+        <% if (orders[0].returnstatus == 'packed') { %>
+          <div class="btn" style="pointer-events: none; background-color: #03f871a8;">Order picked</div>
+        <% } else { %>
+          <div class="btn" style="pointer-events: none;">Order picked</div>
+        <% } %>
+        <div class="col-12 d-grid justify-content-center mt-1 mb-1" style="background-color: #f2f2f2;"><img style="width: 30px;" src="/images/user/buttons/down-arrow.png" alt="down-arrow"></div>
+        <% if (orders[0].returnstatus == 'refund') { %>
+          <div class="btn" style="pointer-events: none; background-color: #03f871a8;">Refunded</div>
+        <% } else { %>
+          <div class="btn" style="pointer-events: none;">Refunded</div>
+        <% } %>
+    <% } else {  %>
     <% if (orders[0].orderstatus == 'placed') { %>
       <div class="btn" style="pointer-events: none; background-color: #03f871a8;">Ordered</div>
     <% } else { %>
@@ -175,13 +200,16 @@
       <% } else { %>
         <div class="btn" style="pointer-events: none;">Delivered</div>
       <% } %>
+      <% }%>
   </div>
 </div>
 <% if (orders[0].orderstatus == 'canceled') { %>
   <button style="pointer-events: none;" class="btn btn-fill-out col-md-12 mb-4 mt-40"> <h4 style="color: rgb(252, 59, 59);">Your order is canceled it will remove soon as possible</h4></button>
 <% } else if(orders[0].orderstatus == 'delivered') { %>
   <button style="pointer-events: none;" class="btn btn-fill-out col-md-12 mb-4 mt-40"> <h4 style="color: rgb(61, 61, 61);">Your order is delivered.</h4></button>
-<% } else { %>
+  <% } else if(orders[0].orderstatus == 'return') { %>
+  <button style="pointer-events: none;" class="btn btn-fill-out col-md-12 mb-4 mt-40"> <h4 style="color: rgb(61, 61, 61);">Your order is returning.</h4></button>
+  <% } else { %>
   <button style="pointer-events: none;" class="btn btn-fill-out col-md-12 mb-4 mt-40"> <h4 style="color: rgb(61, 61, 61);">Your order will be delivered as soon as possible.</h4></button>
 <% } %>
 
@@ -241,6 +269,14 @@
             <button class="btn btn-fill-out col-md-12 mb-4"> 
               <h4 style="color: red;">RETURN ORDERED</h4>
             </button></a> 
+        <% } else if (orders[0].orderstatus == 'return') { %>
+          <button class="btn btn-fill-out col-md-12 mb-4" disabled> 
+            <% if (orders[0].returnstatus) { %>
+              <h4 style="color: red;text-transform: uppercase;">RETURN STATUS : <%= orders[0].returnstatus %></h4>
+            <% } else { %>
+              <h4 style="color: red;text-transform: uppercase;">RETURN STATUS : return</h4>
+            <% } %>
+          </button>
         <% }else{ %>
           <a href="/cancel_order/<%= orders[0]._id %>" id="cancelOrderBtn">
             <button class="btn btn-fill-out col-md-12 mb-4"> 
