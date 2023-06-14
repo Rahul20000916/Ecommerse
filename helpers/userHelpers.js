@@ -16,11 +16,16 @@ module.exports = {
     console.log(userData);
     return new Promise(async (resolve, reject) => {
       userData.Password = await bcrypt.hash(userData.Password, 10);
+      let referal = await bcrypt.hash(userData.Name,10)
+      let referalCode = referal.slice(-4);
       uploadUserData = new db.users({
         name: userData.Name,
         email: userData.Email,
         phone: userData.Phone,
         password: userData.Password,
+        wallet:null,
+        walletpoint:null,
+        referal:referalCode,
         block: false,
       });
       uploadUserData.save().then((data) => {

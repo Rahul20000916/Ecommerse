@@ -64,6 +64,15 @@ const usersSchema = new mongoose.Schema({
   password: {
     type: String,
   },
+  wallet: {
+    type: String,
+  },
+  walletpoint: {
+    type: String,
+  },
+  referal: {
+    type: String,
+  },
   block: {
     type: Boolean,
   },
