@@ -81,6 +81,10 @@ router.post("/verify-payment",middleware.userSession,userController.verifyPaymen
 // cancel order
 router.get("/cancel_order/:id",middleware.userSession,userController.cancelOrder);
 
+// return order
+router.get("/return_order/:id",middleware.userSession,userController.returnOrder);
+
+
 // edit profile
 router.post("/edit_profile/:id",middleware.userSession,userController.editProfile);
 

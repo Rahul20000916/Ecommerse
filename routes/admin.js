@@ -158,7 +158,7 @@ router.get(
   adminController.orderShipped
   );
  // order delivered
- router.get(
+  router.get(
   "/order_delivered/:id",
   middleware.adminSession,
   adminController.orderDelivered

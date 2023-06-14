@@ -238,6 +238,24 @@ module.exports = {
     });
   },
 
+    // return order
+    returnOrder: (orderId) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          await db.orders
+            .updateOne({ _id: orderId }, { orderstatus: "return" ,
+            rdate: new Date().toDateString(),
+          })
+            .then(() => {
+              console.log("Order returned successfully.");
+              resolve(); // Resolve the promise to indicate successful completion
+            });
+        } catch (err) {
+          console.log(err);
+        }
+      });
+    },
+
   // generate razorpay
   generateRazorpay: (orderId, total) => {
     return new Promise(async (resolve, reject) => {
@@ -410,7 +428,7 @@ module.exports = {
       }
     });
   },
-
+ 
   // get order address
   getOrderAddress: async (addressId) => {
     return new Promise(async (resolve, reject) => {
@@ -466,6 +484,10 @@ module.exports = {
           address: address,
           products: products,
           date: new Date().toDateString(),
+          pdate:null,
+          sdate:null,
+          ddate:null,
+          rdate:null,
           coupon: "no coupon applied",
           total: total,
           paymentmode: paymentMode,

@@ -408,6 +408,8 @@ module.exports = {
   postOders: async (req, res) => {
     try {
       let address = req.body.selectedaddress;
+      // let add = new ObjectId(address)
+      // let addres = await userHelpers.getOrderAddress(add);
       let userId = req.session.user._id;
       let usrId = new ObjectId(userId);
       let paymentMode = req.body.payment_method;
@@ -467,6 +469,27 @@ module.exports = {
         .cancelOrder(orderId)
         .then(() => {
           res.render("user/cancel_success");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
+  // return order
+
+  returnOrder: (req, res) => {
+    try {
+      let ordId = req.params.id;
+      let orderId = new ObjectId(ordId);
+
+      // Ensure that the cancelOrder function returns a promise
+      return userHelpers
+        .returnOrder(orderId)
+        .then(() => {
+          res.render("user/return_success");
         })
         .catch((err) => {
           console.log(err);

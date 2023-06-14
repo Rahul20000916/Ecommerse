@@ -179,6 +179,8 @@
 </div>
 <% if (orders[0].orderstatus == 'canceled') { %>
   <button style="pointer-events: none;" class="btn btn-fill-out col-md-12 mb-4 mt-40"> <h4 style="color: rgb(252, 59, 59);">Your order is canceled it will remove soon as possible</h4></button>
+<% } else if(orders[0].orderstatus == 'delivered') { %>
+  <button style="pointer-events: none;" class="btn btn-fill-out col-md-12 mb-4 mt-40"> <h4 style="color: rgb(61, 61, 61);">Your order is delivered.</h4></button>
 <% } else { %>
   <button style="pointer-events: none;" class="btn btn-fill-out col-md-12 mb-4 mt-40"> <h4 style="color: rgb(61, 61, 61);">Your order will be delivered as soon as possible.</h4></button>
 <% } %>
@@ -234,10 +236,18 @@
           
         </div>
         <button id="addAddressButton" onclick="openModal()" class="btn btn-fill-out col-md-12 mb-1">VIEW DELIVERY ADDRESS</button>
-        <a href="/cancel_order/<%= orders[0]._id %>" id="cancelOrderBtn">
-        <button class="btn btn-fill-out col-md-12 mb-4"> 
-          <h4 style="color: red;">CANCEL ORDER</h4>
-        </button></a> 
+        <% if (orders[0].orderstatus == 'delivered') { %>
+          <a href="/return_order/<%= orders[0]._id %>" id="returnOrderBtn">
+            <button class="btn btn-fill-out col-md-12 mb-4"> 
+              <h4 style="color: red;">RETURN ORDERED</h4>
+            </button></a> 
+        <% }else{ %>
+          <a href="/cancel_order/<%= orders[0]._id %>" id="cancelOrderBtn">
+            <button class="btn btn-fill-out col-md-12 mb-4"> 
+              <h4 style="color: red;">CANCEL ORDER</h4>
+            </button></a> 
+        <% } %>
+        
         </section>
 
 <div id="addressModal" class="modal">

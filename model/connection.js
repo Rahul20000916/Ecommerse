@@ -122,6 +122,18 @@ const ordersSchema = new mongoose.Schema({
   date: {
     type: Date,
   },
+  pdate: {
+    type: Date,
+  },
+  sdate: {
+    type: Date,
+  },
+  ddate: {
+    type: Date,
+  },
+  rdate: {
+    type: Date,
+  },
   coupon: {
     type: String,
   },

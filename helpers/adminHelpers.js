@@ -259,7 +259,11 @@ module.exports = {
     try {
       await db.orders.updateOne(
         { _id: orderId },
-        { $set: { orderstatus: "packed" } }
+        { $set: { orderstatus: "packed",
+        pdate: new Date().toDateString(),
+        sdate: null, 
+        ddate: null, 
+        } }
       );
       console.log("Order packed successfully.");
     } catch (err) {
@@ -272,7 +276,10 @@ module.exports = {
     try {
       await db.orders.updateOne(
         { _id: orderId },
-        { $set: { orderstatus: "shipped" } }
+        { $set: { orderstatus: "shipped",
+        sdate: new Date().toDateString(),
+        ddate: null,
+        } }
       );
       console.log("Order packed successfully.");
     } catch (err) {
@@ -284,7 +291,9 @@ module.exports = {
     try {
       await db.orders.updateOne(
         { _id: orderId },
-        { $set: { orderstatus: "delivered" } }
+        { $set: { orderstatus: "delivered",
+                  ddate: new Date().toDateString(),
+                } }
       );
       console.log("Order packed successfully.");
     } catch (err) {
