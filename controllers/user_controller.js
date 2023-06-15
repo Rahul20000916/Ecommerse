@@ -4,27 +4,7 @@ const { ObjectId } = require("mongodb");
 
 module.exports = {
   
-  //test
-  test: async (req, res) => {
-    let code = 'rhsG';
-    if (code) {
-      let point = 10;
-      await userHelpers.walletPoint(code).then(async(response) => {
-        const parsedResponse = parseInt(response);
-        if (!isNaN(parsedResponse)) {
-          point = point + parsedResponse;
-          console.log(point, "=====================");
-          console.log(code,"------------------------")
-          await userHelpers.addPoint(code, point);
-        } else {
-          console.log("Invalid response format");
-        }
-      });
-    }
-    res.render("test");
-  },
-  
-  
+
 
   // home page
 
