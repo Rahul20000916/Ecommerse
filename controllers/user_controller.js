@@ -81,33 +81,6 @@ module.exports = {
 
   //do sign up
 
-  // doSignup: async (req, res) => {
-  //   try {
-  //     let user = req.session.loggedIn;
-  //     let cartCount = null;
-  //     let code = req.body.Referal;
-  //     console.log(code,"------------------------upline referal code----------------")
-  //     if(code){
-  //       let pint = await userHelpers.walletPoint(code);
-  //       let rpoint = pint+10;
-  //       await userHelpers.addPoint(code,rpoint);
-  //     }
-  //     if (user) {
-  //       cartCount = await userHelpers.getCartCount(user._id);
-  //     }
-  //     userHelpers.doSignup(req.body).then(async(response) => {
-  //       console.log(response);
-  //       let referal = response.referal;
-  //       console.log(referal,"--------------------------downline referal code----------------")
-  //       let point =await userHelpers.walletPoint(referal)
-  //       let referalPoint = point+5;
-  //       await userHelpers.addPoint(referal,referalPoint)
-  //       res.render("user/login", { user, cartCount });
-  //     });
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // },
   doSignup: async (req, res) => {
     try {
       let user = req.session.loggedIn;
