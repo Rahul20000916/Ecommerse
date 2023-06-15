@@ -449,6 +449,14 @@ module.exports = {
   returnRefund:async (req, res) => {
     try {
       const orderId = req.params.id;
+      let id = new ObjectId(orderId)
+      let order = await adminHelper.findRetunOrder(id);
+      let userId = order[0].userid;
+      let total = order[0].total;
+      console.log(userId,"--------------------userid")
+      console.log(total,"--------------------total")
+      await adminHelper.refundAmount(userId,total);;
+      console.log(order[0],"--------------order--------------")
       await adminHelper.returnRefund(orderId);
       res.redirect("/admin/vieworders/" + orderId);
     } catch (err) {
@@ -458,10 +466,52 @@ module.exports = {
   //report
   report: async (req, res) => {
     try {
-      let orders = await adminHelper.orders();
-      res.render("admin/report", { orders });
+          const sales = await adminHelper.getAllDeliveredOrders();
+    console.log("sales---------------------------------------", sales);
+
+    sales.forEach((order) => {
+      // Format the orderDate using built-in JavaScript methods or a date formatting library like Moment.js
+      const formattedDate = new Date(order.ddate).toLocaleDateString(
+        "en-US",
+        {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }
+      );
+
+      order.ddate = formattedDate;
+    });
+      res.render("admin/report", { sales });
     } catch (err) {
       console.log(err);
+    }
+  },
+  salesReport: async (req, res) => {
+    try {
+      console.log(req.body);
+      let { startDate, endDate } = req.body;
+
+      startDate = new Date(startDate);
+      endDate = new Date(endDate);
+
+      const salesReport = await adminHelper.getAllDeliveredOrdersByDate(
+        startDate,
+        endDate
+      );
+      for (let i = 0; i < salesReport.length; i++) {
+        salesReport[i].ddateate =
+          salesReport[i].ddate.toLocaleDateString(); // Format the orderDate using toLocaleDateString
+        salesReport[i].total = salesReport[i].total.toLocaleString(
+          "en-IN",
+          { style: "currency", currency: "INR" }
+        ); // Format totalAmount as currency (INR)
+      }
+      res
+        .status(200)
+        .json({ sales: salesReport, startDate: startDate, endDate: endDate });
+    } catch (error) {
+      console.log(error);
     }
   },
 };

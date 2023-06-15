@@ -44,6 +44,7 @@ router.get("/profile",middleware.userSession,userController.profile)
 
 //view product details
 router.get("/product_details/:id",middleware.userSession, userController.viewProductDetails);
+
 // cart
 router.get("/cart/:id",middleware.userSession,userController.cart);
 
@@ -85,7 +86,6 @@ router.get("/cancel_order/:id",middleware.userSession,userController.cancelOrder
 
 // return order
 router.get("/return_order/:id",middleware.userSession,userController.returnOrder);
-
 
 // edit profile
 router.post("/edit_profile/:id",middleware.userSession,userController.editProfile);

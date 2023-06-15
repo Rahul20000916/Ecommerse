@@ -65,7 +65,7 @@ const usersSchema = new mongoose.Schema({
     type: String,
   },
   wallet: {
-    type: String,
+    type: Number,
   },
   walletpoint: {
     type: String,

@@ -199,4 +199,9 @@ router.get(
   middleware.adminSession,
   adminController.report
 )
+// datebydate report
+router.post("/sales-report",
+middleware.adminSession,
+adminController.salesReport)
+
 module.exports = router;

@@ -366,4 +366,78 @@ module.exports = {
       throw err;
     }
   },
+  // find return order
+  findRetunOrder: (id) => {
+    return new Promise(async (resolve, reject) => {
+      await db.orders
+        .find({ _id: id })
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
+  // refund amount
+  refundAmount: async (orderId, amount) => {
+    try {
+      await db.users.updateOne(
+        { _id: orderId },
+        { $inc: { wallet: amount } }
+      );
+      console.log("Amount refunded successfully.");
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  },
+    // sales report
+    getAllDeliveredOrders: () => {
+      return new Promise(async (resolve, reject) => {
+        await db.orders.aggregate([
+          {
+            $match: { orderstatus: "delivered" },
+          },
+          {
+            $lookup: {
+              from: "users",
+              localField: "userid",
+              foreignField: "_id",
+              as: "userDetails",
+            },
+          },
+        ]).then((result) => {
+          resolve(result);
+        });
+      });
+    },
+    // SALES REPORT DATE BY DATE
+    getAllDeliveredOrdersByDate: (startDate, endDate) => {
+      return new Promise(async (resolve, reject) => {
+        // Convert startDate and endDate to appropriate format
+        const formattedStartDate = new Date(startDate);
+        formattedStartDate.setHours(0, 0, 0, 0); // Set time to the beginning of the day
+        const formattedEndDate = new Date(endDate);
+        formattedEndDate.setHours(23, 59, 59, 999); // Set time to the end of the day
+  
+        try {
+          const orders = await db.orders.find({
+            ddate: { $gte: formattedStartDate, $lte: formattedEndDate },
+            orderstatus: "delivered",
+          })
+          .populate({
+            path: "userid",
+            model: "users",
+            select: "name email phone", // Specify the fields to select from the user
+          })
+          .lean();
+  
+          console.log("Orders in range:", orders);
+          console.log("getAllDeliveredOrdersByDate completed successfully.");
+          resolve(orders);
+        } catch (error) {
+          console.error("Error in getAllDeliveredOrdersByDate:", error);
+          reject(error);
+        }
+      });
+    },
+  
 };

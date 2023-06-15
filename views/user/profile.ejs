@@ -1,4 +1,43 @@
 <%-include('../partials/user_header')%>
+
+<style>
+  /* Style the referal modal */
+  .message-modal {
+display: none;
+position: fixed;
+z-index: 1;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+overflow: auto;
+background-color: rgba(0, 0, 0, 0.363);
+}
+
+.message-modal-content {
+background-color: #fefefe;
+margin: 10% auto;
+padding: 20px;
+border: 10px solid #888;
+border-radius: 250px;
+width: 20%;
+height: 100px;
+}
+
+  /* Style the close button */
+  .alert-close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .alert-close:hover,
+  .alert-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+</style>
 <!-- alert modal -->
 <style>
   .alert-modal {
@@ -74,7 +113,7 @@
   </style>
 <style>
     .dashboard-menu {
-        border: 1px solid #ccc;
+        border: 1px solid #cccccc00;
         border-radius: 5px;
         padding: 10px;
     }
@@ -106,24 +145,43 @@
     }
 </style>
     <main class="main">
-
-        <section class="pt-30 pb-150">
+        <section class="pt-2 pb-150">
             <div class="container">
+                  <!-- topbar -->
+<div class="container-fluid" style="background-color: rgb(255, 255, 255); height: 100px;">
+  <div class="row mt-1 mb-2 ">
+      <h3 class="content-title card-title mt-3" style="color: #00000098; text-align: center;">DASHBOARD</h3>
+      <p style="color: rgba(0, 0, 0, 0.493); text-align: center;">( WELCOME TO YOUR PERSONAL DASHBOARD ! )</p>
+  </div>
+</div>
+  <!-- /topbar -->
                 <div class="row">
-                    <div class="col-lg-12 m-auto">
+                    <div class="col-lg-12 m-auto mt-2">
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="dashboard-menu">
-                                    <ul class="nav flex-column" role="tablist">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="false"><i class="fi-rs-settings-sliders mr-10"></i>Profile</a>
+                                    <ul class="nav flex-column" role="tablist" style="background-color: #ffffffa6;">
+                                        <li class="nav-item mb-3">
+                                            <a class="nav-link active btn" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="false"><i class="fi-rs-settings-sliders mr-10"></i>PROFILE</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
+                                        <li class="nav-item mb-3">
+                                            <a class="nav-link btn" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>MY ADDRESS</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                        <li class="nav-item mb-3">
+                                            <a class="nav-link btn" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>ORDERS</a>
                                         </li>
+                                        <li class="nav-item mb-3">
+                                          <a class="nav-link btn" id="track-orders-tab" data-bs-toggle="tab" href="#track-orders" role="tab" aria-controls="track-orders" aria-selected="false"><i class="fi-rs-shopping-cart-check mr-10"></i>WALLET</a>
+                                        </li>
+                                        <li class="nav-item mb-3">
+                                          <a class="nav-link btn" id="account-detail-tab" data-bs-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>REFFER</a>
+                                        </li>
+                                        <li class="nav-item mb-3">
+                                          <a class="nav-link btn" href="page-login-register.html"><i class="fi-rs-sign-out mr-10"></i>CONTACT US</a>
+                                      </li>
+                                      <li class="nav-item mb-3">
+                                        <a class="nav-link btn" href="/logout"><i class="fi-rs-sign-out mr-10"></i>LOGOUT</a>
+                                    </li>
                                     </ul>
                                 </div>
                             </div>
@@ -167,6 +225,66 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
+                                      <div class="card">
+                                          <div class="card-header">
+                                              <h5>REFFER AND EARN POINTS</h5>
+                                          </div>
+                                          <div class="card-body">
+                                            <div id="referral-code">
+                                              <p>YOUR REFFERAL CODE: <span id="code"><%= user.referal %></span></p>
+                                              <button style="width: 180px;" class="btn" onclick="messageAlertModal()"><h6>COPY</h6></button>
+                                            </div>
+                                            <div class="mt-4">
+                                              <h6>Hey there! We have an awesome Referral Program that lets you earn rewards. Here's how it works:</h6>
+                                              <hr>
+                                              <ol>
+                                                <li>
+                                                  <p>Get your unique referral code.</p>
+                                                </li>
+                                                <li>
+                                                  <p>Share it with your friends and family.</p>
+                                                </li>
+                                                <li>
+                                                  <p>For each person who signs up using your code, you'll get 10 WalletPoints, and they'll receive 5 WalletPoints as a welcome gift.</p>
+                                                </li>
+                                                <li>
+                                                  <p>Accumulate WalletPoints and convert them into real money.</p>
+                                                </li>
+                                                <li>
+                                                  <p>Use the money to shop for cool portraits in our shop.</p>
+                                                </li>
+                                              </ol>
+                                              <hr>
+                                              <h6>It's that easy! The more referrals you make, the more WalletPoints you earn, and the more portraits you can collect.</h6>
+                                              <br>
+                                              <h6>Start referring today and enjoy the benefits of our Referral Program. If you have any questions, our support team is here to assist you.</h6>
+                                            </div>
+                                            
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <!-- modal -->
+                                    
+                                    <div id="alertModal" class="message-modal">
+                                        <div class="message-modal-content">
+                                            <p style="text-align: center;" id="modal-message"></p>
+                                            <p style="text-align: center;"><span class="alert-close pt-1" onclick="messageCloseModal()">&times;</span></p>                                          </p>
+                                        </div>
+                                    </div>
+                                  <!-- end modal -->
+                                    <div class="tab-pane fade" id="track-orders" role="tabpanel" aria-labelledby="track-orders-tab">
+                                      <div class="card">
+                                          <div class="card-header">
+                                              <h5 class="mb-0">WALLET</h5>
+                                          </div>
+                                          <div class="card-body contact-from-area">
+                                            <h6>YOUR WALLET POINTS : <span id="code"><%= user.walletpoint %></span></h6>
+                                            <br>
+                                            <h6>YOUR WALLET AMOUNT : RS  <span id="code"><%= user. wallet %></span></h6>
+                                          </div>
+                                      </div>
+                                  </div>
                                     <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
                                         <div class="card">
                                             <div class="card-header">
@@ -470,5 +588,34 @@
     }
   }
 </script>
+<!-- referal alert -->
+<script>
+  function messageAlertModal() {
+    var codeElement = document.getElementById("code");
+    var code = codeElement.innerText;
+    var modalMessage = document.getElementById("modal-message");
+    
+    // Create a temporary input element
+    var tempInput = document.createElement("input");
+    tempInput.value = code;
+    document.body.appendChild(tempInput);
+    
+    // Select the code and copy it
+    tempInput.select();
+    document.execCommand("copy");
+    
+    // Remove the temporary input element
+    document.body.removeChild(tempInput);
+    
+    // Show the modal with the message
+    modalMessage.innerText = "Referral code copied: " + code;
+    document.getElementById("alertModal").style.display = "block";
+  }
+
+  function messageCloseModal() {
+    document.getElementById("alertModal").style.display = "none";
+  }
+</script>
+
 
 <%-include('../partials/user_footer')%>
