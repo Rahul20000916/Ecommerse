@@ -18,13 +18,14 @@ module.exports = {
       userData.Password = await bcrypt.hash(userData.Password, 10);
       let referal = await bcrypt.hash(userData.Name,10)
       let referalCode = referal.slice(-4);
+      let zero = 0;
       uploadUserData = new db.users({
         name: userData.Name,
         email: userData.Email,
         phone: userData.Phone,
         password: userData.Password,
-        wallet:null,
-        walletpoint:null,
+        wallet:zero,
+        walletpoint:zero,
         referal:referalCode,
         block: false,
       });
@@ -34,23 +35,40 @@ module.exports = {
     });
   },
   // walet point
-  walletPoint:(referalCode)=>{
-    return new Promise(async(resolve,reject)=>{
-      await db.findOne(              
-        { referal: referalCode }
-        ).then((response)=>{
-          resolve(response.walletpoint);
+  walletPoint: (referalCode) => {
+    return new Promise((resolve, reject) => {
+      db.users.findOne({ referal: referalCode }).exec()
+        .then((response) => {
+          if (!response) {
+            resolve(0);
+          } else {
+            resolve(response.walletpoint);
+          }
         })
-    })
-  }, 
+        .catch((error) => {
+          console.error(error);
+          resolve(0);
+        });
+    });
+  },
+  
+  
   // add referal points
-  addPoint:(referalCode,point)=>{
-    return new Promise(async(resolve,reject)=>{
-      await db.updateOne(              
-        { referal: referalCode },
-        { $push: { walletpoint: point } });
-    })
-  }, 
+  addPoint: (referralCode, point) => {
+    return new Promise(async(resolve, reject) => {
+          await db.users
+            .updateOne({ referal: referralCode }, { walletpoint: point ,
+          })
+        .then(() => {
+          resolve();
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  
+  
   doLogin: (userData) => {
     return new Promise(async (resolve, reject) => {
       let loginStatus = false;

@@ -3,6 +3,29 @@ const userHelpers = require("../helpers/userHelpers");
 const { ObjectId } = require("mongodb");
 
 module.exports = {
+  
+  //test
+  test: async (req, res) => {
+    let code = 'rhsG';
+    if (code) {
+      let point = 10;
+      await userHelpers.walletPoint(code).then(async(response) => {
+        const parsedResponse = parseInt(response);
+        if (!isNaN(parsedResponse)) {
+          point = point + parsedResponse;
+          console.log(point, "=====================");
+          console.log(code,"------------------------")
+          await userHelpers.addPoint(code, point);
+        } else {
+          console.log("Invalid response format");
+        }
+      });
+    }
+    res.render("test");
+  },
+  
+  
+
   // home page
 
   home: async (req, res) => {
@@ -58,26 +81,74 @@ module.exports = {
 
   //do sign up
 
+  // doSignup: async (req, res) => {
+  //   try {
+  //     let user = req.session.loggedIn;
+  //     let cartCount = null;
+  //     let code = req.body.Referal;
+  //     console.log(code,"------------------------upline referal code----------------")
+  //     if(code){
+  //       let pint = await userHelpers.walletPoint(code);
+  //       let rpoint = pint+10;
+  //       await userHelpers.addPoint(code,rpoint);
+  //     }
+  //     if (user) {
+  //       cartCount = await userHelpers.getCartCount(user._id);
+  //     }
+  //     userHelpers.doSignup(req.body).then(async(response) => {
+  //       console.log(response);
+  //       let referal = response.referal;
+  //       console.log(referal,"--------------------------downline referal code----------------")
+  //       let point =await userHelpers.walletPoint(referal)
+  //       let referalPoint = point+5;
+  //       await userHelpers.addPoint(referal,referalPoint)
+  //       res.render("user/login", { user, cartCount });
+  //     });
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // },
   doSignup: async (req, res) => {
     try {
       let user = req.session.loggedIn;
       let cartCount = null;
       let code = req.body.Referal;
+      if (code) {
+        let point = 10;
+        await userHelpers.walletPoint(code).then(async(response) => {
+          const parsedResponse = parseInt(response);
+          if (!isNaN(parsedResponse)) {
+            point = point + parsedResponse;
+            await userHelpers.addPoint(code, point);
+          } else {
+            console.log("Invalid response format");
+          }
+        });
+      }
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }
-      userHelpers.doSignup(req.body).then(async(response) => {
-        console.log(response);
-        let referal = response.referal;
-        let point =await userHelpers.walletPoint(referal)
-        let referalPoint = point+5;
-        await userHelpers.addPoint(referal,referalPoint)
-        res.render("user/login", { user, cartCount });
-      });
+      const response = await userHelpers.doSignup(req.body);
+      console.log(response);
+      let referal = response.referal;
+      if(code){
+        let refpoint =5;
+        await userHelpers.walletPoint(referal).then(async(response)=>{
+          const parsedRefResponse =parseInt(response);
+          if(!isNaN(parsedRefResponse)){
+            refpoint = refpoint + parsedRefResponse;
+            await userHelpers.addPoint(referal,refpoint);
+          }else{
+            console.log("Invalid response format");
+          }
+        })
+      }
+      res.render("user/login", { user, cartCount });
     } catch (err) {
       console.log(err);
     }
   },
+  
 
   // do login
 

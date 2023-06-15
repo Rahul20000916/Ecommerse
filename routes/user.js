@@ -5,6 +5,9 @@ var userHelper = require("../helpers/userHelpers");
 const middleware = require("../middleware/middleware");
 const { response } = require("../app");
 
+router.get("/test",userController.test)
+
+
 // home page
 router.get("/", userController.home);
 
