@@ -453,10 +453,7 @@ module.exports = {
       let order = await adminHelper.findRetunOrder(id);
       let userId = order[0].userid;
       let total = order[0].total;
-      console.log(userId,"--------------------userid")
-      console.log(total,"--------------------total")
       await adminHelper.refundAmount(userId,total);;
-      console.log(order[0],"--------------order--------------")
       await adminHelper.returnRefund(orderId);
       res.redirect("/admin/vieworders/" + orderId);
     } catch (err) {
@@ -467,7 +464,6 @@ module.exports = {
   report: async (req, res) => {
     try {
           const sales = await adminHelper.getAllDeliveredOrders();
-    console.log("sales---------------------------------------", sales);
 
     sales.forEach((order) => {
       // Format the orderDate using built-in JavaScript methods or a date formatting library like Moment.js

@@ -283,6 +283,23 @@ height: 100px;
                                             <br>
                                             <h6>YOUR WALLET AMOUNT : RS  <span id="code"><%= user. wallet %></span></h6>
                                           </div>
+                                          <hr>
+                                          <div>
+                                            <p>Discover the power of unlocking your wallet points and turning them into wallet cash </p>
+                                            <p>Use the money to shop for cool portraits in our shop.</p>
+                                            <p>Experience the convenience of converting up to 100 wallet points into real cash.</p>
+                                          </div>
+                                          <hr>
+                                          <div>
+                                            <form action="/convert-points" method="post">
+                                              <label for="inputField">YOUR WALLET POINTS:</label>
+                                              <input type="text" id="inputField" value="<%= user.walletpoint %>" name="inputField" disabled>
+                                              
+                                              <input type="submit" value="convert">
+                                              <br>
+                                              <br>
+                                            </form>
+                                          </div>
                                       </div>
                                   </div>
                                     <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">

@@ -209,11 +209,15 @@
                       <% })%>
                       <tr>
                         <th>SubTotal</th>
-                        <td class="product-subtotal" colspan="2">Rs <%= total %></td>
+                        <td class="product-subtotal" colspan="2">Rs <%= subtotal %></td>
                       </tr>
                       <tr>
                         <th>Shipping</th>
-                        <td colspan="2"><em>Free Shipping</em></td>
+                        <td colspan="2">Free Shipping</td>
+                      </tr>
+                      <tr>
+                        <th>Wallet</th>
+                        <td class="product-subtotal" colspan="2"><%= wallet %></td>
                       </tr>
                       <tr>
                         <th>Total</th>
@@ -227,8 +231,9 @@
               </div>
             </div>
             <div class="bt-1 border-color-1 "></div>
+            <p>AUTOMATICALY REDUCE YOUR WALLET BALANCE WHILE PURCHASING PRODUCTS</p>
             <div class="payment_method">
-                <div class="mb-4">
+                <div class="mb-0">
                     <h5>Payment Mode</h5>
                 </div>
                 <div class="payment_option">

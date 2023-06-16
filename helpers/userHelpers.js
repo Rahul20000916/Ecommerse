@@ -380,7 +380,22 @@ module.exports = {
       });
     });
   },
-
+  // udate wallet
+  updateWallet:(userId,amount)=>{
+  return new Promise(async(resolve,reject)=>{
+    await db.users
+    .updateOne(
+      { _id: userId },
+      {
+        $set: {
+          wallet: amount,
+        },
+      }
+    ).then(()=>{
+      resolve();
+    })
+  })
+  },
   // total amount
   totalAmount: (userId) => {
     return new Promise(async (resolve, reject) => {

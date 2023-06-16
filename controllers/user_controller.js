@@ -356,12 +356,26 @@ module.exports = {
       }
       let address = await userHelpers.getAddress(user._id);
       let products = await userHelpers.getCartProducts(userId);
-      let total = await userHelpers.totalAmount(userId);
+      let subtotal = await userHelpers.totalAmount(userId);
+      let usr = await userHelpers.findUser(userId)
+      let total = subtotal;
+      var walet;
+      let wallet =usr[0].wallet
+
+      if(total > usr[0].wallet){
+        total = total - usr[0].wallet;
+        walet = 0;
+      }else{
+        walet = usr[0].wallet - total;
+        total = 0;
+      }
       res.render("user/place_order", {
         user,
         cartCount,
         address,
         products,
+        subtotal,
+        wallet,
         total,
       });
     } catch (err) {
@@ -444,6 +458,17 @@ module.exports = {
       let paymentMode = req.body.payment_method;
       let products = await userHelpers.getCartProducts(usrId);
       let total = await userHelpers.totalAmount(usrId);
+      let user= await userHelpers.findUser(usrId);
+      console.log(user,"------------------user vannu--------------")
+      var walet;
+      if(total > user[0].wallet){
+        total = total - user[0].wallet;
+        walet = 0;
+      }else{
+        walet = user[0].wallet - total;
+        total = 0;
+      }
+      await userHelpers.updateWallet(usrId,walet);
       await userHelpers
         .postUserOders(userId, products, total, paymentMode, address)
         .then(async (response) => {
