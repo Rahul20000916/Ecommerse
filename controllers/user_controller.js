@@ -194,6 +194,8 @@ module.exports = {
       const endIndex = startIndex + perPage; // End index of the current page
 
       let user = req.session.loggedIn;
+      let usermsg = await userHelpers.findUser(req.session.user._id)
+      let message =usermsg[0].message
       let cartCount = null;
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
@@ -202,7 +204,7 @@ module.exports = {
       const allProducts = await userHelpers.viewProduct();
       const totalItems = allProducts.length;
       const totalPages = Math.ceil(totalItems / perPage);
-
+      await userHelpers.updateMessage(req.session.user._id,null);
       const paginatedProducts = allProducts.slice(startIndex, endIndex);
       res.render("user/products", {
         viewProducts: paginatedProducts,
@@ -211,6 +213,7 @@ module.exports = {
         category,
         currentPage,
         totalPages,
+        message,
       });
     } catch (err) {
       console.log(err);
@@ -319,8 +322,10 @@ module.exports = {
       let proId = req.params.id;
       let userId = new ObjectId(usrId);
       let productId = new ObjectId(proId);
+      let message = 'PRODUCT ADDED SUCESSFULLY';
       console.log(userId, productId);
-      await userHelpers.addToCart(userId, productId).then((response) => {
+      await userHelpers.addToCart(userId, productId).then(async(response) => {
+        await userHelpers.updateMessage(userId,message)
         res.redirect("/products");
       });
     } catch (err) {

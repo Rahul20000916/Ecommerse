@@ -28,11 +28,26 @@ module.exports = {
         walletpoint:zero,
         referal:referalCode,
         block: false,
+        message:null,
       });
       uploadUserData.save().then((data) => {
         resolve(data);
       });
     });
+  },
+  // message
+  updateMessage:(userId,message)=>{
+    return new Promise(async(resolve, reject) => {
+      await db.users
+        .updateOne({ _id: userId }, { message: message ,
+      })
+    .then(() => {
+      resolve();
+    })
+    .catch(error => {
+      reject(error);
+    });
+});
   },
   // walet point
   walletPoint: (referalCode) => {

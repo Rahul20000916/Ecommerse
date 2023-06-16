@@ -76,6 +76,9 @@ const usersSchema = new mongoose.Schema({
   block: {
     type: Boolean,
   },
+  message:{
+    type:String,
+  }
 });
 //cart
 const cartSchema = new mongoose.Schema({
