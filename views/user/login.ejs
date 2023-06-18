@@ -3,7 +3,7 @@
   <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-account-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:33 GMT -->
   <head>
     <meta charset="utf-8" />
-    <title>Evara Dashboard</title>
+    <title>Po Trait</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -29,10 +29,10 @@
     <main>
       <%-include('../partials/user_header')%>
 
-      <section class="content-main mt-15 mb-80">
+      <section class="content-main mt-40 mb-40">
         <div class="card mx-auto card-login">
           <div class="card-body">
-            <h4 class="card-title mb-2">Sign in</h4>
+            <h4 class="card-title mb-2 text-center">SING IN</h4>
             <form
               id="login-form"
               action="/login"
@@ -68,18 +68,18 @@
               </div>
               <!-- form-group form-check .// -->
               <div class="mb-2">
-                <button type="submit" class="btn btn-primary w-100">
-                  LOGIN
+                <button style=" border-color: rgba(133, 132, 132, 0.555); border-width: 4px;" type="submit" class="btn  w-100">
+                  <h6>LOGIN</h6>
                 </button>
               </div>
               <!-- form-group// -->
             </form>
             <div class="mb-2">
               <a href="/otp">
-                <button class="btn btn-secondary w-100 mt-15">OTP LOGIN</button>
+                <button style=" border-color: rgba(133, 132, 132, 0.555); border-width: 4px;" class="btn  w-100 mt-15"><h6>OTP LOGIN</h6></button>
               </a>
             </div>
-            <p class="text-center small text-muted mb-15">or sign up with</p>
+            <!-- <p class="text-center small text-muted mb-15">or sign up with</p>
             <div class="d-grid gap-3 mb-2">
               <a href="#" class="btn w-100 btn-light font-sm">
                 <svg
@@ -108,7 +108,7 @@
                 </svg>
                 Sign in using Google
               </a>
-            </div>
+            </div> -->
             <p class="text-center mb-4">
               Don't have account? <a href="/signup">Sign up</a>
             </p>
@@ -146,3 +146,4 @@
 
   <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-account-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:33 GMT -->
 </html>
+<%-include('../partials/admin_footer')%>

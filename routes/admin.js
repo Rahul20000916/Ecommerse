@@ -37,6 +37,12 @@ router.get(
   middleware.adminSession,
   adminController.manageOrders
 )
+// manage mails
+router.get(
+  "/manage_mails",
+  middleware.adminSession,
+  adminController.manageMails
+)
 // manage returns
 router.get(
   "/manage_returns",
@@ -103,6 +109,11 @@ router.get(
   "/edit_category/:id",
   middleware.adminSession,
   adminController.editCategory
+);
+router.get(
+  "/edit_category",
+  middleware.adminSession,
+  adminController.editCategories
 );
 router.post(
   "/edit_categories/:id",

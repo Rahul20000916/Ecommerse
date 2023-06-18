@@ -29,7 +29,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
   </head>
-
+  
   <body>
     <style>
       .p-conf,.n-conf{
@@ -47,7 +47,7 @@
     <main>
       <%-include('../partials/user_header')%>
 
-      <section class="content-main mt-15 mb-15">
+      <section class="content-main mt-15 ">
         <div class="card mx-auto card-login">
           <div class="card-body">
             <h4 class="card-title mb-2 text-center">SIGN UP</h4>
@@ -141,12 +141,12 @@
               </div>
               <!-- form-group// -->
               <div class="mb-4 mt-4">
-                <button type="submit" class="btn btn-primary w-100" id="submit-btn" disabled>
+                <button type="submit" style=" border-color: rgb(133, 132, 132); border-width: 4px;"  class="btn  w-100" id="submit-btn" disabled>
                   Sign up
                 </button>                
               </div>
               <!-- form-group// -->
-              <div class="mb-4 mt-4">
+              <div class=" mt-2">
                 <input
                 class="form-control"
                 name="Referal"
@@ -396,3 +396,4 @@ function validatePasswordStrength() {
 
   <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-account-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:33 GMT -->
 </html>
+<%-include('../partials/admin_footer')%>

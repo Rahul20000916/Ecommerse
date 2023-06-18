@@ -220,6 +220,20 @@ module.exports = {
     }
   },
 
+  //contact us
+  contact:async(req,res)=>{
+    try{
+      let user = req.session.loggedIn;
+      let cartCount = null;
+      if (user) {
+        cartCount = await userHelpers.getCartCount(user._id);
+      }
+      res.render("user/contact", { user, cartCount });
+    }catch(err){
+      console.log(err)
+    }
+  },
+
   // product filter
   productFilter: (req, res) => {
     try {

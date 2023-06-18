@@ -14,6 +14,11 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-3">
+          <% if (data == null) { %>
+            <h6 class=" text-center
+             mt-4">SELECT CATEGORY TO EDIT OR <br>
+               CREATE NEW ONE</h6>
+          <% } else { %>
           <form action="/admin/edit_categories/<%= data._id %>" method="post">
             <div class="mb-4">
               <label class="form-label">Name</label>
@@ -38,6 +43,7 @@
               </button>
             </div>
           </form>
+          <% } %>
           <div class="d-grid mt-4">
             <a href="/admin/add_categories">
             <button style="width: 257px; background-color: rgba(253, 253, 253, 0.712);" class="btn btn-primary">

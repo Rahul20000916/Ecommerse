@@ -36,6 +36,9 @@ router.post("/otp_login",userController.otpLogin)
 // view products
 router.get("/products",middleware.userSession, userController.viewProducts);
 
+// contact us
+router.get("/contact",middleware.userSession,userController.contact)
+
 // category filter
 router.post("/category_filter",middleware.userSession,userController.productFilter)
 

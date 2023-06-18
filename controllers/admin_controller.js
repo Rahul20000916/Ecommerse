@@ -168,7 +168,14 @@ module.exports = {
         console.log(err);
       }
     },
+ // manage mails
+ manageMails:(req,res)=>{
+  try{
+    res.render("admin/manage_mails");
+  }catch(err){
 
+  }
+ },
   // view orders
   viewOrders: async (req, res) => {
     try {
@@ -290,6 +297,15 @@ module.exports = {
       const viewCategory = await adminHelpers.viewAddCategory();
       const data = await adminHelpers.viewCategoryData(id);
       res.render("admin/edit_categories", { viewCategory, data: data[0] });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  editCategories: async (req, res) => {
+    try {
+      const viewCategory = await adminHelpers.viewAddCategory();
+      let data = null
+      res.render("admin/edit_categories", { viewCategory, data});
     } catch (err) {
       console.log(err);
     }
