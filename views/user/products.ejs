@@ -134,34 +134,18 @@
             <p class="sub-title">
               Latest Protraits <i class="uil uil-list-ui-alt"></i><i></i>
               <hr>
-              <h5 class="content-title card-title mt-3" style="color: #00000098; text-align: center;">SEARCH WITH CATEGORY</h5>
-
+              <p style="color: rgba(0, 0, 0, 0.493); text-align: center;">( SIMPLIFYING THE ORDERING PROCESS FOR FINE ART )</p>
             </p>
           </article>
+          <div>
+            <form>
+              <input type="text" placeholder=" search potraits" name="search">
+              <input type="submit" value="search">
+            </form>
+          </div>
         </div>
       </div>
-          <!-- categorize -->
-          <div class="container-fluid" style="background-color: rgb(255, 255, 255); height: 200px;">
-            <div class="row">
-              <div class="scroll-container  mb-4" style="max-height: 200px; overflow-y: scroll;">
-                <p style="color: rgba(0, 0, 0, 0.493); text-align: center;">( SIMPLIFYING THE ORDERING PROCESS FOR FINE ART )</p>
-                <form action="/category_filter" method="post">
-                  <% category.forEach(function(categoryName){ %>
-                  <button class="col-md-2 btn btn-fill-out" style="width: 200px;height: 60px;margin-left: 13px;">
-                    <input type="radio" name="<%= categoryName.categoryName %>">
-                    <%= categoryName.categoryName%>
-                  </button>
-                  <% })%>
-              </div>
-            </div>
-          </div>
-          <hr>
-          <div>
-            <button type="submit" class="col-md-12 btn btn-fill-out">SEARCH</button>
-          </div>
-        </form>
-
-  <!-- /categorize -->
+       
       <div class="row">
 
         <!-- products-start  -->
@@ -212,28 +196,6 @@
           <% } %>
         <!-- products-end ./ -->
         <% })%>
-        <div class="row pt-40">
-          <div class="pagination justify-content-center">
-              <% if (currentPage > 1) { %>
-                <li class="page-item">
-                  <a class="page-link" href="?page=<%= currentPage - 1 %>"><i class="uil uil-arrow-left"></i></a>
-                </li>
-              <% } %>
-            
-              <% for (let i = 1; i <= totalPages; i++) { %>
-                <li class="page-item <% if (currentPage === i) { %> active <% } %>">
-                  <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-                </li>
-              <% } %>
-            
-              <% if (currentPage < totalPages) { %>
-                <li class="page-item">
-                  <a class="page-link" href="?page=<%= currentPage + 1 %>"><i class="uil uil-arrow-right"></i></a>
-                </li>
-              <% } %>
-            </ul>
-          </div>
-        </div>
       </div>
     </div>
   </section>

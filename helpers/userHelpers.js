@@ -142,9 +142,17 @@ module.exports = {
     });
   },
   // view products
-  viewProduct: () => {
+  viewProduct: (search) => {
     return new Promise(async (resolve, reject) => {
-      await db.products.find({}).then((response) => {
+      await db.products.find(
+        {
+          $or:[
+            {productName :{$regex : '.*'+search+'.*',$options :'i'}},
+            {category :{$regex : '.*'+search+'.*',$options :'i'}},
+          ]
+        }
+        )
+        .then((response) => {
         resolve(response);
         console.log(response);
       });

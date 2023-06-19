@@ -188,38 +188,35 @@ module.exports = {
 
   viewProducts: async (req, res) => {
     try {
-      const currentPage = parseInt(req.query.page) || 1; // Current page number, default to 1
-      const perPage = 8; // Number of products to display per page
-      const startIndex = (currentPage - 1) * perPage; // Start index of the current page
-      const endIndex = startIndex + perPage; // End index of the current page
-
       let user = req.session.loggedIn;
-      let usermsg = await userHelpers.findUser(req.session.user._id)
-      let message =usermsg[0].message
+      let usermsg = await userHelpers.findUser(req.session.user._id);
+      let message = usermsg[0].message;
       let cartCount = null;
+      // searching
+      var search ="";
+      if(req.query.search){
+        search = req.query.search
+      }
+
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }
       const category = await userHelpers.allCategory();
-      const allProducts = await userHelpers.viewProduct();
-      const totalItems = allProducts.length;
-      const totalPages = Math.ceil(totalItems / perPage);
-      await userHelpers.updateMessage(req.session.user._id,null);
-      const paginatedProducts = allProducts.slice(startIndex, endIndex);
+      const allProducts = await userHelpers.viewProduct(search);
+
+      await userHelpers.updateMessage(req.session.user._id, null);
       res.render("user/products", {
-        viewProducts: paginatedProducts,
+        viewProducts: allProducts,
         user,
         cartCount,
         category,
-        currentPage,
-        totalPages,
         message,
       });
     } catch (err) {
       console.log(err);
     }
   },
-
+  
   //contact us
   contact:async(req,res)=>{
     try{
@@ -234,15 +231,6 @@ module.exports = {
     }
   },
 
-  // product filter
-  productFilter: (req, res) => {
-    try {
-      let category = req.body;
-      res.redirect("/products");
-    } catch (err) {
-      console.log(err);
-    }
-  },
 
   // view product details
 

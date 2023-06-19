@@ -37,13 +37,10 @@ router.post("/otp_login",userController.otpLogin)
 router.get("/products",middleware.userSession, userController.viewProducts);
 
 // contact us
-router.get("/contact",middleware.userSession,userController.contact)
-
-// category filter
-router.post("/category_filter",middleware.userSession,userController.productFilter)
+router.get("/contact",middleware.userSession,userController.contact);
 
 // profile
-router.get("/profile",middleware.userSession,userController.profile)
+router.get("/profile",middleware.userSession,userController.profile);
 
 //view product details
 router.get("/product_details/:id",middleware.userSession, userController.viewProductDetails);
