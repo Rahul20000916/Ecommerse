@@ -188,10 +188,17 @@ module.exports = {
 
   viewProducts: async (req, res) => {
     try {
+      let use = req.session.user;
       let user = req.session.loggedIn;
       let usermsg = await userHelpers.findUser(req.session.user._id);
       let message = usermsg[0].message;
       let cartCount = null;
+      // pagination
+      const currentPage = parseInt(req.query.page) || 1; // Current page number, default to 1
+      const perPage = 4; // Number of items to display per page
+      const startIndex = (currentPage - 1) * perPage; // Start index of the current page
+      const endIndex = startIndex + perPage; // End index of the current page
+
       // searching
       var search ="";
       if(req.query.search){
@@ -199,18 +206,25 @@ module.exports = {
       }
 
       if (user) {
-        cartCount = await userHelpers.getCartCount(user._id);
+        cartCount = await userHelpers.getCartCount(use._id);
       }
       const category = await userHelpers.allCategory();
       const allProducts = await userHelpers.viewProduct(search);
 
+      const totalItems = allProducts.length;
+      const totalPages = Math.ceil(totalItems / perPage);
+
+      const paginatedProducts = allProducts.slice(startIndex, endIndex);
+
       await userHelpers.updateMessage(req.session.user._id, null);
       res.render("user/products", {
-        viewProducts: allProducts,
+        viewProducts: paginatedProducts,
         user,
         cartCount,
         category,
         message,
+        currentPage,
+        totalPages,
       });
     } catch (err) {
       console.log(err);

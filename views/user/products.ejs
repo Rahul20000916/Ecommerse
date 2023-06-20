@@ -1,8 +1,60 @@
 <%-include('../partials/user_header')%>
 <style>
-  
 
 
+  .pagination-contain {
+  text-align: center;
+  color: #212529;
+}
+
+.pagination {
+  display: inline-block;
+  padding: 1px;
+}
+
+.page-item {
+  display: inline-block;
+  margin-right: 1px;
+}
+
+</style>
+<style>
+  /* style for options*/
+  .custom-select {
+    width: 65px;
+    height: 43px;
+    background-color: rgba(255, 252, 252, 0);
+    color: #212529;
+    border-color: #ccc;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    display: inline-block;
+  }
+</style>
+<style>
+  /* Style for the search input */
+  input[type="text"].search-input {
+    /* Add your custom styles here */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 300px;
+  }
+
+  /* Style for the search button */
+  input[type="submit"].search-button {
+    /* Add your custom styles here */
+    padding: 10px 20px;
+    background-color: #48494857;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+</style>
+<style>
   /* Message Modal styles */
   .message-modal {
     display: block;
@@ -125,24 +177,33 @@
         <div class="col-md-8">
           <% if (message != null) { %>
             <div id="messageAlertModal" class="message-modal">
-              <div class="message-modal-content mb-0">
+              <div class="message-modal-content ">
                 <h6 id="activeAlertMessage" class="text-center blink" style="color: rgb(253, 69, 69);text-transform: uppercase;"><p><%= message %></p></h6>
               </div>
             </div>
           <% } %>
-          <article class="title text-center">
+          <article class="title text-center mb-0">
             <p class="sub-title">
               Latest Protraits <i class="uil uil-list-ui-alt"></i><i></i>
               <hr>
               <p style="color: rgba(0, 0, 0, 0.493); text-align: center;">( SIMPLIFYING THE ORDERING PROCESS FOR FINE ART )</p>
             </p>
           </article>
-          <div>
+            <!-- searching-->
             <form>
-              <input type="text" placeholder=" search potraits" name="search">
-              <input type="submit" value="search">
+              <button disabled style="width: 100%; height: 80px; border-radius: 100px; border-width: 10px;">
+                <input type="text" placeholder="Search portraits . . .  " name="search" class="search-input" id="text-input">
+                
+                <select class="custom-select" onchange="updateTextInput(this.value)">
+                  <option value="">All</option>
+                  <% category.forEach(category => { %>
+                    <option value="<%= category.categoryName %>"><%= category.categoryName %></option>
+                  <% }) %>
+                  <!-- Add more options as needed -->
+                </select>
+                <input type="submit" value="Search" class="search-button">
+              </button>
             </form>
-          </div>
         </div>
       </div>
        
@@ -197,7 +258,30 @@
         <!-- products-end ./ -->
         <% })%>
       </div>
+      
     </div>
+    <div class="pagination-contain">
+      <ul class="pagination">
+        <% if (currentPage > 1) { %>
+          <li class="page-item">
+            <a class="page-link" href="?page=<%= currentPage - 1 %>">&lt;	 </a>
+          </li>
+        <% } %>
+    
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <li class="page-item <% if (currentPage === i) { %>active<% } %>">
+            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+          </li>
+        <% } %>
+    
+        <% if (currentPage < totalPages) { %>
+          <li class="page-item">
+            <a class="page-link" href="?page=<%= currentPage + 1 %>"> &gt;</a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+    
   </section>
 </main>
 <!-- message script for hide  -->
@@ -216,4 +300,33 @@
   }
 </script>
 
+<script>
+  //category searching
+  document.getElementById("searchForm").addEventListener("submit", function(event) {
+  event.preventDefault(); // Prevent form submission
+  var searchValue = document.querySelector(".search-input").value; // Get the value of the search input
+
+  var categories = ["category1", "category2", "category3"]; // Array of category names
+
+  // Iterate through the categories
+  for (var i = 0; i < categories.length; i++) {
+    var categoryName = categories[i];
+    var listID = "list" + (i + 1);
+    var list = document.getElementById(listID);
+
+    // Create a list item with the category name
+    var listItem = document.createElement("li");
+    listItem.textContent = categoryName;
+    list.appendChild(listItem);
+  }
+
+  // Clear the search input
+  document.querySelector(".search-input").value = "";
+});
+</script>
+<script>
+  function updateTextInput(value) {
+    document.getElementById("text-input").value = value;
+  }
+</script>
 <%-include('../partials/user_footer')%>
