@@ -89,6 +89,23 @@ const cartSchema = new mongoose.Schema({
     type: [],
   },
 });
+const contactSchema = new mongoose.Schema({
+  userid:{
+    type: mongoose.SchemaTypes.ObjectId,
+  },
+  name:{
+    type:String
+  },
+  email:{
+    type:String
+  },
+  subject:{
+    type:String
+  },
+  message:{
+    type:String
+  }
+});
 
 // address
 const addressSchema = new mongoose.Schema({
@@ -172,4 +189,5 @@ module.exports = {
   carts: mongoose.model("carts", cartSchema),
   addresses: mongoose.model("addresses", addressSchema),
   orders: mongoose.model("orders", ordersSchema),
+  contacts:mongoose.model("contacts",contactSchema),
 };

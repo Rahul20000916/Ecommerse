@@ -169,11 +169,21 @@ module.exports = {
       }
     },
  // manage mails
- manageMails:(req,res)=>{
+ manageMails:async(req,res)=>{
   try{
-    res.render("admin/manage_mails");
+    let mails = await adminHelper.messages()
+    res.render("admin/manage_mails",{mails});
   }catch(err){
-
+    console.log(err)
+  }
+ },
+ // remove mail
+ removeMail:async(req,res)=>{
+  try{
+  await adminHelper.removeMail(req.params.id)
+  res.redirect("/admin/manage_mails");
+  }catch(err){
+    console.log(err);
   }
  },
   // view orders

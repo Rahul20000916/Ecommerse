@@ -93,4 +93,7 @@ router.post("/edit_profile/:id",middleware.userSession,userController.editProfil
 // edit password
 router.post("/edit_password/:id",middleware.userSession,userController.editPassword);
 
+// contact us
+router.post("/contact",middleware.userSession,userController.contactUs)
+
 module.exports = router;

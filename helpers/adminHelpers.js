@@ -79,14 +79,31 @@ module.exports = {
       }
     });
   },
-  // GET PRODUCT
 
-  getAllProducts: () => {
-    return new Promise((resolve, reject) => {
-      let products = db.get().collection("products").find();
-    });
-  },
   // ADD CATEGORY
+  messages:() => {
+    try{
+      return new Promise(async (resolve, reject) => {
+        await db.contacts.find({}).then((response) => {
+          resolve(response);
+        });
+      });
+    }catch(err){
+      console.log(err);
+    }
+    },
+  // MANAGE MAIL
+  removeMail:(id)=>{
+    try{
+      return new Promise(async(resolve,reject)=>{
+        await db.contacts.deleteOne({_id:id}).then(()=>{
+          resolve();
+        })
+      })
+    }catch(err){
+      console.log(err);
+    }
+  }, 
 
   addCategories: (categoryData) => {
     return new Promise(async (resolve, reject) => {

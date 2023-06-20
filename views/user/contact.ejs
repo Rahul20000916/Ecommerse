@@ -1,3 +1,196 @@
 <%-include('../partials/user_header')%>
+<style>
+    /* Message Modal styles */
+    .message-modal {
+      display: block;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.274);
+    }
+  
+    .message-modal-content {
+      background-color: #ffffff;
+      margin: 6% auto;
+      padding: 20px;
+      border: 10px solid #888888cb;
+      border-radius: 250px;
+      width: 30%;
+    }
+    @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  .blink {
+    animation: blink 1s infinite;
+  }
+  </style>
+<style>
+    .contact {
+    padding: 10px 0;
+    margin-top: 0;
+}
 
+.contact .heading h2 {
+    font-size: 30px;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+
+}
+
+.contact .heading h2 span {
+    color: #706f6f;
+}
+
+.contact .heading p {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: #727272;
+    margin: 20px 0 60px;
+    padding: 0;
+}
+
+.contact .form-control {
+    padding: 25px;
+    font-size: 13px;
+    margin-bottom: 10px;
+    background: #8d8c8c;
+    border: 0;
+    border-radius: 10px;
+}
+
+.contact button.btn {
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 15px;
+    background: #8b8b8b;
+    color: #ffffff;
+}
+
+.contact .title h3 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.contact .title p {
+    font-size: 14px;
+    font-weight: 400;
+    color: #616161;
+    line-height: 1.6;
+    margin: 0 0 40px;
+}
+
+.contact .content .info {
+    margin-top: 30px;
+}
+.contact .content .info i {
+    font-size: 30px;
+    padding: 0;
+    margin: 0;
+    color: #02434b;
+    margin-right: 20px;
+    text-align: center;
+    width: 20px;
+}
+.contact .content .info h4 {
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.contact .content .info h4 span {
+    font-size: 13px;
+    font-weight: 300;
+    color: #999999;
+}
+</style>
+<section class="contact" id="contact">
+    <div class="container">
+        <% if (message != null) { %>
+            <div id="messageAlertModal" class="message-modal">
+                <div class="message-modal-content ">
+                <h6 id="activeAlertMessage" class="text-center blink" style="color: rgb(253, 69, 69);text-transform: uppercase;"><p><%= message %></p></h6>
+                </div>
+            </div>
+        <% } %>
+        <div class="heading text-center">
+            <h2>Contact
+                <span> Us </span></h2>
+            <p>We value your feedback, inquiries, and suggestions. <br> If you have any questions or need assistance, please don't hesitate to get in touch with us. <br> We are here to help.</p>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="title">
+                    <h3>Contact detail</h3>
+                    <p>We value your feedback and strive to provide excellent customer service. </p>
+                </div>
+                <div class="content">
+                    <!-- Info-1 -->
+                    <div class="info">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h4 class="d-inline-block">PHONE :
+                            <br>
+                            <span>+12457836913 , +12457836913</span></h4>
+                    </div>
+                    <!-- Info-2 -->
+                    <div class="info">
+                        <i class="far fa-envelope"></i>
+                        <h4 class="d-inline-block">EMAIL :
+                            <br>
+                            <span>example@info.com</span></h4>
+                    </div>
+                    <!-- Info-3 -->
+                    <div class="info">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h4 class="d-inline-block">ADDRESS :<br>
+                            <span>6743 last street , Abcd, Xyz</span></h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-7">
+
+                <form method="post" action="/contact">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input required type="text" class="form-control mt-2" name="Name" placeholder="Name">
+                        </div>
+                        <div class="col-sm-6">
+                            <input required type="email" class="form-control mt-2" name="Email" placeholder="Email">
+                        </div>
+                        <div class="col-sm-12">
+                            <input required type="text" class="form-control mt-2" name="Subject" placeholder="Subject">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea required class="form-control mt-2" rows="5" id="comment" name="Message" placeholder="Message"></textarea>
+                    </div>
+                    <button class="btn col-sm-12 mt-4" type="submit">Send Now!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- message script for hide  -->
+<script>
+    // Check if the message exists
+    var message = "<%= message %>";
+    if (message) {
+      // Display the message
+      $("#activeAlertMessage").text(message);
+      $("#messageAlertModal").show();
+  
+      // Hide the message after 2 seconds
+      setTimeout(function() {
+        $("#messageAlertModal").hide();
+      }, 2100);
+    }
+  </script>
 <%-include('../partials/user_footer')%>

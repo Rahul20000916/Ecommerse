@@ -1,3 +1,4 @@
+const session = require("express-session");
 const { response } = require("../app");
 const userHelpers = require("../helpers/userHelpers");
 const { ObjectId } = require("mongodb");
@@ -236,10 +237,13 @@ module.exports = {
     try{
       let user = req.session.loggedIn;
       let cartCount = null;
+      let usermsg = await userHelpers.findUser(req.session.user._id);
+      let message = usermsg[0].message;
+      await userHelpers.updateMessage(req.session.user._id, null);
       if (user) {
-        cartCount = await userHelpers.getCartCount(user._id);
+        cartCount = await userHelpers.getCartCount(req.session.user._id);
       }
-      res.render("user/contact", { user, cartCount });
+      res.render("user/contact", { user, cartCount,message });
     }catch(err){
       console.log(err)
     }
@@ -480,7 +484,6 @@ module.exports = {
       let products = await userHelpers.getCartProducts(usrId);
       let total = await userHelpers.totalAmount(usrId);
       let user= await userHelpers.findUser(usrId);
-      console.log(user,"------------------user vannu--------------")
       var walet;
       if(total > user[0].wallet){
         total = total - user[0].wallet;
@@ -601,4 +604,21 @@ module.exports = {
       console.log(err);
     }
   },
+
+  // contact us
+  contactUs:async(req,res)=>{
+    try{
+      let content = req.body;
+      let user = req.session.user._id
+      // let usermsg = await userHelpers.findUser(req.session.user._id);
+      // let message = usermsg[0].message;
+      let mess ="MAIL SENTED SUCCESFULLY";
+      await userHelpers.updateMessage(req.session.user._id, mess);
+      await userHelpers.contact(content,user).then(()=>{
+        res.redirect('/contact')
+      })
+    }catch(err){
+      console.log(err);
+    }
+  }
 };

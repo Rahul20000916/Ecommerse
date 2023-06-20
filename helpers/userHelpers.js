@@ -585,7 +585,7 @@ module.exports = {
   updateProfile: (userId, data) => {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log(data, "--------------------------------");
+        console.log(data);
         console.log(userId);
         await db.users
           .updateOne(
@@ -614,7 +614,6 @@ module.exports = {
       try {
         console.log(userId);
         data.password = await bcrypt.hash(data.password, 10);
-        console.log(data.password, "--------------------------------");
         await db.users
           .updateOne(
             { _id: userId },
@@ -633,4 +632,19 @@ module.exports = {
       }
     });
   },
+  // contact page
+  contact:(data,userId)=>{
+    return new Promise((resolve,reject)=>{
+        const  item = new db.contacts({
+        userid : userId,
+        name: data.Name,
+        email: data.Email,
+        subject: data.Subject,
+        message: data.Message,
+      });
+      item.save().then((data) => {
+        resolve({ added: true });
+      });
+    })
+  }
 };

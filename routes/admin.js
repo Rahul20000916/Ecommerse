@@ -43,6 +43,12 @@ router.get(
   middleware.adminSession,
   adminController.manageMails
 )
+// ddelete mails
+router.get(
+  "/delete_mail/:id",
+  middleware.adminSession,
+  adminController.removeMail
+)
 // manage returns
 router.get(
   "/manage_returns",
