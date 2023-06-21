@@ -219,6 +219,27 @@ router.get(
 // datebydate report
 router.post("/sales-report",
 middleware.adminSession,
-adminController.salesReport)
+adminController.salesReport);
+
+// add coupon page
+router.get("/add_coupon",
+middleware.adminSession,
+adminController.coupon);
+// add coupon
+router.post("/add_new_coupon",
+middleware.adminSession,
+adminController.addCoupon);
+//update coupon
+router.post("/update_coupon",
+middleware.adminSession,
+adminController.updateCoupon);
+// remove coupon
+router.get("/delete_coupon/:id",
+middleware.adminSession,
+adminController.deleteCoupon);
+// edit coupon page
+router.get("/edit_coupon/:id",
+middleware.adminSession,
+adminController.editCoupon);
 
 module.exports = router;

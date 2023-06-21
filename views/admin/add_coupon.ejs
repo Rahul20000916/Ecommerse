@@ -1,0 +1,130 @@
+<%-include('../partials/admin_header')%>
+
+<!-- topbar -->
+<div class="container-fluid" style="background-color: rgb(255, 255, 255); height: 100px;">
+  <div class="row mt-1">
+      <h3 class="content-title card-title mt-3" style="color: #00000098; text-align: center;">ADD COUPON</h3>
+      <p style="color: rgba(0, 0, 0, 0.493); text-align: center;">( ADD / EDIT / DELETE COUPON)</p>
+      <hr>
+  </div>
+</div>
+  <!-- /topbar -->
+
+<section class="content-main">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+          <form action="/admin/add_new_coupon" method="post">
+            <div class="mb-1">
+              <label class="form-label">Coupon Name</label>
+              <input
+                type="text"
+                placeholder="Name"
+                id="name"
+                class="form-control"
+                name="Name"
+                required
+              />
+            </div>
+
+            <div class="mb-1">
+              <label class="form-label">Description</label>
+              <textarea
+                placeholder="Description"
+                id="description"
+                name="Description"
+                class="form-control"
+                required
+              ></textarea>
+            </div>
+
+            <div class="mb-1">
+                <label class="form-label">Expiry Date</label>
+                <input 
+                type="date" 
+                name="date" 
+                id="date"
+                class="form-control"
+                placeholder="Expiry date"
+                required
+                >
+            </div>
+            <div class="mb-1">
+                <label class="form-label">Minimum purchase amount</label>
+                <input 
+                type="number" 
+                name="amount" 
+                id="amount"
+                class="form-control"
+                placeholder="Minimum purchase amount"
+                required
+                >
+            </div>
+                <div class="mb-1">
+                    <label class="form-label">Discount in precentage</label>
+                    <input 
+                    type="number" 
+                    name="discount" 
+                    id="discount"
+                    class="form-control"
+                    placeholder="0/100 %"
+                    required
+                    >
+            </div>
+            <div class="d-grid mt-2">
+              <button style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-primary" id="btn" type="submit">
+                CREATE COUPON
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-9">
+          <div class="table-responsive">
+            <table class="table table-hover display mt-4">
+              <thead>
+                <tr>
+                    <div class="form-check">     
+                  <th scope="col">No</th>
+                  <th scope="col">Coupon name</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Expiry date</th>
+                  <th scope="col">Minimum purchase</th>
+                  <th scope="col">Discount</th>
+                  <th scope="col" class="text-center" colspan="2">Actions</th>
+                     </div>
+                </tr>
+                <tbody>
+                    <% coupon.forEach(function(item,index){ %>
+                        <tr>
+                          <td><%= index+1  %></td>    
+                          <td><%= item.name %></td>
+                          <td><%= item.description %></td>
+                          <td><%= item.expiry.toLocaleDateString() %></td>
+                          <td>Rs.<%= item.amount %></td>
+                          <td><%= item.discount %>%</td>
+                          <td>
+                            <div class="text-center">
+                              <a href="/admin/edit_coupon/<%= item._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-success "><p style="color: green;">Edit</p></a>   
+                              <a href="/admin/delete_coupon/<%= item._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger"><p style="color: red;">Delete</p></a>
+                             </div>
+                          </td>
+                        </tr>
+                        <% })%>
+                </tbody>
+              </thead>
+            </table>
+          </div>
+        </div>
+        <!-- .col// -->
+      </div>
+      <!-- .row // -->
+    </div>
+    <!-- card body .// -->
+  </div>
+  <!-- card .// -->
+</section>
+
+
+
+<%-include('../partials/admin_footer')%>

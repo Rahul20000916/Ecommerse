@@ -182,6 +182,25 @@ const ordersSchema = new mongoose.Schema({
     type: String,
   },
 });
+const couponSchema = new mongoose.Schema({
+  name:{
+    type:String,
+    unique:true,
+    uppercase:true
+  },
+  description: {
+    type: String,
+  },
+  amount:{
+    type:Number,
+  },
+  expiry:{
+    type:Date,
+  },
+  discount:{
+    type:Number,
+  }
+});
 module.exports = {
   products: mongoose.model("products", productSchema),
   categories: mongoose.model("categories", categorySchema),
@@ -190,4 +209,5 @@ module.exports = {
   addresses: mongoose.model("addresses", addressSchema),
   orders: mongoose.model("orders", ordersSchema),
   contacts:mongoose.model("contacts",contactSchema),
+  coupons:mongoose.model("coupons",couponSchema),
 };

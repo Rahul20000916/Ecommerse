@@ -1,0 +1,143 @@
+<%-include('../partials/admin_header')%>
+
+<!-- topbar -->
+<div class="container-fluid" style="background-color: rgb(255, 255, 255); height: 100px;">
+  <div class="row mt-1">
+      <h3 class="content-title card-title mt-3" style="color: #00000098; text-align: center;">EDIT COUPON</h3>
+      <p style="color: rgba(0, 0, 0, 0.493); text-align: center;">( ADD / EDIT / DELETE COUPON)</p>
+      <hr>
+  </div>
+</div>
+  <!-- /topbar -->
+
+<section class="content-main">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+            <% if (data == null) { %>
+              <h6 class=" text-center
+               mt-4">SELECT CATEGORY TO EDIT OR <br>
+                 CREATE NEW ONE</h6>
+            <% } else { %>
+                <form action="/admin/update_coupon" method="post">
+                    <div class="mb-1">
+                      <label class="form-label">Coupon Name</label>
+                      <input
+                        type="text"
+                        id="name"
+                        value="<%= data[0].name %>"
+                        class="form-control"
+                        name="Name"
+                        required
+                      />
+                    </div>
+        
+                    <div class="mb-1">
+                      <label class="form-label">Description</label>
+                      <textarea
+                        id="description"
+                        name="Description"
+                        class="form-control"
+                        required
+                      ><%= data[0].description %></textarea>
+                    </div>
+        
+                    <div class="mb-1">
+                        <label class="form-label">Expiry Date</label>
+                        <input 
+                            type="date" 
+                            name="date" 
+                            id="date"
+                            value="<%= data[0].expiry.toISOString().substr(0, 10) %>"
+                            class="form-control"
+                            required
+                        >
+                    </div>
+                    
+                    <div class="mb-1">
+                        <label class="form-label">Minimum purchase amount</label>
+                        <input 
+                        type="number" 
+                        name="amount" 
+                        value="<%= data[0].amount %>"
+                        id="amount"
+                        class="form-control"
+                        required
+                        >
+                    </div>
+                        <div class="mb-1">
+                            <label class="form-label">Discount in precentage</label>
+                            <input 
+                            type="number" 
+                            name="discount" 
+                            id="discount"
+                            value="<%= data[0].discount %>"
+                            class="form-control"
+                            required
+                            >
+                    </div>
+                    <div class="d-grid mt-2">
+                      <button style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-primary" id="btn" type="submit">
+                        UPDATE COUPON
+                      </button>
+                    </div>
+                  </form>
+            <% } %>
+            <div class="d-grid mt-4">
+              <a href="/admin/add_coupon">
+              <button style="width: 257px; background-color: rgba(253, 253, 253, 0.712);" class="btn btn-primary">
+                CREATE COUPON
+              </button>
+            </a>
+            </div>
+        </div>
+        <div class="col-md-9">
+          <div class="table-responsive">
+            <table class="table table-hover display mt-4">
+              <thead>
+                <tr>
+                    <div class="form-check">     
+                  <th scope="col">No</th>
+                  <th scope="col">Coupon name</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Expiry date</th>
+                  <th scope="col">Minimum purchase</th>
+                  <th scope="col">Discount</th>
+                  <th scope="col" class="text-center" colspan="2">Actions</th>
+                     </div>
+                </tr>
+                <tbody>
+                    <% coupon.forEach(function(item,index){ %>
+                        <tr>
+                          <td><%= index+1  %></td>    
+                          <td><%= item.name %></td>
+                          <td><%= item.description %></td>
+                          <td><%= item.expiry.toLocaleDateString() %></td>
+                          <td>Rs.<%= item.amount %></td>
+                          <td><%= item.discount %>%</td>
+                          <td>
+                            <div class="text-center">
+                              <a href="/admin/edit_coupon/<%= item._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-success "><p style="color: green;">Edit</p></a>   
+                              <a href="/admin/delete_coupon/<%= item._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger"><p style="color: red;">Delete</p></a>
+                             </div>
+                          </td>
+                        </tr>
+                        <% })%>
+                </tbody>
+              </thead>
+            </table>
+          </div>
+        </div>
+        <!-- .col// -->
+      </div>
+      <!-- .row // -->
+    </div>
+    <!-- card body .// -->
+  </div>
+  <!-- card .// -->
+</section>
+
+
+
+<%-include('../partials/admin_footer')%>

@@ -456,5 +456,61 @@ module.exports = {
         }
       });
     },
+
+    addcoupon:(data)=>{
+      try {
+        return new Promise((resolve,reject)=>{
+          const  item = new db.coupons({
+            name: data.Name,
+            description: data.Description,
+            amount:data.amount,
+            expiry: data.date,
+            discount: data.discount,
+          });
+          item.save().then((data) => {
+            resolve({ added: true });
+          });
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    },
+
+    // find all coupon
+    getCoupons:()=>{
+      try {
+        return new Promise((resolve,reject)=>{
+          db.coupons.find({}).then((response)=>{
+            resolve(response);
+          })
+        })
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    // remove coupon
+    removeCoupon:(id)=>{
+      try {
+        return new Promise((resolve,reject)=>{
+          db.coupons.deleteOne({_id:id}).then(()=>{
+            resolve();
+          })
+        })
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    // find coupon
+    findCoupon:(id)=>{
+      try{
+        return new Promise((resolve,reject)=>{
+          db.coupons.find({_id:id}).then((response)=>{
+            resolve(response);
+          })
+        })
+      }catch(err){
+        console.log(err)
+      }
+    }
   
 };

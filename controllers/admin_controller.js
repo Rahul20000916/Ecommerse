@@ -536,4 +536,54 @@ module.exports = {
       console.log(error);
     }
   },
+  // coupon page
+  coupon:async(req,res)=>{
+    try{
+      let coupon = await adminHelper.getCoupons()
+      res.render("admin/add_coupon",{coupon});
+    }catch(err){
+      console.log(err);
+    }
+  },
+  // add coupon
+  addCoupon:async(req,res)=>{
+    try{
+      data = req.body;
+      await adminHelper.addcoupon(data)
+      res.redirect("/admin/add_coupon");
+    }catch(err){
+      console.log(err);
+    }
+  },
+  // update coupon
+  updateCoupon:(req,res)=>{
+    try{
+      data =req.body
+      console.log(data,"---------------------------------data")
+      res.redirect('/admin/edit_coupon');
+    }catch(err){
+      console.log(err);
+    }
+  },
+  // remove coupon
+  deleteCoupon:async(req,res)=>{
+    try{
+      await adminHelper.removeCoupon(req.params.id)
+      res.redirect("/admin/edit_coupon")
+    }catch(err){
+      console.log(err)
+    }
+  },
+  // edit coupon page
+  editCoupon:async(req,res)=>{
+    try{
+      let id = req.params.id
+      let data = await adminHelper.findCoupon(req.params.id)
+      let coupon = await adminHelper.getCoupons()
+      res.render("admin/edit_coupon",{coupon,data})
+    }catch(err){
+      console.log(err)
+    }
+  },
+
 };

@@ -293,20 +293,12 @@ module.exports = {
 
   cart: async (req, res) => {
     try {
-      var user = req.session.user;
-      let cartCount = null;
       let usrId = req.session.user._id;
       let userId = new ObjectId(usrId);
       let proId = req.params.id;
       let productId = new ObjectId(proId);
-      if (user) {
-        cartCount = await userHelpers.getCartCount(user._id);
-      }
-      let total = await userHelpers.totalAmount(userId);
       await userHelpers.addToCart(userId, productId).then(async (response) => {
-        let products = await userHelpers.getCartProducts(userId);
-        console.log(products);
-        res.render("user/cart", { user, products, cartCount, total });
+        res.redirect("/cart");
       });
     } catch (err) {
       console.log(err);
