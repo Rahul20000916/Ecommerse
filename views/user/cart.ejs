@@ -1,5 +1,49 @@
 <%-include('../partials/user_header')%>
+<style>
+  .custom-select {
+  /* Set desired width */
+  width: 200px;
+  /* Customize background color */
+  background-color: #f2f2f2;
+  /* Customize font */
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  /* Add padding */
+  padding: 8px;
+  /* Add border */
+  border: 1px solid #ccc;
+  /* Add border radius */
+  border-radius: 4px;
+}
 
+.custom-select:focus {
+  /* Add box shadow when focused */
+  box-shadow: 0 0 4px #aaa;
+}
+
+/* Style the dropdown arrow */
+.custom-select::after {
+  content: "";
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #555;
+}
+
+/* Style the options */
+.custom-select option {
+  /* Customize background color */
+  background-color: #fff;
+  /* Customize font */
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+</style>
 <style>
   .table-image td,
   .table-image th {
@@ -150,17 +194,27 @@
   <section class="cart-add">
     <div class="container">
       <div class="row">
-        <div class="col-md-6 col-lg-6 cupon">
+        <div class="col-md-5 col-lg-5 subtotal m-3">
           <h3>Apply Coupon</h3>
             <div>
-              <input type="text" placeholder="Enter your Coupon..!" />
-              <button class="btn-normal">Apply</button>
-            </div>
-            <div>
-              <p>Select coupon to apply</p>
+              <form id="couponForm" method="post">
+                <input type="text" class="col-lg-12 search" placeholder="Apply coupon . . ." name="coupon" id="text-input">
+                <div class="mt-4">
+                  <h6>SELECT COUPON TO APPLY</h6>
+                  <select class="custom-select mt-4" onchange="updateTextInput(this.value)">
+                    <option value="">All</option>
+                    <% coupon.forEach(coupon => { %>
+                    <option value="<%= coupon.name %>"><%= coupon.name %></option>
+                    <% }) %>
+                  </select>
+                  <div class="mt-4">
+                    <button type="submit" class="btn-normal col-lg-12">Apply</button>
+                  </div>
+                </div>
+              </form>
             </div>
         </div>
-        <div class="col-md-6 col-lg-6 subtotal">
+        <div class="col-md-6 col-lg-6 subtotal m-3">
           <h3>Cart Total</h3>
           <table class="table table-borderless">
             <tr>
@@ -173,11 +227,11 @@
             </tr>
             <tr>
               <td><strong>Total</strong></td>
-              <td><strong>Rs : <%= total %></strong></td>
+              <td id="text-input-total"><strong>Rs : <%= total %></strong></td>
             </tr>
           </table>
-          <a href="/place_order/">
-          <button class="btn-normal">Proceed to Checkout</button>
+          <a id="checkout-link" href="/place_order/0">
+            <button class="btn-normal col-lg-12">Proceed to Checkout</button>
           </a>
         </div>
       </div>
@@ -186,5 +240,55 @@
   <% } %>
 </main>
 <!-- main-body-end ./ -->
+<script>
+  function updateTextInput(value) {
+    document.getElementById("text-input").value = value;
+  }
+</script>
+<script>
+  $(document).ready(function() {
+    $('#couponForm').submit(function(event) {
+      event.preventDefault(); // Prevent default form submission
+      var totalElement = document.getElementById("text-input-total");
+      var totalText = totalElement.textContent.trim();
+      var total = parseInt(totalText.match(/\d+/)[0]);
+      var formData = $(this).serialize(); // Serialize form data
+
+      // Send an AJAX POST request
+      $.ajax({
+        type: 'POST',
+        url: '/apply-coupon', // Replace with your server endpoint
+        data: formData,
+        success: function(response) {
+          // Handle the response from the server
+          var couponName = response.name;
+          let minimumAmount = response.amount;
+          let expiryDate = response.expiry;
+          let discount = response.discount;
+          console.log(couponName, minimumAmount, expiryDate, discount, '------------heheheheheheeh');
+          if (total > minimumAmount) {
+            var discountPrice = (total * discount) / 100;
+            var totalPrice = total - discountPrice;
+            console.log("coupon applied sucessfully", totalPrice);
+            // Replace the EJS value with the custom totalPrice
+            var ejsValue = '<%= total %>';
+            totalElement.innerHTML = totalElement.innerHTML.replace(ejsValue, totalPrice);
+
+            var couponCode = couponName;
+            var checkoutLink = document.getElementById("checkout-link");
+            // Update the href attribute with the coupon code
+            checkoutLink.href = "/place_order/" + discountPrice;
+          } else {
+            console.log("sorry coupon not applicable");
+          }
+        },
+        error: function(error) {
+          // Handle errors
+          console.error(error);
+        }
+      });
+    });
+  });
+</script>
 
 <%-include('../partials/user_footer')%>

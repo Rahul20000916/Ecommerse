@@ -230,7 +230,7 @@ router.post("/add_new_coupon",
 middleware.adminSession,
 adminController.addCoupon);
 //update coupon
-router.post("/update_coupon",
+router.post("/update_coupon/:id",
 middleware.adminSession,
 adminController.updateCoupon);
 // remove coupon
@@ -241,5 +241,9 @@ adminController.deleteCoupon);
 router.get("/edit_coupon/:id",
 middleware.adminSession,
 adminController.editCoupon);
+
+router.get("/edit_coupons",
+middleware.adminSession,
+adminController.editCoupons);
 
 module.exports = router;

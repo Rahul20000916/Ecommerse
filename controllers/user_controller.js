@@ -313,15 +313,28 @@ module.exports = {
       let usrId = req.session.user._id;
       let userId = new ObjectId(usrId);
       let cartCount = null;
+
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }
       let products = await userHelpers.getCartProducts(userId);
       console.log(products);
       let total = await userHelpers.totalAmount(userId);
+      let coupon = await userHelpers.getCoupon();
       console.log(total);
-      res.render("user/cart", { user, products, cartCount, total });
+      res.render("user/cart", { user,products,cartCount,total,coupon });
     } catch (err) {
+      console.log(err);
+    }
+  },
+
+  // manage coupon
+  couponAdd:async(req,res)=>{
+    try{
+      let data = req.body.coupon;
+      let couponDetails = await userHelpers.findCoupon(data);
+      res.json(couponDetails);
+    }catch(err){
       console.log(err);
     }
   },
@@ -364,6 +377,7 @@ module.exports = {
   // place order
   placeOrder: async (req, res) => {
     try {
+      let discountPrice = parseInt(req.params.id);
       let user = req.session.user;
       let usrId = req.session.user._id;
       let userId = new ObjectId(usrId);
@@ -375,10 +389,9 @@ module.exports = {
       let products = await userHelpers.getCartProducts(userId);
       let subtotal = await userHelpers.totalAmount(userId);
       let usr = await userHelpers.findUser(userId)
-      let total = subtotal;
+      var total = subtotal;
       var walet;
-      let wallet =usr[0].wallet
-
+      let wallet =usr[0].wallet;
       if(total > usr[0].wallet){
         total = total - usr[0].wallet;
         walet = 0;
@@ -394,6 +407,7 @@ module.exports = {
         subtotal,
         wallet,
         total,
+        discountPrice,
       });
     } catch (err) {
       console.log(err);
@@ -470,6 +484,8 @@ module.exports = {
       let address = req.body.selectedaddress;
       // let add = new ObjectId(address)
       // let addres = await userHelpers.getOrderAddress(add);
+      let couponStatus = req.body.couponStatus;
+      console.log(couponStatus,"-------------------------------------------form data")
       let userId = req.session.user._id;
       let usrId = new ObjectId(userId);
       let paymentMode = req.body.payment_method;
@@ -486,7 +502,7 @@ module.exports = {
       }
       await userHelpers.updateWallet(usrId,walet);
       await userHelpers
-        .postUserOders(userId, products, total, paymentMode, address)
+        .postUserOders(userId, products, total, paymentMode, address,couponStatus)
         .then(async (response) => {
           let formData = response;
           await userHelpers.removeCartItems(usrId);

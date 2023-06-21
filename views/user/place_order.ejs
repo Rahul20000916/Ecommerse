@@ -220,9 +220,13 @@
                         <td class="product-subtotal" colspan="2"><%= wallet %></td>
                       </tr>
                       <tr>
+                        <th>Discount</th>
+                        <td class="product-subtotal" colspan="2"><%= discountPrice %></td>
+                      </tr>
+                      <tr>
                         <th>Total</th>
                         <td colspan="2" class="product-subtotal">
-                          <span class="font-xl text-brand fw-900">Rs <%= total %></span>
+                          <span class="font-xl text-brand fw-900">Rs <%= total-discountPrice %></span>
                         </td>
                       </tr>
                     </tbody>
@@ -251,6 +255,12 @@
               <button type="submit" class="btn btn-fill-out col-md-12">place Order</button>
             </div>
         </div>
+        <% if (discountPrice != 0) { %>
+          <input type="hidden" name="couponStatus" value="coupon-applied">
+        <% } else {  %>
+          <input type="hidden" name="couponStatus" value=" no-coupon-applied">
+        <% } %>
+        
       </form>
 <!------------------------ form end ----------------------->
     </div>

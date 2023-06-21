@@ -554,7 +554,7 @@ module.exports = {
   },
 
   // post orders
-  postUserOders: async (userId, products, total, paymentMode, address) => {
+  postUserOders: async (userId, products, total, paymentMode, address,couponStatus) => {
     return new Promise(async (resolve, reject) => {
       try {
         let orders = {
@@ -566,7 +566,7 @@ module.exports = {
           sdate:null,
           ddate:null,
           rdate:null,
-          coupon: "no coupon applied",
+          coupon:couponStatus,
           total: total,
           paymentmode: paymentMode,
           paymentstatus: "pending",
@@ -646,5 +646,27 @@ module.exports = {
         resolve({ added: true });
       });
     })
-  }
+  },
+  getCoupon:()=>{
+    try{
+      return new Promise((resolve,reject)=>{
+        db.coupons.find({}).then((response)=>{
+          resolve(response);
+        })
+      })
+    }catch(err){
+      console.log(err)
+    }
+  },
+  findCoupon:(name)=>{
+    try{
+      return new Promise((resolve,reject)=>{
+        db.coupons.findOne({name:name}).then((response)=>{
+          resolve(response);
+        })
+      })
+    }catch(err){
+      console.log(err)
+    }
+  },
 };

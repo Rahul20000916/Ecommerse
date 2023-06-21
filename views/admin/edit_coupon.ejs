@@ -20,7 +20,7 @@
                mt-4">SELECT CATEGORY TO EDIT OR <br>
                  CREATE NEW ONE</h6>
             <% } else { %>
-                <form action="/admin/update_coupon" method="post">
+                <form action="/admin/update_coupon/<%= data[0]._id %>" method="post">
                     <div class="mb-1">
                       <label class="form-label">Coupon Name</label>
                       <input

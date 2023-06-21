@@ -511,6 +511,22 @@ module.exports = {
       }catch(err){
         console.log(err)
       }
+    },
+    updateCoupon:async(id,data)=>{
+      try{
+        let updateData ={
+          name: data.Name,
+          description: data.Description,
+          amount:data.amount,
+          expiry: data.date,
+          discount: data.discount,
+        }
+        await db.coupons.updateOne({ _id: id }, { $set: updateData }).then(() => {
+          resolve();
+        });
+      }catch(err){
+        console.log(err);
+      }
     }
   
 };

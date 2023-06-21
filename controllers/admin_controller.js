@@ -556,11 +556,13 @@ module.exports = {
     }
   },
   // update coupon
-  updateCoupon:(req,res)=>{
+  updateCoupon:async(req,res)=>{
     try{
-      data =req.body
-      console.log(data,"---------------------------------data")
-      res.redirect('/admin/edit_coupon');
+      id = req.params.id;
+      data =req.body;
+      await adminHelper.updateCoupon(id,data).then(()=>{
+        res.redirect("/admin/add_coupon");
+      })
     }catch(err){
       console.log(err);
     }
@@ -579,6 +581,16 @@ module.exports = {
     try{
       let id = req.params.id
       let data = await adminHelper.findCoupon(req.params.id)
+      let coupon = await adminHelper.getCoupons()
+      res.render("admin/edit_coupon",{coupon,data})
+    }catch(err){
+      console.log(err)
+    }
+  },
+  editCoupons:async(req,res)=>{
+    try{
+      console.log('------------------------------------------------------')
+      let data = null;
       let coupon = await adminHelper.getCoupons()
       res.render("admin/edit_coupon",{coupon,data})
     }catch(err){
