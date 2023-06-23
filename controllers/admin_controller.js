@@ -24,15 +24,20 @@ module.exports = {
       console.log(err);
     }
   },
-  postLogin: (req, res) => {
-    console.log("hello");
+  postLogin:async (req, res) => {
     let admin = req.body;
     console.log(admin);
     console.log(adminCred);
     if (admin.Email === adminCred.username) {
       if (admin.Password == adminCred.password) {
         req.session.adminLogggedIn = true;
-        res.render("admin/index");
+        var revenue = await adminHelper.getRevenue();
+        var orders = await adminHelper.getNewOrders();
+        var products = await adminHelper.getProducts();
+        var users  = await adminHelper.getUsers();
+        var categories = await adminHelper.getCategories();
+        var chartData = await adminHelper.getChartDetails();
+        res.render("admin/index",{revenue,orders,products,users,categories,chartData});
       } else {
         req.session.adminLogggedIn = false;
         console.log("password is invalid");
@@ -50,10 +55,16 @@ module.exports = {
     res.redirect("/admin/login");
   },
   // ADMIN DASH PAGE
-  dashBoard: (req, res) => {
+  dashBoard: async(req, res) => {
     try {
       if (req.session.adminLogggedIn) {
-        res.render("admin/index");
+        var revenue = await adminHelper.getRevenue();
+        var orders = await adminHelper.getNewOrders();
+        var products = await adminHelper.getProducts();
+        var users  = await adminHelper.getUsers();
+        var categories = await adminHelper.getCategories();
+        var chartData = await adminHelper.getChartDetails();
+        res.render("admin/index",{revenue,orders,products,users,categories,chartData});
       } else {
         res.redirect("/admin/login");
       }

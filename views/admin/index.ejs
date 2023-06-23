@@ -24,7 +24,7 @@
             ></span>
             <div class="text">
               <h6 class="mb-1 card-title">Revenue</h6>
-              <span>$13,456.5</span>
+              <span>Rs <%= revenue %></span>
               <span class="text-sm"> Shipping fees are not included </span>
             </div>
           </article>
@@ -38,7 +38,7 @@
             ></span>
             <div class="text">
               <h6 class="mb-1 card-title">Orders</h6>
-              <span>53.668</span>
+              <span>Rs <%= orders %></span>
               <span class="text-sm"> Excluding orders in transit </span>
             </div>
           </article>
@@ -52,8 +52,8 @@
             ></span>
             <div class="text">
               <h6 class="mb-1 card-title">Products</h6>
-              <span>9.856</span>
-              <span class="text-sm"> In 19 Categories </span>
+              <span><%= products %></span>
+              <span class="text-sm"> In <%= categories %> Categories </span>
             </div>
           </article>
         </div>
@@ -65,15 +65,15 @@
               ><i class="text-info material-icons md-shopping_basket"></i
             ></span>
             <div class="text">
-              <h6 class="mb-1 card-title">Monthly Earning</h6>
-              <span>$6,982</span>
-              <span class="text-sm"> Based in your local time. </span>
+              <h6 class="mb-1 card-title">Users</h6>
+              <span><%= users %></span>
+              <span class="text-sm"> Active users . </span>
             </div>
           </article>
         </div>
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-xl-12 col-lg-12">
         <div class="card mb-4">
           <article class="card-body">
@@ -90,7 +90,23 @@
           </article>
         </div>
       </div>
-    </div>
+    </div> -->
+
+  <div class="row">
+      <div class="col-xl-12 col-lg-12">
+          <div class="card mb-4">
+              <article class="card-body">
+                  <h5 class="card-title">Sale statistics</h5>
+                  <canvas id="myChart" height="120px"></canvas>
+              </article>
+          </div>
+          
+          <div style="display: none;" id="chart-container">
+              <canvas id="myChartData"   data-monthly="<%= chartData.monthlyData %>" data-daily="<%= chartData.dailyData %>">
+              </canvas>
+          </div>
+      </div>
+  </div>
   </section>
   <!-- content-main end// -->
 </main>

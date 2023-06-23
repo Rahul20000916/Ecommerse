@@ -527,6 +527,163 @@ module.exports = {
       }catch(err){
         console.log(err);
       }
+    },
+    // get revenue
+    getRevenue:()=>{
+      try{
+        return new Promise(async(resolve,reject)=>{
+          await db.orders.find({orderstatus:'delivered'}).then(async(response)=>{
+            const totalRevenue = await response.map(item => parseFloat(item.total))
+            .reduce((sum, value) => sum + value, 0);
+            resolve(totalRevenue);
+          })
+        })
+      }catch(err){
+        console.log(err);
+      }
+    },
+    // get new orders
+    getNewOrders:()=>{
+      try{
+        return new Promise(async(resolve,reject)=>{
+          await db.orders.find({orderstatus:'placed'}).then(async(response)=>{
+            const totalOrders = response.length;
+            resolve(totalOrders);
+          })
+        })
+      }catch(err){
+        console.log(err);
+      }
+    },
+  // get products
+  getProducts:()=>{
+    try{
+      return new Promise(async(resolve,reject)=>{
+        await db.products.find({block:'false'}).then(async(response)=>{
+          const totalProducts = response.length;
+          resolve(totalProducts);
+        })
+      })
+    }catch(err){
+      console.log(err);
     }
-  
+  },
+  // get users
+  getUsers:()=>{
+    try{
+      return new Promise(async(resolve,reject)=>{
+        await db.users.find({block:'false'}).then(async(response)=>{
+          const totalUsers = response.length;
+          resolve(totalUsers);
+        })
+      })
+    }catch(err){
+      console.log(err);
+    }
+  },
+  getCategories:()=>{
+    try{
+      return new Promise(async(resolve,reject)=>{
+        await db.categories.find({}).then(async(response)=>{
+          const totalCategories = response.length;
+          resolve(totalCategories);
+        })
+      })
+    }catch(err){
+      console.log(err);
+    }
+  },
+  getChartDetails:  () => {
+    try {
+      return new Promise (async(resolve,reject)=>{
+      const orders = await db.orders.aggregate([
+        {
+          $match: { orderstatus: "delivered" },
+        },
+        {
+          $project: {
+            _id: 0,
+            orderDate: "$date",
+          },
+        },
+      ]);
+      let monthlyData = [];
+      let dailyData = [];
+
+      const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      const days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
+
+      let monthlyMap = new Map();
+      let dailyMap = new Map();
+      //converting to monthly order array
+
+      //taking the count of orders in each month
+      orders.forEach((order) => {
+        const date = new Date(order.orderDate);
+        const month = date.toLocaleDateString("en-US", { month: "short" });
+
+        if (!monthlyMap.has(month)) {
+          monthlyMap.set(month, 1);
+        } else {
+          monthlyMap.set(month, monthlyMap.get(month) + 1);
+        }
+      });
+
+      for (let i = 0; i < months.length; i++) {
+        if (monthlyMap.has(months[i])) {
+          monthlyData.push(monthlyMap.get(months[i]));
+        } else {
+          monthlyData.push(0);
+        }
+      }
+
+      //taking the count of orders in each day of a week
+      orders.forEach((order) => {
+        const date = new Date(order.orderDate);
+        const day = date.toLocaleDateString("en-US", { weekday: "long" });
+
+        if (!dailyMap.has(day)) {
+          dailyMap.set(day, 1);
+        } else {
+          dailyMap.set(day, dailyMap.get(day) + 1);
+        }
+      });
+
+      for (let i = 0; i < days.length; i++) {
+        if (dailyMap.has(days[i])) {
+          dailyData.push(dailyMap.get(days[i]));
+        } else {
+          dailyData.push(0);
+        }
+      }
+      console.log(monthlyData)
+      console.log(dailyData)
+      resolve({monthlyData: monthlyData, dailyData: dailyData})
+      // return { monthlyData: monthlyData, dailyData: dailyData };
+    })
+    } catch (error) {
+      console.error(error);
+    }
+  },
 };

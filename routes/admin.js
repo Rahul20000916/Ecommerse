@@ -5,13 +5,15 @@ const middleware = require("../middleware/middleware");
 const multer = require("../multer/multer");
 
 // admin opening page
-router.get("/", adminController.dashBoard);
+router.get("/",adminController.dashBoard);
 
 
 // admin login page
 router.get("/login", adminController.getlogin);
 router.post("/login", adminController.postLogin);
 router.get("/admin_logout", adminController.adminLogout);
+
+// router.get("/admin",middleware.adminSession,adminController.dashBoard);
 // add products page
 router.get(
   "/add_products",
