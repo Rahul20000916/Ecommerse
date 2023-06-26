@@ -179,6 +179,24 @@
                 <h6 id="activeAlertMessage" class="text-center blink" style="color: rgb(253, 69, 69);text-transform: uppercase;"><p><%= message %></p></h6>
               </div>
             </div>
+            <script>
+              function close(){
+                // Check if the message exists
+                var message = "<%= message %>";
+              }
+              
+              
+              if (message) {
+                // Display the message
+                $("#activeAlertMessage").text(message);
+                $("#messageAlertModal").show();
+            
+                // Hide the message after 2 seconds
+                setTimeout(function() {
+                  $("#messageAlertModal").hide();
+                }, 2100);
+              }
+            </script>
           <% } %>
           <article class="title text-center mb-0">
             <p class="sub-title">
@@ -283,20 +301,7 @@
   </section>
 </main>
 <!-- message script for hide  -->
-<script>
-  // Check if the message exists
-  var message = "<%= message %>";
-  if (message) {
-    // Display the message
-    $("#activeAlertMessage").text(message);
-    $("#messageAlertModal").show();
 
-    // Hide the message after 2 seconds
-    setTimeout(function() {
-      $("#messageAlertModal").hide();
-    }, 2100);
-  }
-</script>
 
 <script>
   //category searching
