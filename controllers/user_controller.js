@@ -447,7 +447,8 @@ module.exports = {
       let userid = req.session.user._id;
       let formData = req.body;
       await userHelpers.addUserAddress(userid, formData).then((response) => {
-        res.redirect("/place_order");
+        console.log(response,"----------------dtata")
+        res.json(response);
       });
     } catch (err) {
       console.log(err);

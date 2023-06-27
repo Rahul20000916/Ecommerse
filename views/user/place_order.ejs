@@ -12,7 +12,6 @@
       overflow: auto;
       background-color: rgba(0, 0, 0, 0.4);
     }
-  
     .modal-content {
       background-color: #fefefe;
       margin: 10% auto;
@@ -21,7 +20,6 @@
       width: 80%;
       max-width: 600px;
     }
-  
     .close {
       color: #aaa;
       float: right;
@@ -29,14 +27,12 @@
       font-weight: bold;
       cursor: pointer;
     }
-  
     .close:hover,
     .close:focus {
       color: black;
       text-decoration: none;
       cursor: pointer;
     }
-  
     /* Additional styling */
     .form-row {
       display: flex;
@@ -44,96 +40,77 @@
       align-items: center;
     }
   </style>
-<style>
+  <style>
   .cardcontainer {
     height: 300px;
     overflow-y: scroll;
   }
-
   .card {
     border: 1px solid #ccc;
     padding: 10px;
     margin-bottom: 10px;
   }
-
   .card button {
     margin-top: 10px;
   }
   .cardcontainer::-webkit-scrollbar {
   width: 8px; /* Set the width of the scrollbar */
-}
-
-.cardcontainer::-webkit-scrollbar-track {
+  }
+  .cardcontainer::-webkit-scrollbar-track {
   background-color: white; /* Set the background color of the track */
-}
-
-.cardcontainer::-webkit-scrollbar-thumb {
+  }
+  .cardcontainer::-webkit-scrollbar-thumb {
   background-color: white; /* Set the color of the scrollbar */
-}
-</style>
+  }
+  </style>
 <!-- table style -->
-
 <style>
   .table {
     width: 100%;
     border-collapse: collapse;
   }
-
   .table th,
   .table td {
     padding: 10px;
     text-align: center;
     border-bottom: 1px solid #ccc;
   }
-
   .table th {
     background-color: #f2f2f2;
   }
-
   .table td.image {
     width: 100px;
     height: 100px;
   }
-
   .table td.image img {
     width: 100%;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   }
-
   .table .product-name {
     font-size: 18px;
     font-weight: bold;
   }
-
   .table .product-price {
     font-weight: bold;
   }
-
   .table .product-subtotal {
     font-weight: bold;
     text-align: right;
   }
-
   .table .font-xl {
     font-size: 24px;
   }
-
   .table .text-brand {
     color: #007bff;
   }
-
   .table .fw-900 {
     font-weight: 900;
   }
 </style>
-      
 </head>
 <body>
-
-
- 
 <div class="row">
     <div class="col-md-6 mt-4">
         <div class="mb-25">
@@ -146,41 +123,32 @@
         <button id="addAddressButton" onclick="openModal()" class="btn btn-fill-out col-md-12">Add Address</button>
         <hr>
   <!-- card start -->
-  
 <div class="cardcontainer">
-  <% address.forEach(element => { %>
+  <% address?.forEach(element => { %>
     <div class="card">
       <!------------------------ form start ----------------------->
       <form action="" method="post" id="checkout-form">
         <p><strong>Name:</strong> <%= element.name %></p>
         <input type="hidden" name="name" value="<%= element.name %>">
-  
         <p><strong>Address:</strong> <%= element.address %></p>
         <input type="hidden" name="address" value="<%= element.address %>">
-  
         <p><strong>City:</strong> <%= element.city %></p>
         <input type="hidden" name="city" value="<%= element.city %>">
-  
         <p><strong>State:</strong> <%= element.state %></p>
         <input type="hidden" name="state" value="<%= element.state %>">
-  
         <p><strong>Zipcode:</strong> <%= element.zipcode %></p>
         <input type="hidden" name="zipcode" value="<%= element.zipcode %>">
-  
         <p><strong>Phone:</strong> <%= element.phone %></p>
         <input type="hidden" name="phone" value="<%= element.phone %>">
-  
         <p><strong>Email:</strong> <%= element.email %></p>
         <input type="hidden" name="email" value="<%= element.email %>">
-         <hr>
+        <hr>
         <input type="radio" class="btn btn-fill-out col-md-12" name="selectedaddress" value="<%= element._id %>" required>
         <hr>
     </div>
   <% }) %>
-
 </div>
 <hr>
-
   <!-- card end -->
     </div>
     <div class="col-md-6 mt-4">
@@ -193,7 +161,6 @@
               <div class="cardcontainer">
                 <div class="card">
                   <table class="table">
-           
                     <tbody>
                       <% products?.forEach(function(viewProducts){ %>
                         <tr>
@@ -272,11 +239,10 @@
       <span class="close" onclick="closeModal()">&times;</span>
       <h4 class="text-center">ADD ADDRESS</h4>
       <hr>
-      <form method="post" action="/user/place_order">
+      <form action="" method="post" id="address-form">
           <div class="form-group ">
             <input type="text" required="" name="name" placeholder="Full name *" class="form-control">
           </div>
- 
         <hr>
         <div class="form-group">
           <input type="text" name="address" required="" placeholder="Address *" class="form-control">
@@ -303,7 +269,6 @@
     </div>
     <hr>
   </div>
-
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script>
   $(document).ready(function() {
@@ -328,8 +293,6 @@
     });
   });
 });
-
-     
   const getRazorpay = (order) => {
     var options = {
       "key": 'rzp_test_onTZMcpnZgRY0j', // Enter the Key ID generated from the Dashboard
@@ -365,14 +328,11 @@
     });
     rzp1.open();
   }
-
-
   const verifyPayment = (payment, order) => {
   const data = {
     payment,
     order
   };
-
   $.ajax({
     type: "POST",
     url: '/verify-payment',
@@ -392,26 +352,30 @@
     }
   });
 }
-
-
-
   </script>
-
   <script>
     var modal = document.getElementById("addressModal");
     var addressList = document.getElementById("addressList");
-
     // Function to open the modal
     function openModal() {
       modal.style.display = "block";
     }
-
     // Function to close the modal
     function closeModal() {
       modal.style.display = "none";
     }
-
+    $(document).ready(function() {
+  $('#address-form').submit((e) => {
+    e.preventDefault();
+    $.ajax({
+  url: '/user/place_order',
+  type: 'post',
+  data: $('#address-form').serialize(),
+  success: (response) => {
+    location.reload();
+      }
+    });
+  });
+});
   </script>
-
-
 <%-include('../partials/user_footer')%>

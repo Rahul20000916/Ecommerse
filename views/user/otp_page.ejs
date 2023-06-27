@@ -24,8 +24,6 @@
       type="text/css"
     />
     <!-- firbase link -->
-    <!-- <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script> -->
     <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
   </head>
@@ -56,7 +54,7 @@
                     <div class="n-conf text-center">OTP ERROR</div>
                     <div id="timer" class="text-center"></div>
 
-           <!-- message end -->
+            <!-- message end -->
             <form action="/logindone" method="post">
               <!-- form-group// -->
               <div class="mb-2">
@@ -97,7 +95,7 @@
                     class="btn btn-primary"
                     onclick="codeverify()"
                   >
-                   <b style="opacity: 60%;">Verify</b> 
+                  <b style="opacity: 60%;">Verify</b> 
                   </button>
                 </div>
               </div>
@@ -109,35 +107,6 @@
               </div>
               <!-- form-group// -->
             </form>
-            <!-- <p class="text-center small text-muted mb-15">or sign up with</p>
-            <div class="d-grid gap-3 mb-2">
-              <a href="#" class="btn w-100 btn-light font-sm">
-                <svg
-                  aria-hidden="true"
-                  class="icon-svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 002.38-5.88c0-.57-.05-.66-.15-1.18z"
-                    fill="#4285F4"
-                  ></path>
-                  <path
-                    d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 01-7.18-2.54H1.83v2.07A8 8 0 008.98 17z"
-                    fill="#34A853"
-                  ></path>
-                  <path
-                    d="M4.5 10.52a4.8 4.8 0 010-3.04V5.41H1.83a8 8 0 000 7.18l2.67-2.07z"
-                    fill="#FBBC05"
-                  ></path>
-                  <path
-                    d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 001.83 5.4L4.5 7.49a4.77 4.77 0 014.48-3.3z"
-                    fill="#EA4335"
-                  ></path>
-                </svg>
-                Sign up using Google
-              </a> -->
             </div>
             <p class="text-center mb-2">
               Sign in with email? <a href="/login">Sign in</a>
@@ -176,13 +145,13 @@
 <script>
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  // apiKey: "AIzaSyA8Va8iX0eVMuQZY9dnEdoYF5tvrQrpwE0",
-  // authDomain: "potrait-e1587.firebaseapp.com",
-  // projectId: "potrait-e1587",
-  // storageBucket: "potrait-e1587.appspot.com",
-  // messagingSenderId: "1056113861202",
-  // appId: "1:1056113861202:web:99659f4005d48767ddf58b",
-  // measurementId: "G-VB8DKMT5E5"
+  apiKey: "AIzaSyA8Va8iX0eVMuQZY9dnEdoYF5tvrQrpwE0",
+  authDomain: "potrait-e1587.firebaseapp.com",
+  projectId: "potrait-e1587",
+  storageBucket: "potrait-e1587.appspot.com",
+  messagingSenderId: "1056113861202",
+  appId: "1:1056113861202:web:99659f4005d48767ddf58b",
+  measurementId: "G-VB8DKMT5E5"
 };
 firebase.initializeApp(firebaseConfig);
 // render recaptcha verifier
@@ -228,10 +197,7 @@ function phoneAuth() {
   });
 }
 
-
-
 // function for code varification
-// ...
 
 // Function for code verification
 function codeverify() {
@@ -256,33 +222,6 @@ function codeverify() {
 }
 
 </script>
-
-<!-- login -->
-<!-- <script>
-function submitForm() {
-  let number = document.getElementById('phone').value;
-  fetch("/logindone", {
-    method: "POST",
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ number: number })
-  })
-    .then(response => response.json())
-    .then(data => {
-      if (data) {
-        location.href = "/products";
-      } else {
-        location.href = "/login";
-      }
-    })
-    .catch(error => {
-      console.error(error);
-    });
-}
-</script> -->
-
-<!-- login end -->
 
     <script src="admin_assets/assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="admin_assets/assets/js/vendors/bootstrap.bundle.min.js"></script>

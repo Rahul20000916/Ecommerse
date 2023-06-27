@@ -476,7 +476,7 @@ module.exports = {
           type: data.type,
         };
         db.addresses.create(userAdress);
-        resolve();
+        resolve(userAdress);
       } catch (err) {
         console.log(err);
       }

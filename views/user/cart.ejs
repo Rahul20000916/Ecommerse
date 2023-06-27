@@ -15,12 +15,10 @@
   /* Add border radius */
   border-radius: 4px;
 }
-
 .custom-select:focus {
   /* Add box shadow when focused */
   box-shadow: 0 0 4px #aaa;
 }
-
 /* Style the dropdown arrow */
 .custom-select::after {
   content: "";
@@ -33,7 +31,6 @@
   border-right: 6px solid transparent;
   border-top: 6px solid #555;
 }
-
 /* Style the options */
 .custom-select option {
   /* Customize background color */
@@ -42,7 +39,6 @@
   font-family: Arial, sans-serif;
   font-size: 14px;
 }
-
 </style>
 <style>
   .table-image td,
@@ -61,7 +57,6 @@
       opacity: 0;
     }
   }
-
   /* Apply the animation to the element */
   .animation {
     animation: fadeInOut 1s infinite;
@@ -70,12 +65,10 @@
     position: relative;
     overflow: hidden;
   }
-
   button b {
     position: relative;
     z-index: 1;
   }
-
   button::before {
     content: "";
     position: absolute;
@@ -89,17 +82,14 @@
     transition: opacity 0.3s, transform 0.3s;
     pointer-events: none;
   }
-
   button:hover::before {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1.2);
   }
-
   .bg-hover-gray:hover {
   background-color: gray;
 }
 </style>
-
 <main class="wrapper">
   <% if (cartCount > 0) { %>
   <section class="hero blog-hero">
@@ -147,7 +137,6 @@
   </section>
   <% } %> 
   <% if (cartCount > 0) { %>
-
   <div class="container col-md-12">
     <div class="row">
       <table class="table table-image table-striped">
@@ -161,10 +150,7 @@
           </tr>
         </thead>
         <tbody>
-
           <% products?.forEach(function(viewProducts){ %>
-            
-            <%console.log(viewProducts)%>
           <tr>
             <td>
               <img
@@ -190,7 +176,6 @@
       </table>
     </div>
   </div>
-
   <section class="cart-add">
     <div class="container">
       <div class="row">
@@ -203,7 +188,7 @@
                   <h6>SELECT COUPON TO APPLY</h6>
                   <select class="custom-select mt-4" onchange="updateTextInput(this.value)">
                     <option value="">All</option>
-                    <% coupon.forEach(coupon => { %>
+                    <% coupon?.forEach(coupon => { %>
                     <option value="<%= coupon.name %>"><%= coupon.name %></option>
                     <% }) %>
                   </select>
@@ -253,7 +238,6 @@
       var totalText = totalElement.textContent.trim();
       var total = parseInt(totalText.match(/\d+/)[0]);
       var formData = $(this).serialize(); // Serialize form data
-
       // Send an AJAX POST request
       $.ajax({
         type: 'POST',
@@ -265,7 +249,7 @@
           let minimumAmount = response.amount;
           let expiryDate = response.expiry;
           let discount = response.discount;
-          console.log(couponName, minimumAmount, expiryDate, discount, '------------heheheheheheeh');
+          console.log(couponName, minimumAmount, expiryDate, discount);
           if (total > minimumAmount) {
             var discountPrice = (total * discount) / 100;
             var totalPrice = total - discountPrice;
@@ -273,7 +257,6 @@
             // Replace the EJS value with the custom totalPrice
             var ejsValue = '<%= total %>';
             totalElement.innerHTML = totalElement.innerHTML.replace(ejsValue, totalPrice);
-
             var couponCode = couponName;
             var checkoutLink = document.getElementById("checkout-link");
             // Update the href attribute with the coupon code
@@ -290,5 +273,4 @@
     });
   });
 </script>
-
 <%-include('../partials/user_footer')%>
