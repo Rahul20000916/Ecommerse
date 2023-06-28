@@ -97,7 +97,7 @@
         </div>
         <!-- card end// -->
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-6">
         <div class="card mb-6">
           <div class="card-header">
             <h4>IMAGE 1</h4>
@@ -109,34 +109,15 @@
                 alt=""
                 id="img1"
               />
-              <!-- <input class="form-control" name="image1" type="file" multiple> -->
             </div>
           </div>
         </div>
-        <!-- card end// -->
-
-        <!-- card end// -->
 
         <div class="card mb-6">
           <div class="card-header">
             <h4>IMAGE 2</h4>
           </div>
           <div class="card-body">
-            <!-- <div class="input-upload">
-              <img
-                src="/uploads/products/<%= data.image[1]%>"
-                alt=""
-                id="img2"
-              />
-              <input
-                class="form-control"
-                onchange="function5(event)"
-                name="image"
-                type="file"
-                multiple
-                required
-              />
-            </div> -->
             <div class="mb-4 input-upload">
               <label for="id_image"></label><br />
               <img src="/uploads/products/<%= data.image[1]%>" alt="" id="img2" />
@@ -155,45 +136,10 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3">
-        <div class="card mb-6">
-          <div class="card-header">
-            <h4>IMAGE 3</h4>
-          </div>
-          <div class="card-body">
-            <div class="input-upload">
-              <img
-                src="/uploads/products/<%= data.image[2]%>"
-                alt=""
-                id="img3"
-              />
-              <!-- <input class="form-control" name="image3" type="file" multiple> -->
-            </div>
-          </div>
-        </div>
-
-        <!-- card end// -->
-
-        <div class="card mb-6">
-          <div class="card-header">
-            <h4>IMAGE 4</h4>
-          </div>
-          <div class="card-body">
-            <div class="input-upload">
-              <img
-                src="/uploads/products/<%= data.image[3]%>"
-                alt=""
-                id="img4"
-              />
-              <!-- <input class="form-control" name="image4" type="file" multiple> -->
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </form>
     <!-- Modal -->
-    <div
+<div
     class="modal fade mt-80"
     id="exampleModal"
     tabindex="-1"
@@ -201,7 +147,7 @@
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-xl mb-80" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <div class="description">
@@ -222,7 +168,7 @@
         <div class="modal-header text-center mt-4">
           <button
             style="background-color: rgba(253, 253, 253, 0.712);"
-            class="btn btn-success"
+            class="btn btn-success col-md-12"
             type="button"
             data-bs-dismiss="modal"
             aria-label="Close"
@@ -231,7 +177,6 @@
           </button>
         </div>
       </div>
-         
     </div>
   </div>
 </section>
@@ -240,7 +185,6 @@
   function hideDiv() {
     document.getElementById("alert").style.display = "none";
   }
-
   setTimeout(hideDiv, 1000); // Hide the div after 3 seconds (3000 milliseconds)
   function function5(event) {
     document.getElementById("img1").src = URL.createObjectURL(
@@ -249,71 +193,11 @@
     document.getElementById("img2").src = URL.createObjectURL(
       event.target.files[1]
     );
-    document.getElementById("img3").src = URL.createObjectURL(
-      event.target.files[2]
-    );
-    document.getElementById("img4").src = URL.createObjectURL(
-      event.target.files[3]
-    );
   }
 </script>
 
-<script>
-  function validateForm() {
-    var title = document.getElementById("title").value;
-    var description = document.getElementById("description").value;
-    var stock = document.getElementById("stock").value;
-    var price = document.getElementById("price").value;
-    var category = document.getElementById("category").value;
-    var image = document.getElementById("image").value;
 
-    if (title == "") {
-      alert("Product name must be filled out");
-      return false;
-    }
 
-    if (description == "") {
-      alert("Description must be filled out");
-      return false;
-    }
-
-    if (stock == "" || stock <= 0) {
-      alert("Quantity must be a positive number");
-      return false;
-    }
-
-    if (price == "" || price <= 0) {
-      alert("Price must be a positive number");
-      return false;
-    }
-
-    if (category == "") {
-      alert("Category must be selected");
-      return false;
-    }
-
-    if (image == "") {
-      alert("Image must be uploaded");
-      return false;
-    }
-  }
-</script>
-<!-- ........................................................................... -->
-<!-- <script>
-  const input = document.querySelector("input");
-  const preview1 = document.querySelector("#preview1");
-  const preview2 = document.querySelector("#preview2");
-  const preview3 = document.querySelector("#preview3");
-  input.addEventListener("change", handleFiles);
-
-  function handleFiles(event) {
-    const files = event.target.files;
-    preview1.src = URL.createObjectURL(files[0]);
-    preview2.src = URL.createObjectURL(files[1]);
-    preview3.src = URL.createObjectURL(files[2]);
-  }
-</script> -->
-<!-- ........................................................................... -->
 
 <script>
   const input = document.getElementById("id_image");
@@ -327,8 +211,13 @@
     const url = [];
     const length = input.files.length;
     for (i = 0; i < length; i++) {
-      test.innerHTML += `<div class="col-4"><div id="image-box${i}" class="image-container" style="height: 350px; width: 350px;"> </div>
-  <button class="btn btn-outline-info" id="crop-btn${i}" style="width: 100%; margin-top: 10px; display: block;" type="button">Crop</button> </div>`;
+      test.innerHTML += `
+                          <div class="col-md-6 "><div id="image-box${i}" class="image-container " style="height: auto; width: auto;">
+                          </div>
+                          <div>
+                          <button class="btn btn-outline-info col-md-6" id="crop-btn${i}" style="width: 100%; margin-top: 10px; display: block;" type="button">Crop</button> 
+                          </div>
+                          `;
     }
     for (i = 0; i < length; i++) {
       img_data[i] = input.files[i];
@@ -345,11 +234,7 @@
       ).innerHTML = `<img src="${url}" id="image${i}" style="width:100%;">`;
     });
 
-    // Creating a image tag inside imagebox which will hold the cropping view image(uploaded file) to it using the url created before.
 
-    // Storing that cropping view image in a variable
-
-    // Displaying the image box
     for (i = 0; i < length; i++) {
       document.getElementById("image-box" + i).style.display = "block";
       document.getElementById("crop-btn" + i).style.display = "block";
