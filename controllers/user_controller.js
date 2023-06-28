@@ -446,6 +446,7 @@ module.exports = {
     try {
       let userid = req.session.user._id;
       let formData = req.body;
+      console.log(formData,"hoidhfiowshfiohsifgoisefioshiofgoseihfgisihfuuifu--------------------")
       await userHelpers.addUserAddress(userid, formData).then((response) => {
         console.log(response,"----------------dtata")
         res.json(response);
