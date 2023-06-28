@@ -1,4 +1,5 @@
 <%-include('../partials/user_header')%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <style>
     /* CSS for the modal */
     .modal {
@@ -368,7 +369,7 @@
   $('#address-form').submit((e) => {
     e.preventDefault();
     $.ajax({
-  url: '/user/place_order',
+  url: '/user/place_order/add_address',
   method: 'post',
   data: $('#address-form').serialize(),
   success: (response) => {
