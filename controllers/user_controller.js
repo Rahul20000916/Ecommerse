@@ -320,6 +320,7 @@ module.exports = {
       console.log(products);
       let total = await userHelpers.totalAmount(userId);
       let coupon = await userHelpers.getCoupon();
+      await userHelpers.addDiscount(userId,0);
       console.log(total);
       res.render("user/cart", { user,products,cartCount,total,coupon });
     } catch (err) {
@@ -330,10 +331,24 @@ module.exports = {
   // manage coupon
   couponAdd:async(req,res)=>{
     try{
+      let user = req.session.user._id
+      let userId = new ObjectId(user);
       let data = req.body.coupon;
-      console.log(data,'---------------------------couypon ddtattat')
+      let total = req.body.totalprice;
       let couponDetails = await userHelpers.findCoupon(data);
-      res.json(couponDetails);
+      let minimumAmout = couponDetails.amount;
+      let discountPersentage = couponDetails.discount;
+      let expiryDate = couponDetails.expiry; // Convert expiry date to a JavaScript Date object
+      let currentDate = new Date(); // Get the current date
+      var discountPrice = 0;
+      var totalAmount = 0;
+      if( total > minimumAmout){
+        discountPrice = (total * discountPersentage) / 100;
+        totalAmount = total - discountPrice;
+      }
+      await userHelpers.addDiscount(userId,discountPrice).then((response)=>{
+        res.json(totalAmount);
+      })
     }catch(err){
       console.log(err);
     }
@@ -377,11 +392,12 @@ module.exports = {
   // place order
   placeOrder: async (req, res) => {
     try {
-      let discountPrice = parseInt(req.params.id);
       let user = req.session.user;
       let usrId = req.session.user._id;
       let userId = new ObjectId(usrId);
       let cartCount = null;
+      let discountPrice = await userHelpers.finDiscount(userId);
+      console.log(discountPrice,"------------------price")
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }

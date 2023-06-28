@@ -61,7 +61,7 @@ router.get("/addcart/:id",middleware.userSession,userController.addCart);
 router.get("/deleteCartItem/:id",middleware.userSession,userController.deleteCartItem);
 
 //place order
-router.get("/place_order/:id",middleware.userSession,userController.placeOrder);
+router.get("/place_order",middleware.userSession,userController.placeOrder);
 
 // get orders
 router.get("/order_status/:id",middleware.userSession,userController.getOrder);

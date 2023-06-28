@@ -184,6 +184,7 @@
             <div>
               <form id="couponForm" method="post">
                 <input type="text" class="col-lg-12 search" placeholder="Apply coupon . . ." name="coupon" id="text-input">
+                <input type="hidden" name="totalprice" value="<%= total %>">
                 <div class="mt-4">
                   <h6>SELECT COUPON TO APPLY</h6>
                   <select class="custom-select mt-4" onchange="updateTextInput(this.value)">
@@ -215,7 +216,7 @@
               <td id="text-input-total"><strong>Rs : <%= total %></strong></td>
             </tr>
           </table>
-          <a id="checkout-link" href="/place_order/0">
+          <a id="checkout-link" href="/place_order">
             <button class="btn-normal col-lg-12">Proceed to Checkout</button>
           </a>
         </div>
@@ -230,47 +231,30 @@
     document.getElementById("text-input").value = value;
   }
 </script>
+
 <script>
-  $(document).ready(function() {
-    $('#couponForm').submit(function(event) {
-      event.preventDefault(); // Prevent default form submission
-      var totalElement = document.getElementById("text-input-total");
-      var totalText = totalElement.textContent.trim();
-      var total = parseInt(totalText.match(/\d+/)[0]);
-      var formData = $(this).serialize(); // Serialize form data
-      // Send an AJAX POST request
-      $.ajax({
-        type: 'POST',
-        url: '/apply-coupon', // Replace with your server endpoint
-        data: formData,
-        success: function(response) {
-          // Handle the response from the server
-          var couponName = response.name;
-          let minimumAmount = response.amount;
-          let expiryDate = response.expiry;
-          let discount = response.discount;
-          console.log(couponName, minimumAmount, expiryDate, discount);
-          if (total > minimumAmount) {
-            var discountPrice = (total * discount) / 100;
-            var totalPrice = total - discountPrice;
-            console.log("coupon applied sucessfully", totalPrice);
-            // Replace the EJS value with the custom totalPrice
-            var ejsValue = '<%= total %>';
-            totalElement.innerHTML = totalElement.innerHTML.replace(ejsValue, totalPrice);
-            var couponCode = couponName;
-            var checkoutLink = document.getElementById("checkout-link");
-            // Update the href attribute with the coupon code
-            checkoutLink.href = "/place_order/" + discountPrice;
-          } else {
-            console.log("sorry coupon not applicable");
-          }
-        },
-        error: function(error) {
-          // Handle errors
-          console.error(error);
-        }
-      });
-    });
+  // Add a submit event listener to the form
+$("#couponForm").submit(function(event) {
+  var totalElement = document.getElementById("text-input-total");
+  event.preventDefault(); // Prevent the form from submitting normally
+  // Get the form data
+  const formData = $(this).serialize();
+
+  // Send the request using AJAX
+  $.ajax({
+    url: "/apply-coupon",
+    type: "POST",
+    data: formData,
+    success: function(response) {
+    var updatedTotal = response;
+    // Update the EJS total element with the new value
+    $("#text-input-total").html("<strong>Rs : " + updatedTotal + "</strong>");
+    },
+    error: function(err) {
+      console.log(err);
+    }
   });
+});
+
 </script>
 <%-include('../partials/user_footer')%>

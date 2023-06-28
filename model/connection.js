@@ -78,6 +78,9 @@ const usersSchema = new mongoose.Schema({
   },
   message:{
     type:String,
+  },
+  discount:{
+    type:Number,
   }
 });
 //cart

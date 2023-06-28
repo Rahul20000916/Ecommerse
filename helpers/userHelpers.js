@@ -3,6 +3,7 @@ const { ObjectId } = require("mongodb");
 const Razorpay = require("razorpay");
 
 const bcrypt = require("bcrypt");
+const { response } = require("../app");
 
 // razor pay
 var instance = new Razorpay({
@@ -28,6 +29,7 @@ module.exports = {
         referal:referalCode,
         block: false,
         message:null,
+        discount:zero,
       });
       uploadUserData.save().then((data) => {
         resolve(data);
@@ -38,7 +40,7 @@ module.exports = {
   updateMessage:(userId,message)=>{
     return new Promise(async(resolve, reject) => {
       await db.users
-        .updateOne({ _id: userId }, { message: message ,
+        .updateOne({ _id: userId }, { message: message,
       })
     .then(() => {
       resolve();
@@ -176,8 +178,21 @@ module.exports = {
       }
     });
   },
+  // update discount
+  addDiscount: (id, price) => {
+    return new Promise((resolve, reject) => {
+      db.users
+        .updateOne({ _id: id }, { discount: price })
+        .then(() => {
+          resolve();
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+  
   // cart
-
   addToCart: (userId, productId) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -368,7 +383,18 @@ module.exports = {
       }
     });
   },
-
+  // get user id
+  finDiscount:(id)=>{
+    try{
+      return new Promise(async(resolve,reject)=>{
+        await db.users.findOne({ _id: id }).then((response)=>{
+          resolve(response.discount)
+        })
+      })
+    }catch(err){
+      console.log(err);
+    }
+  },
   // get cart count
   getCartCount: (userId) => {
     try {
