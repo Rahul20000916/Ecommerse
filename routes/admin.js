@@ -23,13 +23,13 @@ router.get(
 // add products to database
 router.post(
   "/add_products",
-  multer.uploads.array("image", 4),
+  multer.uploads.array("image", 2),
   adminController.addProducts
 );
 // edit products
 router.post(
   "/edit_product/:id",
-  multer.uploads.array("image",4),
+  multer.uploads.array("image",2),
   adminController.updateProducts
 )
 
