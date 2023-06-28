@@ -323,7 +323,7 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       try {
         var option = {
-          amount: total,
+          amount: total*100,
           currency: "INR",
           receipt: "" + orderId,
         };
