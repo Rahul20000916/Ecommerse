@@ -314,5 +314,14 @@
     document.getElementById("text-input").value = value;
   }
 </script>
-
+<script>
+  // Check if the message exists
+  var message = "<%= message %>";
+  if (message != null) {
+    setTimeout(function() {
+      // Hide the modal by changing the display style
+      document.getElementById("messageAlertModal").style.display = "none";
+    }, 2100);
+  }
+</script>
 <%-include('../partials/user_footer')%>
