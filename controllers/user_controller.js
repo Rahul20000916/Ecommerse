@@ -442,11 +442,11 @@ module.exports = {
   },
 
   // add address
-  addAddress: async (req, res) => {
+  addAddress:(req, res) => {
     try {
       let userid = req.session.user._id;
       let formData = req.body;
-      await userHelpers.addUserAddress(userid, formData).then((response) => {
+      userHelpers.addUserAddress(userid, formData).then((response) => {
         res.json(response);
       });
     } catch (err) {
