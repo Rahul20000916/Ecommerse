@@ -182,14 +182,10 @@
 <script>
     // Check if the message exists
     var message = "<%= message %>";
-    if (message) {
-      // Display the message
-      $("#activeAlertMessage").text(message);
-      $("#messageAlertModal").show();
-  
-      // Hide the message after 2 seconds
+    if (message != null) {
       setTimeout(function() {
-        $("#messageAlertModal").hide();
+        // Hide the modal by changing the display style
+        document.getElementById("messageAlertModal").style.display = "none";
       }, 2100);
     }
   </script>
