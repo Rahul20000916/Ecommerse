@@ -1,5 +1,43 @@
 <%-include('../partials/user_header')%>
 
+<style>
+  /* Style the referal modal */
+  .message-modal {
+display: none;
+position: fixed;
+z-index: 1;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+overflow: auto;
+background-color: rgba(0, 0, 0, 0.363);
+}
+
+.message-modal-content {
+background-color: #fefefe;
+margin: 10% auto;
+padding: 20px;
+border: 10px solid #888;
+border-radius: 250px;
+width: 20%;
+height: 100px;
+}
+
+  /* Style the close button */
+  .alert-close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .alert-close:hover,
+  .alert-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+</style>
 <!-- alert modal -->
 <style>
   .alert-modal {
@@ -227,6 +265,13 @@
                                       </div>
                                   </div>
                                   <!-- modal -->
+                                    
+                                    <div id="alertModal" class="message-modal">
+                                        <div class="message-modal-content">
+                                            <p style="text-align: center;" id="modal-message"></p>
+                                            <p style="text-align: center;"><span class="alert-close pt-1" onclick="messageCloseModal()">&times;</span></p>                                          </p>
+                                        </div>
+                                    </div>
                                   <!-- end modal -->
                                     <div class="tab-pane fade" id="track-orders" role="tabpanel" aria-labelledby="track-orders-tab">
                                       <div class="card">
@@ -277,6 +322,7 @@
                                                       </thead>
                                                       <tbody>
                                                           <% orders.forEach((data,index) => { %>
+                                                              
                                                               <tr>
                                                                   <td><%= index+1 %></td>
                                                                   <td><%= data.date.toLocaleDateString() %></td>
@@ -303,7 +349,7 @@
                                         </div>
                                         <div class="row">
 
-                                            <% address?.forEach(element => { %>
+                                            <% address.forEach(element => { %>
                                                 <div class="col-lg-6 mb-2">
                                                     <div class="card mb-3 mb-lg-0">
                                                         <div class="m-3">
@@ -320,6 +366,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                
                                             <% }) %>
                                         </div>
                                     </div>
@@ -418,12 +465,14 @@
         </div>
         <hr>
       </div>
+    
 <!-- Alert Modal -->
 <div id="alertModal" class="alert-modal">
   <!-- Modal content -->
   <div class="alert-modal-content">
       <h3 class="text-center" style="color: red;">Warning!</h3>
       <h4 class="text-center" style="color: #7c7c7c;">Are you sure you want to proceed?</h4>
+
       <!-- Buttons -->
       <div class="alert-modal-buttons">
           <button class="btn" onclick="submitAlert()"><img src="images/user/buttons/check.png" alt="submit"></button>
@@ -431,6 +480,7 @@
       </div>
   </div>
 </div>
+
 <script>
   const alertModal = document.getElementById('alertModal');
   let addressId;
@@ -441,7 +491,33 @@
   function closeAlertModal() {
       alertModal.style.display = 'none';
   }
+  function submitAlert() {
+      closeAlertModal();
+      $.ajax({
+    url: '/delete_address/'+addressId,
+    type: 'GET',
+    success: function(response) {
+      location.reload();
+    },
+  });
+  }
 </script>
+
+
+  <script>
+    var modal = document.getElementById("addressModal");
+
+    // Function to open the modal
+    function openModal() {
+      modal.style.display = "block";
+    }
+
+    // Function to close the modal
+    function closeModal() {
+      modal.style.display = "none";
+    }
+
+  </script>
   <script>
     var modal1 = document.getElementById("profileModal");
 
