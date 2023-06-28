@@ -357,17 +357,14 @@
   <script>
 var modal = $("#addressModal");
 var addressList = $("#addressList");
-
 // Function to open the modal
 function openModal() {
   modal.css("display", "block");
 }
-
 // Function to close the modal
 function closeModal() {
   modal.css("display", "none");
 }
-
 $('#address-form').submit((e) => {
   e.preventDefault();
   $.ajax({
@@ -379,8 +376,6 @@ $('#address-form').submit((e) => {
     }
   });
 });
-
 // Other code and event handlers if applicable
-
   </script>
 <%-include('../partials/user_footer')%>
