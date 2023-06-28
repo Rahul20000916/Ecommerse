@@ -23,19 +23,19 @@ module.exports = {
       console.log(err);
     }
   },
-  postLogin:async (req, res) => {
+  postLogin: (req, res) => {
     let admin = req.body;
     console.log(admin);
     console.log(adminCred);
     if (admin.Email === adminCred.username) {
       if (admin.Password == adminCred.password) {
         req.session.adminLogggedIn = true;
-        var revenue = await adminHelper.getRevenue();
-        var orders = await adminHelper.getNewOrders();
-        var products = await adminHelper.getProducts();
-        var users  = await adminHelper.getUsers();
-        var categories = await adminHelper.getCategories();
-        var chartData = await adminHelper.getChartDetails();
+        var revenue = adminHelper.getRevenue();
+        var orders = adminHelper.getNewOrders();
+        var products = adminHelper.getProducts();
+        var users  = adminHelper.getUsers();
+        var categories = adminHelper.getCategories();
+        var chartData = adminHelper.getChartDetails();
         res.render("admin/index",{revenue,orders,products,users,categories,chartData});
       } else {
         req.session.adminLogggedIn = false;
