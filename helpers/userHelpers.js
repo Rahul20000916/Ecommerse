@@ -50,8 +50,8 @@ module.exports = {
   },
   // walet point
   walletPoint: (referalCode) => {
-    return new Promise((resolve, reject) => {
-      db.users.findOne({ referal: referalCode }).exec()
+    return new Promise(async(resolve, reject) => {
+      await db.users.findOne({ referal: referalCode }).exec()
         .then((response) => {
           if (!response) {
             resolve(0);

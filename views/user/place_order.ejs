@@ -239,7 +239,7 @@
       <span class="close" onclick="closeModal()">&times;</span>
       <h4 class="text-center">ADD ADDRESS</h4>
       <hr>
-      <form action="" method="post" id="address-form">
+      <form action="" method="" id="address-form">
           <div class="form-group ">
             <input type="text" required="" name="name" placeholder="Full name *" class="form-control">
           </div>
@@ -369,7 +369,7 @@
     e.preventDefault();
     $.ajax({
   url: '/user/place_order',
-  type: 'post',
+  method: 'post',
   data: $('#address-form').serialize(),
   success: (response) => {
     location.reload();

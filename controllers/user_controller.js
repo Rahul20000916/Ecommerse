@@ -61,36 +61,36 @@ module.exports = {
 
   //do sign up
 
-  doSignup: async (req, res) => {
+  doSignup: (req, res) => {
     try {
       let user = req.session.loggedIn;
       let cartCount = null;
       let code = req.body.Referal;
       if (code) {
         let point = 10;
-        await userHelpers.walletPoint(code).then(async(response) => {
+        userHelpers.walletPoint(code).then(async(response) => {
           const parsedResponse = parseInt(response);
           if (!isNaN(parsedResponse)) {
             point = point + parsedResponse;
-            await userHelpers.addPoint(code, point);
+          userHelpers.addPoint(code, point);
           } else {
             console.log("Invalid response format");
           }
         });
       }
       if (user) {
-        cartCount = await userHelpers.getCartCount(user._id);
+        cartCount = userHelpers.getCartCount(user._id);
       }
-      const response = await userHelpers.doSignup(req.body);
+      const response = userHelpers.doSignup(req.body);
       console.log(response);
       let referal = response.referal;
       if(code){
         let refpoint =5;
-        await userHelpers.walletPoint(referal).then(async(response)=>{
+        userHelpers.walletPoint(referal).then((response)=>{
           const parsedRefResponse =parseInt(response);
           if(!isNaN(parsedRefResponse)){
             refpoint = refpoint + parsedRefResponse;
-            await userHelpers.addPoint(referal,refpoint);
+            userHelpers.addPoint(referal,refpoint);
           }else{
             console.log("Invalid response format");
           }
@@ -331,6 +331,7 @@ module.exports = {
   couponAdd:async(req,res)=>{
     try{
       let data = req.body.coupon;
+      console.log(data,'---------------------------couypon ddtattat')
       let couponDetails = await userHelpers.findCoupon(data);
       res.json(couponDetails);
     }catch(err){
