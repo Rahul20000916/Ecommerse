@@ -485,7 +485,6 @@ module.exports = {
       // let add = new ObjectId(address)
       // let addres = await userHelpers.getOrderAddress(add);
       let couponStatus = req.body.couponStatus;
-      console.log(couponStatus,"-------------------------------------------form data")
       let userId = req.session.user._id;
       let usrId = new ObjectId(userId);
       let paymentMode = req.body.payment_method;
