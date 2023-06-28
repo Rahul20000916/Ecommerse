@@ -334,7 +334,7 @@
     order
   };
   $.ajax({
-    type: "POST",
+    method: "POST",
     url: '/verify-payment',
     data: JSON.stringify(data),
     contentType: 'application/json',
