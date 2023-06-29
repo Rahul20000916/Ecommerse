@@ -1,5 +1,11 @@
 <%-include('../partials/user_header')%>
 <style>
+  .font2 {
+      font-family: Times New Roman, serif;
+      font-weight: bold;
+  }
+</style>
+<style>
   .pagination-contain {
   text-align: center;
   color: #212529;
@@ -211,16 +217,16 @@
         <% viewProducts?.forEach(function(viewProduct){ %>
           <% if (viewProduct.block == false) { %>
             <div class="col-md-4 col-lg-3">
-              <div class="product-item discount">
+              <div class="product-item">
                 <div class="product-item-inner">
-                  <span class="discount">
+                  <!-- <span class="discount">
                     <a
                       href="/addwishlist/<%= viewProduct._id %>"
                       class="go-to-wishlist"
                     >
                     <i class="uil uil-heart wishlist-icon"></i>
                     </a
-                  ></span>
+                  ></span> -->
                   <figure
                     class="img-box d-flex justify-content-center align-items-center"
                   >
@@ -232,18 +238,18 @@
                   </figure>
                   <div class="details">
                     <a href="/product_details/<%= viewProduct._id %>" class="link">
-                      <span class="cat">
+                      <span class="cat ">
                         <i
                           style="color: rgb(75, 72, 72)"
-                          class="uil uil-tag-alt"
+                          class="uil uil-tag-alt "
                         ></i>
-                        <b><%= viewProduct.productName %></b>
+                        <b class="font2"><%= viewProduct.productName %></b>
                       </span>
                       <h6>
                         <%= viewProduct.description.split(' ').slice(0, 7).join(' ')
                         %> ...
                       </h6>
-                      <h4>₹ <%= viewProduct.price %></h4>
+                      <h4>₹ <%= viewProduct.price %>.00</h4>
                       <a href="/addcart/<%= viewProduct._id %>" class="go-to-cart">
                         <i class="uil uil-shopping-bag shopping-cart cart"></i>
                       </a>
