@@ -12,11 +12,7 @@
     <meta property="og:url" content="" />
     <meta property="og:image" content="" />
     <!-- Favicon -->
-    <link
-      rel="shortcut icon"
-      type="image/x-icon"
-      href="admin_assets/assets/imgs/theme/favicon.svg"
-    />
+    <link rel="shortcut icon" type="image/x-icon" href="/logo.png">
     <!-- Template CSS -->
     <link
       href="admin_assets/assets/css/main.css"
@@ -35,7 +31,8 @@
             <h4 class="card-title mb-2 text-center">SING IN</h4>
             <% if (loginErr == false) { %>
               <p class="text-center" style="color: red;">INVALID USER OR PASSWORD !</p>
-             <% } %>
+            <% } %>
+            <small id="alert-message" style="text-align: center; color:red;"></small> <!-- Alert message will be displayed here -->
             <form
               id="login-form"
               action="/login"
@@ -84,9 +81,12 @@
       function validateForm() {
         var email = document.forms["login-form"]["Email"].value;
         var password = document.forms["login-form"]["Password"].value;
-        if (email == "" || password == "") {
-          alert("Please fill out both email and password fields.");
-          return false;
+        var alertElement = document.getElementById("alert-message");
+        if (email === "" || password === "") {
+        alertElement.innerText = "PLEASE FILL OUT BOTH EMAIL AND PASSWORD";
+        return false;
+        } else {
+        alertElement.innerText = ""; // Remove the alert message
         }
       }
     </script>

@@ -5,8 +5,7 @@ module.exports = {
     if (user) {
       next();
     } else {
-      req.session.loggedIn = null;
-      let loginErr = req.session.loggedIn;
+      let loginErr = null;
       res.render("user/login", { user, cartCount,loginErr });
     }
   },
