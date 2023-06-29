@@ -239,11 +239,10 @@ $("#couponForm").submit(function(event) {
   event.preventDefault(); // Prevent the form from submitting normally
   // Get the form data
   const formData = $(this).serialize();
-
   // Send the request using AJAX
   $.ajax({
     url: "/apply-coupon",
-    type: "POST",
+    method: "POST",
     data: formData,
     success: function(response) {
     var updatedTotal = response;
