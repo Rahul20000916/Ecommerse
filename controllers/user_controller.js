@@ -11,13 +11,16 @@ module.exports = {
   home: async (req, res) => {
     try {
       const user = req.session.user;
+      var cartCount;
       if (user) {
         console.log(user);
-        let cartCount = null;
+        cartCount = null;
         cartCount = await userHelpers.getCartCount(user._id);
         res.render("user/index", { user, cartCount });
       } else {
-        res.redirect("/login");
+        var loginErr = req.session.loggedIn;
+        req.session.loggedIn = null;
+        res.render("user/login", { user, cartCount , loginErr});
       }
     } catch (err) {
       console.log(err);
