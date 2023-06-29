@@ -285,7 +285,10 @@ module.exports = {
       let cartCount = null;
       //message
       let usermsg = await userHelpers.findUser(req.session.user._id);
-      let message = usermsg[0].message;
+      var message = usermsg[0].message;
+      if(message == null){
+        message = '0' ;
+      }
       await userHelpers.updateMessage(req.session.user._id, null);
       //message end
       if (user) {

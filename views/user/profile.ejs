@@ -185,7 +185,7 @@ height: 100px;
       <p style="color: rgba(0, 0, 0, 0.493); text-align: center;">( WELCOME TO YOUR PERSONAL DASHBOARD ! )</p>
   </div>
 </div>
-        <% if (message != null) { %>
+        <% if (message != null && message != '0') { %>
             <div id="messAlertModal" class="mess-modal">
                 <div class="mess-modal-content ">
                 <h6 id="actAlertMessage" class="text-center blink" style="color: rgb(253, 69, 69);text-transform: uppercase;"><p><%= message %></p></h6>
