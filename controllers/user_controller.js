@@ -283,13 +283,18 @@ module.exports = {
       let usr = await userHelpers.findUser(userId);
       let user = usr[0];
       let cartCount = null;
+      //message
+      let usermsg = await userHelpers.findUser(req.session.user._id);
+      let message = usermsg[0].message;
+      await userHelpers.updateMessage(req.session.user._id, null);
+      //message end
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }
       console.log(user, "------------------user------------------");
       let address = await userHelpers.getAddress(user._id);
       let orders = await userHelpers.getOrders(userId);
-      res.render("user/profile", { user, cartCount, address, orders });
+      res.render("user/profile", { user, cartCount, address, orders,message });
     } catch (err) {
       console.log(err);
     }
@@ -480,6 +485,9 @@ module.exports = {
     try {
       let userid = req.session.user._id;
       let formData = req.body;
+      let mess ="ADDRESS ADDED"
+      await userHelpers.updateMessage(req.session.user._id, mess);
+
       await userHelpers.addUserAddress(userid, formData).then((response) => {
         res.redirect("/profile");
       });
@@ -493,6 +501,8 @@ module.exports = {
     try {
       let id = req.params.id;
       let addressId = new ObjectId(id);
+      let mess = "ADDRESS DELETED"
+      await userHelpers.updateMessage(req.session.user._id, mess);
       await userHelpers.deleteAddress(addressId).then((response) => {
         res.redirect("/profile")
       });
@@ -612,6 +622,8 @@ module.exports = {
     try {
       let usrId = req.params.id;
       let userId = new ObjectId(usrId);
+      let mess = 'PROFILE EDITED'
+      await userHelpers.updateMessage(req.session.user._id, mess);
       await userHelpers.updateProfile(userId, req.body).then(() => {
         res.redirect("/profile");
       });
@@ -626,6 +638,8 @@ module.exports = {
     try {
       let usrId = req.params.id;
       let userId = new ObjectId(usrId);
+      let mess ='PASSWORD CHANGED'
+      await userHelpers.updateMessage(req.session.user._id, mess);
       await userHelpers.updatePassword(userId, req.body).then(() => {
         res.redirect("/profile");
       });
@@ -646,6 +660,28 @@ module.exports = {
       await userHelpers.contact(content,user).then(()=>{
         res.redirect('/contact')
       })
+    }catch(err){
+      console.log(err);
+    }
+  },
+  // convert points
+  convertPoint:async(req,res)=>{
+    try{
+      let point = req.body.points;
+      let user = req.session.user._id
+      let userId = new ObjectId(user);
+      var mess;
+      if(point >= 100){
+        mess ="POINTS COVERTED SUCCESFULLY";
+        let result = Math.max(0, Math.round(point / 10));
+        await userHelpers.convertPoint(userId,result);
+      }else{
+        mess ="REQUIRED MINIMUM POINTS ";
+      }
+      await userHelpers.updateMessage(req.session.user._id, mess);
+      
+      res.redirect('/profile')
+
     }catch(err){
       console.log(err);
     }

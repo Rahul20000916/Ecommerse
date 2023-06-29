@@ -48,7 +48,24 @@ module.exports = {
     .catch(error => {
       reject(error);
     });
-});
+   });
+  },
+  // add walet walet amount converted
+  convertPoint: (userId, amount) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user = await db.users.findOne({ _id: userId });
+        const currentAmount = user.wallet;
+        const newAmount = currentAmount + amount;
+        const zero = 0;
+        await db.users.updateOne({ _id: userId }, { $set: { wallet: newAmount,
+          walletpoint : zero,
+          } });
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
   },
   // walet point
   walletPoint: (referalCode) => {

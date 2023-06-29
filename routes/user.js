@@ -97,6 +97,9 @@ router.post("/edit_profile/:id",middleware.userSession,userController.editProfil
 router.post("/edit_password/:id",middleware.userSession,userController.editPassword);
 
 // contact us
-router.post("/contact",middleware.userSession,userController.contactUs)
+router.post("/contact",middleware.userSession,userController.contactUs);
+
+// convert wallet point
+router.post("/convert-points",middleware.userSession,userController.convertPoint);
 
 module.exports = router;

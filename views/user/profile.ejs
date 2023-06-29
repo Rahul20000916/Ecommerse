@@ -1,5 +1,36 @@
 <%-include('../partials/user_header')%>
+<style>
+  /* Message Modal styles */
+  .mess-modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.274);
+  }
 
+  .mess-modal-content {
+    background-color: #ffffff;
+    margin: 6% auto;
+    padding: 20px;
+    border: 10px solid #888888cb;
+    border-radius: 250px;
+    width: 30%;
+  }
+  @keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
+</style>
 <style>
   /* Style the referal modal */
   .message-modal {
@@ -154,6 +185,13 @@ height: 100px;
       <p style="color: rgba(0, 0, 0, 0.493); text-align: center;">( WELCOME TO YOUR PERSONAL DASHBOARD ! )</p>
   </div>
 </div>
+        <% if (message != null) { %>
+            <div id="messAlertModal" class="mess-modal">
+                <div class="mess-modal-content ">
+                <h6 id="actAlertMessage" class="text-center blink" style="color: rgb(253, 69, 69);text-transform: uppercase;"><p><%= message %></p></h6>
+                </div>
+            </div>
+        <% } %>
   <!-- /topbar -->
                 <div class="row">
                     <div class="col-lg-12 m-auto mt-2">
@@ -293,9 +331,9 @@ height: 100px;
                                           <div>
                                             <form action="/convert-points" method="post">
                                               <label for="inputField">YOUR WALLET POINTS:</label>
-                                              <input type="text" id="inputField" value="<%= user.walletpoint %>" name="inputField" disabled>
-                                              
-                                              <input type="submit" value="convert">
+                                              <input type="text" id="inputField" value="<%= user.walletpoint %>" name="waletpoints" disabled>
+                                              <input type="hidden" value="<%= user.walletpoint %>" name="points">
+                                              <input type="submit">
                                               <br>
                                               <br>
                                             </form>
@@ -321,7 +359,7 @@ height: 100px;
                                                           </tr>
                                                       </thead>
                                                       <tbody>
-                                                          <% orders.forEach((data,index) => { %>
+                                                          <% orders?.forEach((data,index) => { %>
                                                               
                                                               <tr>
                                                                   <td><%= index+1 %></td>
@@ -349,7 +387,7 @@ height: 100px;
                                         </div>
                                         <div class="row">
 
-                                            <% address.forEach(element => { %>
+                                            <% address?.forEach(element => { %>
                                                 <div class="col-lg-6 mb-2">
                                                     <div class="card mb-3 mb-lg-0">
                                                         <div class="m-3">
@@ -633,6 +671,15 @@ height: 100px;
     document.getElementById("alertModal").style.display = "none";
   }
 </script>
-
+<script>
+  // Check if the message exists
+  var message = "<%= message %>";
+  if (message != null) {
+    setTimeout(function() {
+      // Hide the modal by changing the display style
+      document.getElementById("messAlertModal").style.display = "none";
+    }, 2100);
+  }
+</script>
 
 <%-include('../partials/user_footer')%>
