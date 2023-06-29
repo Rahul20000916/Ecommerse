@@ -5,7 +5,9 @@ module.exports = {
     if (user) {
       next();
     } else {
-      res.render("user/login", { user, cartCount });
+      req.session.loggedIn = null;
+      let loginErr = req.session.loggedIn;
+      res.render("user/login", { user, cartCount,loginErr });
     }
   },
   adminSession: (req, res, next) => {

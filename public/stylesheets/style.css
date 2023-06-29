@@ -1156,7 +1156,7 @@ body.dark .dark-light i.sun,
 }
 
 .container-footer {
-    margin: 50px auto;
+    margin: auto;
 }
 
 .container-footer div[class^="col"] {
@@ -1165,7 +1165,7 @@ body.dark .dark-light i.sun,
     justify-content: center;
     align-items: center;
     text-align: justify;
-    padding: 5px 50px 50px 50px;
+    padding: 5px 50px 5px 50px;
     border-right: var(--footer-border);
 }
 
@@ -1180,7 +1180,6 @@ body.dark .dark-light i.sun,
 
 .footer h4 {
     font-size: 1.2rem;
-    padding-bottom: 20px;
 }
 
 .footer p {
