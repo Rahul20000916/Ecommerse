@@ -157,20 +157,24 @@
 
             <div class="col-md-7">
 
-                <form method="post" action="/contact">
+                <form method="post" action="/contact" onsubmit="return validateForm()" id="message-form">
                     <div class="row">
                         <div class="col-sm-6">
-                            <input required type="text" class="form-control mt-2" name="Name" placeholder="Name">
+                            <input id="name" type="text" class="form-control mt-2" name="Name" placeholder="Name">
+                            <small id="alert-name" style="text-align: center; color:red;"></small>
                         </div>
                         <div class="col-sm-6">
-                            <input required type="email" class="form-control mt-2" name="Email" placeholder="Email">
+                            <input id="email" type="email" class="form-control mt-2" name="Email" placeholder="Email">
+                            <small id="alert-email" style="text-align: center; color:red;"></small>
                         </div>
                         <div class="col-sm-12">
-                            <input required type="text" class="form-control mt-2" name="Subject" placeholder="Subject">
+                            <input id="subject" type="text" class="form-control mt-2" name="Subject" placeholder="Subject">
+                            <small id="alert-subject" style="text-align: center; color:red;"></small>
                         </div>
                     </div>
                     <div class="form-group">
-                        <textarea required class="form-control mt-2" rows="5" id="comment" name="Message" placeholder="Message"></textarea>
+                        <textarea  class="form-control mt-2" rows="5" id="message" name="Message" placeholder="Message"></textarea>
+                        <small id="alert-message" style="text-align: center; color:red;"></small>
                     </div>
                     <button class="btn col-sm-12 mt-4" type="submit">Send Now!</button>
                 </form>
@@ -189,4 +193,42 @@
       }, 2100);
     }
   </script>
+    <script>
+        function validateForm() {
+            var name = document.forms["message-form"]["Name"].value;
+            var email = document.forms["message-form"]["Email"].value;
+            var subject = document.forms["message-form"]["Subject"].value;
+            var message = document.forms["message-form"]["Message"].value;
+            var alertName = document.getElementById("alert-name");
+            var alertEmail = document.getElementById("alert-email"); // Fixed typo in element ID
+            var alertSubject = document.getElementById("alert-subject");
+            var alertMessage = document.getElementById("alert-message");
+    
+            if (name === "") {
+                alertName.innerText = "PLEASE FILL OUT NAME FIELD "; // Fixed variable name
+                return false;
+            }else{
+                alertName.innerText = ""; // Remove the alert message
+            }
+            if (email === "") {
+                alertEmail.innerText = "PLEASE FILL OUT EMAIL FIELD"; // Fixed variable name
+                return false;
+            }else{
+                alertEmail.innerText = ""; // Remove the alert message
+            }
+            if (subject === "") {
+                alertSubject.innerText = "PLEASE FILL OUT SUBJECT FIELD"; // Fixed variable name
+                return false;
+            }else{
+                alertSubject.innerText = ""; // Remove the alert message
+            }
+            if (message === "") {
+                alertMessage.innerText = "PLEASE FILL OUT MESSAGE FIELD"; // Fixed variable name
+                return false;
+            }else{
+                alertMessage.innerText = ""; // Remove the alert message
+            }
+        }
+    </script>
+    
 <%-include('../partials/user_footer')%>
