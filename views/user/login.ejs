@@ -33,6 +33,9 @@
         <div class="card mx-auto card-login">
           <div class="card-body">
             <h4 class="card-title mb-2 text-center">SING IN</h4>
+            <% if (loginErr === false) { %>
+              <p class="text-center" style="color: red;">INVALID USER OR PASSWORD !</p>
+             <% } %>
             <form
               id="login-form"
               action="/login"

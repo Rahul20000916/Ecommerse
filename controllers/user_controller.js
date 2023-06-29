@@ -37,7 +37,9 @@ module.exports = {
       if (req.session.loggedIn) {
         res.redirect("/");
       } else {
-        res.render("user/login", { user, cartCount });
+        var loginErr = req.session.loggedIn;
+        req.session.loggedIn = null;
+        res.render("user/login", { user, cartCount , loginErr});
       }
     } catch (err) {
       console.log(err);
@@ -113,6 +115,7 @@ module.exports = {
           req.session.user = response.user;
           res.redirect("/");
         } else {
+          req.session.loggedIn = false;
           res.redirect("/login");
         }
       });
@@ -177,7 +180,7 @@ module.exports = {
 
   logout: (req, res) => {
     try {
-      req.session.destroy();
+      req.session.loggedIn = false;
       res.redirect("/login");
     } catch (err) {
       console.log(err);
