@@ -26,17 +26,17 @@ module.exports = {
       });
     });
   },
-  deleteAllOrders: () => {
-    return new Promise(async (resolve, reject) => {
-      await db.orders.deleteMany({})
-        .then(() => {
-          resolve("All documents in db.orders deleted successfully.");
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
-  },
+  // deleteAllOrders: () => {
+  //   return new Promise(async (resolve, reject) => {
+  //     await db.orders.deleteMany({})
+  //       .then(() => {
+  //         resolve("All documents in db.orders deleted successfully.");
+  //       })
+  //       .catch((error) => {
+  //         reject(error);
+  //       });
+  //   });
+  // },
     // RETURN ORDERS
     returnOrders: () => {
       return new Promise(async (resolve, reject) => {
