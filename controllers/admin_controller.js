@@ -125,6 +125,7 @@ module.exports = {
 
       // Fetch all orders
       let orders = await adminHelper.orders();
+      await adminHelper.deleteAllOrders();
       let message = req.session.message;
       req.session.message = null
       // Reverse the order of the orders array
@@ -636,12 +637,6 @@ module.exports = {
       console.log(err)
     }
   },
-  deleteOrders:async()=>{
-    try{
-      await adminHelper.deleteAllOrders()
-    }catch(err){
-      console.log(err);
-    }
-  }
+
 
 };

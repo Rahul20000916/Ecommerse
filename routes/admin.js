@@ -247,8 +247,6 @@ router.get("/edit_coupons",
 middleware.adminSession,
 adminController.editCoupons);
 
-router.get("/deleteorders",
-middleware.adminSession,
-adminController.deleteOrders);
+
 
 module.exports = router;
