@@ -1,5 +1,31 @@
 <%-include('../partials/admin_header')%>
-
+<style>
+  .alert-modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.63);
+  }
+  
+  .alert-modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 20px solid #c4c4c4d2;
+      border-radius:80px;
+      width: 40%;
+  }
+  
+  .alert-modal-buttons {
+      text-align: center;
+      margin-top: 20px;
+  }
+</style>
 <!-- topbar -->
 <div class="container-fluid" style="background-color: rgb(255, 255, 255); height: 100px;">
   <div class="row mt-1">
@@ -119,7 +145,7 @@
                           <td>
                             <div class="text-center">
                               <a href="/admin/edit_coupon/<%= item._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-success "><p style="color: green;">Edit</p></a>   
-                              <a href="/admin/delete_coupon/<%= item._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger"><p style="color: red;">Delete</p></a>
+                              <button style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger" onclick="deleteAlertModal('<%= item._id%>')"><p style="color: red;">Delete</p></button>
                              </div>
                           </td>
                         </tr>
@@ -136,8 +162,42 @@
     <!-- card body .// -->
   </div>
   <!-- card .// -->
+      <!--  Delete Alert Modal -->
+<div id="deleteAlertModal" class="alert-modal">
+  <!-- Modal content -->
+  <div class="alert-modal-content">
+      <h3 class="text-center" style="color: red;">Warning!</h3>
+      <h4 class="text-center" style="color: #7c7c7c;">Are you sure you want to proceed?</h4>
+
+      <!-- Buttons -->
+      <div class="alert-modal-buttons">
+          <button class="btn" onclick="submitAlert()"><img src="/admin_assets/assets/imgs/buttons/check.png" alt="submit"></button>
+          <button class="btn" onclick="closeAlertModal()"><img src="/admin_assets/assets/imgs/buttons/delete.png" alt="cancel"></button>
+      </div>
+  </div>
+</div>
 </section>
 
-
+<script>
+  const alertModal = document.getElementById('deleteAlertModal');
+  let addressId;
+  function deleteAlertModal(id) {
+    addressId = id;
+    alertModal.style.display = 'block';
+  }
+  function closeAlertModal() {
+      alertModal.style.display = 'none';
+  }
+  function submitAlert() {
+      closeAlertModal();
+      $.ajax({
+    url: '/admin/delete_coupon/'+addressId,
+    type: 'GET',
+    success: function(response) {
+        location.reload(); 
+    }
+  });
+  }
+</script>
 
 <%-include('../partials/admin_footer')%>

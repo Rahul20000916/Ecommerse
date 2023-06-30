@@ -1,8 +1,37 @@
 <%-include('../partials/admin_header')%>
-<!-- sweet alert -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.all.min.js"></script>
-<!-- / sweet alert -->
+<style>
+  /* Message Modal styles */
+  .message-modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.274);
+  }
+
+  .message-modal-content {
+    background-color: #ffffff;
+    margin: 6% auto;
+    padding: 20px;
+    border: 10px solid #888888cb;
+    border-radius: 250px;
+    width: 30%;
+  }
+  @keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
+</style>
+
 
 
   <!-- topbar -->
@@ -14,6 +43,13 @@
   </div>
 </div>
   <!-- /topbar -->
+  <% if (message != null) { %>
+    <div id="messageAlertModal" class="message-modal">
+        <div class="message-modal-content ">
+        <h6 id="activeAlertMessage" class="text-center blink" style="color: rgb(253, 69, 69);text-transform: uppercase;"><p><%= message %></p></h6>
+        </div>
+    </div>
+<% } %>
 <section>
   <div class="col-md-12">
     <div class="table-responsive">
@@ -31,7 +67,7 @@
               </div>
           </tr>
           <tbody>
-            <% mails.forEach(function(data,index){ %>
+            <% mails?.forEach(function(data,index){ %>
             <tr>
                 <td><%= index+1  %></td>
                 <td><%= data.userid %></td>    
@@ -41,8 +77,8 @@
                 <td><%= data.message %></td>
                 <td>
                 <div class="text-center">
-                    <a href="https://mail.google.com/" style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-success"><p>Respond</p></a>   
-                    <a href="/admin/delete_mail/<%= data._id%>" style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger"><p>Delete</p></a>
+                    <a href="https://mail.google.com/" style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-success"><p style="color: green;">Respond</p></a>   
+                    <a href="/admin/delete_mail/<%= data._id%>" style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger"><p style="color: red;">Delete</p></a>
                 </div>
                 </td>
             </tr>
@@ -56,4 +92,14 @@
 
 </section>
 
+<script>
+  // Check if the message exists
+  var message = "<%= message %>";
+  if (message != null) {
+    setTimeout(function() {
+      // Hide the modal by changing the display style
+      document.getElementById("messageAlertModal").style.display = "none";
+    }, 2100);
+  }
+</script>
 <%-include('../partials/admin_footer')%>

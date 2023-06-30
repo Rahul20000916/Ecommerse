@@ -88,6 +88,7 @@ module.exports = {
   addProducts: (req, res) => {
     try {
       console.log(req.body);
+      req.session.message = 'PRODUCT ADDED';
       let images = req.files.map((a) => a.filename);
       console.log(images);
       adminHelper.addProducts(req.body, images).then((add) => {
@@ -103,6 +104,7 @@ module.exports = {
   updateProducts: (req, res) => {
     try {
       let id = req.params.id;
+      req.session.message = 'PRODUCT EDITED'
       let images = req.files.map((a) => a.filename);
       console.log(images);
       console.log(req.body);
@@ -123,7 +125,8 @@ module.exports = {
 
       // Fetch all orders
       let orders = await adminHelper.orders();
-
+      let message = req.session.message;
+      req.session.message = null
       // Reverse the order of the orders array
       orders.reverse();
 
@@ -141,6 +144,7 @@ module.exports = {
         orders: currentPageOrders,
         currentPage: page,
         totalPages: totalPages,
+        message,
       });
     } catch (err) {
       console.log(err);
@@ -182,7 +186,9 @@ module.exports = {
  manageMails:async(req,res)=>{
   try{
     let mails = await adminHelper.messages()
-    res.render("admin/manage_mails",{mails});
+    let message = req.session.message;
+    req.session.message =null;
+    res.render("admin/manage_mails",{mails,message});
   }catch(err){
     console.log(err)
   }
@@ -191,6 +197,7 @@ module.exports = {
  removeMail:async(req,res)=>{
   try{
   await adminHelper.removeMail(req.params.id)
+  req.session.message = 'MESSAGE DELETED';
   res.redirect("/admin/manage_mails");
   }catch(err){
     console.log(err);
@@ -200,6 +207,8 @@ module.exports = {
   viewOrders: async (req, res) => {
     try {
       let orderId = req.params.id;
+      let message = req.session.message;
+      req.session.message = null;
       console.log(orderId);
       let orders = await adminHelper.viewOrders(orderId);
       let addressId = orders[0].address;
@@ -207,7 +216,7 @@ module.exports = {
       let address = addresss[0];
       console.log(address);
       console.log(orders);
-      res.render("admin/order_status", { orders, address });
+      res.render("admin/order_status", { orders, address , message});
     } catch (err) {
       console.log(err);
     }
@@ -219,7 +228,8 @@ module.exports = {
       const perPage = 5; // Number of items to display per page
       const startIndex = (currentPage - 1) * perPage; // Start index of the current page
       const endIndex = startIndex + perPage; // End index of the current page
-
+      var message = req.session.message;
+      req.session.message = null;
       const viewProduct = await adminHelper.viewAddProduct();
       const totalItems = viewProduct.length;
       const totalPages = Math.ceil(totalItems / perPage);
@@ -230,6 +240,7 @@ module.exports = {
         viewProduct: paginatedProducts,
         currentPage,
         totalPages,
+        message,
       });
     } catch (err) {
       console.log(err);
@@ -291,8 +302,10 @@ module.exports = {
   getCategories: (req, res) => {
     try {
       adminHelpers.viewAddCategory().then((response) => {
+        message = req.session.message;
+        req.session.message = null;
         let viewCategory = response;
-        res.render("admin/add_categories", { viewCategory });
+        res.render("admin/add_categories", { viewCategory,message });
       });
     } catch (err) {
       console.log(err);
@@ -303,6 +316,7 @@ module.exports = {
   addCategories: (req, res) => {
     try {
       let data = req.body;
+      req.session.message = 'CATEGORY ADDED'
       adminHelper.addCategories(data).then((response) => {
         res.redirect("/admin/add_categories");
       });
@@ -334,6 +348,7 @@ module.exports = {
   updateCategory: (req, res) => {
     try {
       const id = req.params.id;
+      req.session.message = "CATEGORY UPDATED"
       adminHelper.updateCategories(id, req.body).then((response) => {
         console.log(response);
         res.redirect("/admin/add_categories");
@@ -347,6 +362,7 @@ module.exports = {
   deleteCategory: (req, res) => {
     try {
       adminHelper.deleteCategory(req.params.id).then((response) => {
+        req.session.message = 'CATEGORY DELETED'
         console.log(req.params.id);
         res.redirect("/admin/add_categories");
       });
@@ -415,6 +431,7 @@ module.exports = {
   removeOrder: async (req, res) => {
     try {
       await adminHelper.removeOrder(req.params.id).then(() => {
+        req.session.message = 'ORDER DELETED'
         res.redirect("/admin/manage_orders");
       });
     } catch (err) {
@@ -424,6 +441,7 @@ module.exports = {
   // order packed
   orderPacked: async (req, res) => {
     try {
+      req.session.message = 'ORDER PACKED'
       const orderId = req.params.id;
       await adminHelper.orderPacked(orderId);
       res.redirect("/admin/vieworders/" + orderId);
@@ -435,6 +453,7 @@ module.exports = {
   orderShipped: async (req, res) => {
     try {
       const orderId = req.params.id;
+      req.session.message = 'ORDER SHIPPED'
       await adminHelper.orderShipped(orderId);
       res.redirect("/admin/vieworders/" + orderId);
     } catch (err) {
@@ -444,6 +463,7 @@ module.exports = {
   // order delivered
   orderDelivered: async (req, res) => {
     try {
+      req.session.message = 'ORDER DELIVERED'
       const orderId = req.params.id;
       await adminHelper.orderDelivered(orderId);
       res.redirect("/admin/vieworders/" + orderId);
@@ -455,6 +475,7 @@ module.exports = {
   returnReject:async (req, res) => {
     try {
       const orderId = req.params.id;
+      req.session.message = 'RETURN REJECTED DONE'
       await adminHelper.returnReject(orderId);
       res.redirect("/admin/vieworders/" + orderId);
     } catch (err) {
@@ -465,6 +486,7 @@ module.exports = {
   returnApproved:async (req, res) => {
     try {
       const orderId = req.params.id;
+      req.session.message = 'RETURN APROVED DONE'
       await adminHelper.returnApproved(orderId);
       res.redirect("/admin/vieworders/" + orderId);
     } catch (err) {
@@ -475,6 +497,7 @@ module.exports = {
   returnPicked:async (req, res) => {
     try {
       const orderId = req.params.id;
+      req.session.message = 'RETURN PICKED DONE'
       await adminHelper.returnPicked(orderId);
       res.redirect("/admin/vieworders/" + orderId);
     } catch (err) {
@@ -486,6 +509,7 @@ module.exports = {
     try {
       const orderId = req.params.id;
       let id = new ObjectId(orderId)
+      req.session.message = 'REDUNDED SUCESSFULLY'
       let order = await adminHelper.findRetunOrder(id);
       let userId = order[0].userid;
       let total = order[0].total;
@@ -550,7 +574,9 @@ module.exports = {
   coupon:async(req,res)=>{
     try{
       let coupon = await adminHelper.getCoupons()
-      res.render("admin/add_coupon",{coupon});
+      message = req.session.message;
+      req.session.message = null;
+      res.render("admin/add_coupon",{coupon,message});
     }catch(err){
       console.log(err);
     }
@@ -560,6 +586,7 @@ module.exports = {
     try{
       data = req.body;
       await adminHelper.addcoupon(data)
+      req.session.message= 'COUPON ADDED'
       res.redirect("/admin/add_coupon");
     }catch(err){
       console.log(err);
@@ -570,6 +597,7 @@ module.exports = {
     try{
       id = req.params.id;
       data =req.body;
+      req.session.message = 'COUPON UPDATED'
       await adminHelper.updateCoupon(id,data).then(()=>{
         res.redirect("/admin/add_coupon");
       })
@@ -580,8 +608,9 @@ module.exports = {
   // remove coupon
   deleteCoupon:async(req,res)=>{
     try{
+      req.session.message ="COUPON DELETED"
       await adminHelper.removeCoupon(req.params.id)
-      res.redirect("/admin/edit_coupon")
+      res.redirect("/admin/add_coupon")
     }catch(err){
       console.log(err)
     }

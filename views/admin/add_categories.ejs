@@ -1,5 +1,64 @@
 <%-include('../partials/admin_header')%>
+<!-- alert modal -->
+<style>
+  .alert-modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.63);
+  }
+  
+  .alert-modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 20px solid #c4c4c4d2;
+      border-radius:80px;
+      width: 40%;
+  }
+  
+  .alert-modal-buttons {
+      text-align: center;
+      margin-top: 20px;
+  }
+</style>
+<style>
+  /* Message Modal styles */
+  .mess-modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.274);
+  }
 
+  .mess-modal-content {
+    background-color: #ffffff;
+    margin: 6% auto;
+    padding: 20px;
+    border: 10px solid #888888cb;
+    border-radius: 250px;
+    width: 30%;
+  }
+  @keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
+</style>
 <!-- topbar -->
 <div class="container-fluid" style="background-color: rgb(255, 255, 255); height: 100px;">
   <div class="row mt-1">
@@ -9,7 +68,13 @@
   </div>
 </div>
   <!-- /topbar -->
-
+  <% if (message != null) { %>
+    <div id="messAlertModal" class="mess-modal">
+        <div class="mess-modal-content ">
+        <h6 id="actAlertMessage" class="text-center blink" style="color: rgb(253, 69, 69);text-transform: uppercase;"><p><%= message %></p></h6>
+        </div>
+    </div>
+<% } %>
 <section class="content-main">
   <div class="card">
     <div class="card-body">
@@ -66,7 +131,7 @@
                       <td>
                         <div class="text-center">
                           <a href="/admin/edit_category/<%= viewCategory._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-success "><p style="color: green;">Edit</p></a>   
-                          <a href="/admin/delete_category/<%= viewCategory._id%>"style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger" onclick="return deleteConfirmation(event)"><p style="color: red;">Delete</p></a>
+                          <button style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-xs btn-danger" onclick="deleteAlertModal('<%= viewCategory._id %>')"><p style="color: red;">Delete</p></button>
                          </div>
                       </td>
                     </tr>
@@ -83,29 +148,21 @@
     <!-- card body .// -->
   </div>
   <!-- card .// -->
-</section>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script>
-  function deleteConfirmation(event) {
-    event.preventDefault(); // Prevent the default link behavior
-    
-    // Display the SweetAlert confirmation dialog
-    swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this category!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    })
-    .then((willDelete) => {
-      if (willDelete) {
-        // If the user confirms the deletion, proceed with the link navigation
-        window.location.href = event.target.href;
-      }
-    });
-  }
+    <!--  Delete Alert Modal -->
+<div id="deleteAlertModal" class="alert-modal">
+  <!-- Modal content -->
+  <div class="alert-modal-content">
+      <h3 class="text-center" style="color: red;">Warning!</h3>
+      <h4 class="text-center" style="color: #7c7c7c;">Are you sure you want to proceed?</h4>
 
-</script>
+      <!-- Buttons -->
+      <div class="alert-modal-buttons">
+          <button class="btn" onclick="submitAlert()"><img src="/admin_assets/assets/imgs/buttons/check.png" alt="submit"></button>
+          <button class="btn" onclick="closeAlertModal()"><img src="/admin_assets/assets/imgs/buttons/delete.png" alt="cancel"></button>
+      </div>
+  </div>
+</div>
+</section>
 
 <script>
   document.getElementById("btn").onclick = () => {
@@ -125,5 +182,35 @@
 
   hide("alert");
 </script>
-
+<script>
+  // Check if the message exists
+  var message = "<%= message %>";
+  if (message != null) {
+    setTimeout(function() {
+      // Hide the modal by changing the display style
+      document.getElementById("messAlertModal").style.display = "none";
+    }, 2100);
+  }
+</script>
+<script>
+  const alertModal = document.getElementById('deleteAlertModal');
+  let addressId;
+  function deleteAlertModal(id) {
+    addressId = id;
+    alertModal.style.display = 'block';
+  }
+  function closeAlertModal() {
+      alertModal.style.display = 'none';
+  }
+  function submitAlert() {
+      closeAlertModal();
+      $.ajax({
+    url: '/admin/delete_category/'+addressId,
+    type: 'GET',
+    success: function(response) {
+        location.reload(); 
+    }
+  });
+  }
+</script>
 <%-include('../partials/admin_footer')%>
