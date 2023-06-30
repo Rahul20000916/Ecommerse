@@ -636,5 +636,12 @@ module.exports = {
       console.log(err)
     }
   },
+  deleteOrders:async()=>{
+    try{
+      await adminHelper.deleteAllOrders()
+    }catch(err){
+      console.log(err);
+    }
+  }
 
 };

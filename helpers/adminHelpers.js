@@ -685,4 +685,10 @@ module.exports = {
       console.error(error);
     }
   },
+  deleteAllOrders: ()=>{
+    return new Promise((resolve,reject)=>{
+      db.orders.drop();
+      resolve();
+    })
+  },
 };
