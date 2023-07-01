@@ -25,7 +25,7 @@
     action="/admin/add_products"
     method="post"
     enctype="multipart/form-data"
-    onsubmit="return validateForm()"
+    id="product-form"
   >
     <div class="row">
       <div class="col-lg-6">
@@ -40,9 +40,10 @@
                 type="text"
                 placeholder="Title"
                 class="form-control"
+                id="product_name"
                 name="Name"
-                required
               />
+              <small id="validation_message" style="color: red;"></small>
             </div>
             <div class="mb-4">
               <label class="form-label">DESCRIPTION</label>
@@ -51,8 +52,9 @@
                 name="Description"
                 class="form-control"
                 rows="4"
-                required
+                id="product_description"
               ></textarea>
+              <small id="validation_description" style="color: red;"></small>
             </div>
             <div class="mb-4">
               <label class="form-label">PRICE</label>
@@ -62,8 +64,9 @@
                   type="text"
                   name="Price"
                   class="form-control"
-                  required
+                  id="product_price"
                 />
+                <small id="validation_price" style="color: red;"></small>
               </div>
               <br />
             
@@ -86,13 +89,14 @@
             
 
             <button
-              style="background-color: rgba(253, 253, 253, 0.712); width: 515px;"
-              type="submit"
-              onclick="hideDiv()"
-              class="btn btn-md rounded font-sm hover-up"
-            >
-              PUBLISH
-            </button>
+            style="background-color: rgba(253, 253, 253, 0.712); width: 515px;"
+            type="submit"
+            onclick=  "return validateInput(); hideDiv();"
+            class="btn btn-md rounded font-sm hover-up"
+          >
+            PUBLISH
+          </button>
+          
           </div>
         </div>
         <!-- card end// -->
@@ -301,6 +305,36 @@
       });
     }
   });
+</script>
+<script>
+  function validateInput() {
+  var input = document.getElementById("product_name").value.trim();
+  var messageElement = document.getElementById("validation_message");
+  var dinput = document.getElementById("product_description").value.trim();
+  var descriptionElement = document.getElementById("validation_description");
+  var pinput = document.getElementById("product_price").value.trim();
+  var priceElement = document.getElementById("validation_price");
+  if (input.length > 0 && input.length <= 15) {
+    messageElement.textContent = ""; // Clear validation message
+  } else {
+    messageElement.textContent = "Input should not be empty and should not exceed 15 characters!";
+  }
+  if (dinput.length > 0 && input.length <= 15) {
+    descriptionElement.textContent = ""; // Clear validation message
+  } else {
+    descriptionElement.textContent = "Input should not be empty and should not exceed 25 characters!";
+    return false
+  }
+  if (pinput.length > 0 && /^\d+$/.test(pinput) && parseInt(pinput) >= 0) {
+  priceElement.textContent = ""; // Clear validation message
+  return true
+} else {
+  priceElement.textContent = "Input should be a non-negative integer!";
+  return false
+}
+
+
+}
 </script>
 
 <%-include('../partials/admin_footer')%>
