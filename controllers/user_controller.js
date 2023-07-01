@@ -261,11 +261,12 @@ module.exports = {
     try {
       let user = req.session.loggedIn;
       const id = req.params.id;
+      proId = new ObjectId(id);
       let cartCount = null;
       if (user) {
         cartCount = await userHelpers.getCartCount(user._id);
       }
-      userHelpers.viewProductDetails(id).then((response) => {
+      await userHelpers.viewProductDetails(proId).then((response) => {
         let data = response;
         res.render("user/product_details", { data, user, cartCount });
       });
