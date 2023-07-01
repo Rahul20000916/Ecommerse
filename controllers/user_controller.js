@@ -54,14 +54,11 @@ module.exports = {
   signup: async (req, res) => {
     let user = req.session.loggedIn;
     let cartCount = null;
-    var loginErr =0
     if (user) {
       cartCount = await userHelpers.getCartCount(user._id);
     }
     try {
-      req.session.loggedIn = null;
-      var loginErr = req.session.loggedIn;
-      res.render("user/login", { user, cartCount , loginErr});
+      res.render("user/signup", { user, cartCount });
     } catch (err) {
       console.log(err);
     }
@@ -74,6 +71,8 @@ module.exports = {
       let user = req.session.loggedIn;
       let cartCount = null;
       let code = req.body.Referal;
+      req.session.loggedIn = null;
+      var loginErr = req.session.loggedIn;
       if (code) {
         let point = 10;
         userHelpers.walletPoint(code).then(async(response) => {
@@ -104,7 +103,7 @@ module.exports = {
           }
         })
       }
-      res.render("user/login", { user, cartCount, });
+      res.render("user/login", { user, cartCount , loginErr});
     } catch (err) {
       console.log(err);
     }
