@@ -58,7 +58,9 @@ module.exports = {
       cartCount = await userHelpers.getCartCount(user._id);
     }
     try {
-      res.render("user/signup", { user, cartCount });
+      req.session.loggedIn = null;
+      var loginErr = req.session.loggedIn;
+      res.render("user/login", { user, cartCount , loginErr});
     } catch (err) {
       console.log(err);
     }
@@ -101,7 +103,7 @@ module.exports = {
           }
         })
       }
-      res.render("user/login", { user, cartCount });
+      res.render("user/login", { user, cartCount, });
     } catch (err) {
       console.log(err);
     }
