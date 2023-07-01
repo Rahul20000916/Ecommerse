@@ -54,6 +54,7 @@ module.exports = {
   signup: async (req, res) => {
     let user = req.session.loggedIn;
     let cartCount = null;
+    var loginErr =0
     if (user) {
       cartCount = await userHelpers.getCartCount(user._id);
     }
