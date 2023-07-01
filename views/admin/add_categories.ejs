@@ -91,8 +91,9 @@
                 name="Name"
                 required
               />
+              <small style="color: red;" id="nameValidationMessage"></small>
             </div>
-
+          
             <div class="mb-4">
               <label class="form-label">Description</label>
               <textarea
@@ -102,6 +103,7 @@
                 class="form-control"
                 required
               ></textarea>
+              <small style="color: red;" id="descriptionValidationMessage"></small>
             </div>
             <div class="d-grid">
               <button style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-primary" id="btn" type="submit">
@@ -109,6 +111,7 @@
               </button>
             </div>
           </form>
+          
         </div>
         <div class="col-md-9">
           <div class="table-responsive">
@@ -212,5 +215,33 @@
     }
   });
   }
+</script>
+<script>
+  document.getElementById("btn").addEventListener("click", function(event) {
+  var nameInput = document.getElementById("name").value.trim();
+  var descriptionInput = document.getElementById("description").value.trim();
+  var nameValidationMessage = document.getElementById("nameValidationMessage");
+  var descriptionValidationMessage = document.getElementById("descriptionValidationMessage");
+  var isValid = true;
+
+  if (nameInput.length === 0) {
+    nameValidationMessage.textContent = "Name is required.";
+    isValid = false;
+  } else {
+    nameValidationMessage.textContent = "";
+  }
+
+  if (descriptionInput.length === 0) {
+    descriptionValidationMessage.textContent = "Description is required.";
+    isValid = false;
+  } else {
+    descriptionValidationMessage.textContent = "";
+  }
+
+  if (!isValid) {
+    event.preventDefault(); // Prevent form submission if validation fails
+  }
+});
+
 </script>
 <%-include('../partials/admin_footer')%>

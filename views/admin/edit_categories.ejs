@@ -46,30 +46,32 @@
             <h6 class=" text-center mt-4">SELECT CATEGORY TO EDIT OR <br>
               CREATE NEW ONE</h6>
           <% } else { %>
-          <form action="/admin/edit_categories/<%= data._id %>" method="post">
-            <div class="mb-4">
-              <label class="form-label">Name</label>
-              <input
-                type="text"
-                value="<%= data.categoryName %>"
-                id="name"
-                class="form-control"
-                name="Name"
-                required
-              />
-            </div>
-
-            <div class="mb-4">
-              <label class="form-label">Description</label>
-              <textarea name="Description" class="form-control" rows="4" required><%= data.description %></textarea>
-
-            </div>
-            <div class="d-grid">
-              <button style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-primary" id="btn" type="submit">
-                UPDATE CATEGORY
-              </button>
-            </div>
-          </form>
+            <form action="/admin/edit_categories/<%= data._id %>" method="post">
+              <div class="mb-4">
+                <label class="form-label">Name</label>
+                <input
+                  type="text"
+                  value="<%= data.categoryName %>"
+                  id="name"
+                  class="form-control"
+                  name="Name"
+                  required
+                />
+                <small style="color: red;" id="nameValidationMessage"></small>
+              </div>
+            
+              <div class="mb-4">
+                <label class="form-label">Description</label>
+                <textarea name="Description" class="form-control" rows="4" required><%= data.description %></textarea>
+                <small style="color: red;" id="descriptionValidationMessage"></small>
+              </div>
+              <div class="d-grid">
+                <button style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-primary" id="btn" type="submit">
+                  UPDATE CATEGORY
+                </button>
+              </div>
+            </form>
+            
           <% } %>
           <div class="d-grid mt-4">
             <a href="/admin/add_categories">
@@ -171,5 +173,33 @@
     }
   });
   }
+</script>
+<script>
+  document.getElementById("btn").addEventListener("click", function(event) {
+  var nameInput = document.getElementById("name").value.trim();
+  var descriptionInput = document.querySelector("textarea[name='Description']").value.trim();
+  var nameValidationMessage = document.getElementById("nameValidationMessage");
+  var descriptionValidationMessage = document.getElementById("descriptionValidationMessage");
+  var isValid = true;
+
+  if (nameInput.length === 0) {
+    nameValidationMessage.textContent = "Name is required.";
+    isValid = false;
+  } else {
+    nameValidationMessage.textContent = "";
+  }
+
+  if (descriptionInput.length === 0) {
+    descriptionValidationMessage.textContent = "Description is required.";
+    isValid = false;
+  } else {
+    descriptionValidationMessage.textContent = "";
+  }
+
+  if (!isValid) {
+    event.preventDefault(); // Prevent form submission if validation fails
+  }
+});
+
 </script>
 <%-include('../partials/admin_footer')%>

@@ -1,5 +1,11 @@
 <%-include('../partials/admin_header')%>
 <style>
+  .validation-message {
+  color: red;
+}
+
+</style>
+<style>
   .alert-modal {
       display: none;
       position: fixed;
@@ -46,69 +52,77 @@
                mt-4">SELECT CATEGORY TO EDIT OR <br>
                  CREATE NEW ONE</h6>
             <% } else { %>
-                <form action="/admin/update_coupon/<%= data[0]._id %>" method="post">
-                    <div class="mb-1">
-                      <label class="form-label">Coupon Name</label>
-                      <input
-                        type="text"
-                        id="name"
-                        value="<%= data[0].name %>"
-                        class="form-control"
-                        name="Name"
-                        required
-                      />
-                    </div>
-        
-                    <div class="mb-1">
-                      <label class="form-label">Description</label>
-                      <textarea
-                        id="description"
-                        name="Description"
-                        class="form-control"
-                        required
-                      ><%= data[0].description %></textarea>
-                    </div>
-        
-                    <div class="mb-1">
-                        <label class="form-label">Expiry Date</label>
-                        <input 
-                            type="date" 
-                            name="date" 
-                            id="date"
-                            value="<%= data[0].expiry.toISOString().substr(0, 10) %>"
-                            class="form-control"
-                            required
-                        >
-                    </div>
-                    
-                    <div class="mb-1">
-                        <label class="form-label">Minimum purchase amount</label>
-                        <input 
-                        type="number" 
-                        name="amount" 
-                        value="<%= data[0].amount %>"
-                        id="amount"
-                        class="form-control"
-                        required
-                        >
-                    </div>
-                        <div class="mb-1">
-                            <label class="form-label">Discount in precentage</label>
-                            <input 
-                            type="number" 
-                            name="discount" 
-                            id="discount"
-                            value="<%= data[0].discount %>"
-                            class="form-control"
-                            required
-                            >
-                    </div>
-                    <div class="d-grid mt-2">
-                      <button style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-primary" id="btn" type="submit">
-                        UPDATE COUPON
-                      </button>
-                    </div>
-                  </form>
+              <form action="/admin/update_coupon/<%= data[0]._id %>" method="post">
+                <div class="mb-1">
+                  <label class="form-label">Coupon Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    value="<%= data[0].name %>"
+                    class="form-control"
+                    name="Name"
+                    required
+                  />
+                  <small id="nameValidationMessage" class="validation-message"></small>
+                </div>
+              
+                <div class="mb-1">
+                  <label class="form-label">Description</label>
+                  <textarea
+                    id="description"
+                    name="Description"
+                    class="form-control"
+                    required
+                  ><%= data[0].description %></textarea>
+                  <small id="descriptionValidationMessage" class="validation-message"></small>
+                </div>
+              
+                <div class="mb-1">
+                  <label class="form-label">Expiry Date</label>
+                  <input 
+                    type="date" 
+                    name="date" 
+                    id="date"
+                    value="<%= data[0].expiry.toISOString().substr(0, 10) %>"
+                    class="form-control"
+                    required
+                  >
+                  <small id="dateValidationMessage" class="validation-message"></small>
+                </div>
+              
+                <div class="mb-1">
+                  <label class="form-label">Minimum purchase amount</label>
+                  <input 
+                    type="number" 
+                    name="amount" 
+                    value="<%= data[0].amount %>"
+                    id="amount"
+                    class="form-control"
+                    required
+                  >
+                  <small id="amountValidationMessage" class="validation-message"></small>
+                </div>
+              
+                <div class="mb-1">
+                  <label class="form-label">Discount in percentage</label>
+                  <input 
+                    type="number" 
+                    name="discount" 
+                    id="discount"
+                    value="<%= data[0].discount %>"
+                    class="form-control"
+                    required
+                  >
+                  <small id="discountValidationMessage" class="validation-message"></small>
+                </div>
+              
+                <div class="d-grid mt-2">
+                  <button style="background-color: rgba(253, 253, 253, 0.712);" class="btn btn-primary" id="btn" type="submit">
+                    UPDATE COUPON
+                  </button>
+                </div>
+              </form>
+              
             <% } %>
             <div class="d-grid mt-4">
               <a href="/admin/add_coupon">
@@ -198,6 +212,64 @@
     }
   });
   }
+</script>
+<script>
+  document.getElementById("btn").addEventListener("click", function(event) {
+  var nameInput = document.getElementById("name").value.trim();
+  var descriptionInput = document.getElementById("description").value.trim();
+  var dateInput = document.getElementById("date").value;
+  var amountInput = document.getElementById("amount").value.trim();
+  var discountInput = document.getElementById("discount").value.trim();
+  var nameValidationMessage = document.getElementById("nameValidationMessage");
+  var descriptionValidationMessage = document.getElementById("descriptionValidationMessage");
+  var dateValidationMessage = document.getElementById("dateValidationMessage");
+  var amountValidationMessage = document.getElementById("amountValidationMessage");
+  var discountValidationMessage = document.getElementById("discountValidationMessage");
+  var isValid = true;
+
+  if (nameInput.length === 0) {
+    nameValidationMessage.textContent = "Name is required.";
+    isValid = false;
+  } else {
+    nameValidationMessage.textContent = "";
+  }
+
+  if (descriptionInput.length === 0) {
+    descriptionValidationMessage.textContent = "Description is required.";
+    isValid = false;
+  } else {
+    descriptionValidationMessage.textContent = "";
+  }
+
+  if (dateInput === "") {
+    dateValidationMessage.textContent = "Expiry date is required.";
+    isValid = false;
+  } else {
+    dateValidationMessage.textContent = "";
+  }
+
+  if (amountInput === "") {
+    amountValidationMessage.textContent = "Minimum purchase amount is required.";
+    isValid = false;
+  } else {
+    amountValidationMessage.textContent = "";
+  }
+
+  if (discountInput === "") {
+    discountValidationMessage.textContent = "Discount is required.";
+    isValid = false;
+  } else if (discountInput > 100) {
+    discountValidationMessage.textContent = "Discount cannot be greater than 100.";
+    isValid = false;
+  } else {
+    discountValidationMessage.textContent = "";
+  }
+
+  if (!isValid) {
+    event.preventDefault(); // Prevent form submission if validation fails
+  }
+});
+
 </script>
 
 <%-include('../partials/admin_footer')%>
